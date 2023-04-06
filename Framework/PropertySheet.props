@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <DH>D:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include</DH>
+    <DL64>D:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64</DL64>
+    <DL>D:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86</DL>
+    <DL32>D:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x86</DL32>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="DH">
+      <Value>$(DH)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DL64">
+      <Value>$(DL64)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DL">
+      <Value>$(DL)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DL32">
+      <Value>$(DL32)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
