@@ -4,7 +4,7 @@ class TextureBuffer : public ShaderBuffer {
  public:
   TextureBuffer() : ShaderBuffer(&data, sizeof(data)) { data.bFliped = false; }
 
-  void Flip(bool flip) { data.bFliped = flip; }
+  void Flip(bool flip) { this->data.bFliped = flip; }
  private:
   struct Data {
     int bFliped;

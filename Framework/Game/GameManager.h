@@ -4,11 +4,14 @@ class GameManager : public SingletonBase<GameManager> {
  public:
   friend class SingletonBase<GameManager>;
 
-  float GetGlobalSpeed() const { return globalSpeed; }
-  void SetGlobalSpeed(float globalSpeed) { this->globalSpeed = globalSpeed; }
+  const float GetGlobalSpeed() { return globalSpeed; }
+  const float GetGravity() { return gravity; }
 
+  void SetGlobalSpeed(float globalSpeed = 1.0f) { this->globalSpeed = globalSpeed; }
+  void SetGravity(float gravity) { this->gravity = gravity; }
  private:
   GameManager(void);
 
   float globalSpeed;
+  float gravity;
 };
