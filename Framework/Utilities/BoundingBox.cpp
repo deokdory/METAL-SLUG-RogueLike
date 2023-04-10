@@ -1,17 +1,27 @@
 #include "Framework.h"
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox() {
+BoundingBox::BoundingBox(Vector3 position, Vector3 size, float rotation,
+                         Color color)
+    : position(position), size(size), rotation(rotation), color(color) {
   edge = new RectEdge();
   data = new AxisData();
+
+  Init();
 }
 
 BoundingBox::~BoundingBox() {
   SAFE_DELETE(data);
   SAFE_DELETE(edge);
+  SAFE_DELETE(wb);
+  SAFE_DELETE(il);
+  SAFE_DELETE(ps);
+  SAFE_DELETE(vs);
+  SAFE_DELETE(ib);
+  SAFE_DELETE(vb);
 }
 
-void BoundingBox::Init(Color color) {
+void BoundingBox::Init() {
   vertices.assign(4, VertexColor());
 
   vertices[0].position = Vector3(-.5f, -.5f, +.0f);
@@ -23,7 +33,7 @@ void BoundingBox::Init(Color color) {
     v.color = color;
   }
 
-    vb = new VertexBuffer();
+  vb = new VertexBuffer();
   vb->Create(vertices, D3D11_USAGE_DYNAMIC);
 
   indices = {0, 1, 2, 0, 3, 1};
@@ -49,15 +59,21 @@ void BoundingBox::Init(Color color) {
   States::CreateBlendState(&desc, &bs);
 }
 
-void BoundingBox::Update(Vector3 size, Vector3 movePosition, float rotation) {
-  wb->SetWorld(DXMath::Scaling(size) * DXMath::RotationInDegree(rotation) *
-               DXMath::Translation(
-                   {((edge->LT.x + edge->RB.x) / 2) + movePosition.x,
-                    ((edge->LT.y + edge->RB.y) / 2) + movePosition.y, 0.0f}));
+void BoundingBox::Update(Vector3 position, Vector3 size, float rotation) {
+  this->position = position;
+  this->size = size;
+  this->rotation = rotation;
+
+  world = DXMath::Scaling(size) * DXMath::RotationInDegree(rotation) *
+          DXMath::Translation(position);
+
+  wb->SetWorld(world);
 
   if (Keyboard::Get()->Down(VK_F1)) {
     cb->SwitchRender();
   }
+
+  UpdateCollisionData();
 }
 
 void BoundingBox::Render() {
@@ -67,6 +83,7 @@ void BoundingBox::Render() {
   DC->IASetPrimitiveTopology(
       D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // 토폴로지 ( 그리는 방식 )
                                                // 검색해보길 권장
+
   vs->SetShader();
   wb->SetVSBuffer(0);
 
@@ -78,38 +95,36 @@ void BoundingBox::Render() {
   DC->OMSetBlendState(bs, nullptr, 0xFFFFFFFF);
 }
 
-void BoundingBox::UpdateCollisionData(const Matrix worldMatrix,
-                                      const Vector3 verticesLocalPosition[]) {
+void BoundingBox::UpdateCollisionData() {
   // AABB
   {
-    D3DXVec3TransformCoord(&edge->LT, &verticesLocalPosition[3], &worldMatrix);
-    D3DXVec3TransformCoord(&edge->LB, &verticesLocalPosition[0], &worldMatrix);
-    D3DXVec3TransformCoord(&edge->RT, &verticesLocalPosition[1], &worldMatrix);
-    D3DXVec3TransformCoord(&edge->RB, &verticesLocalPosition[2], &worldMatrix);
+    D3DXVec3TransformCoord(&edge->LT, &vertices[3].position, &world);
+    D3DXVec3TransformCoord(&edge->LB, &vertices[0].position, &world);
+    D3DXVec3TransformCoord(&edge->RT, &vertices[1].position, &world);
+    D3DXVec3TransformCoord(&edge->RB, &vertices[2].position, &world);
   }
 
   // OBB
   {
     // Center Position Update
-    { 
-      float x = ( edge->LT.x + edge->LB.x + edge->RT.x + edge->RB.x ) / 4.f;
-      float y = ( edge->LT.y + edge->LB.y + edge->RT.y + edge->RB.y ) / 4.f;
+    {
+      float x = (edge->LT.x + edge->LB.x + edge->RT.x + edge->RB.x) / 4.f;
+      float y = (edge->LT.y + edge->LB.y + edge->RT.y + edge->RB.y) / 4.f;
       float z = 0;
 
       data->ceneterPos = Vector3(x, y, z);
     }
     // Axis Vector Update
-    { 
-      D3DXVec3TransformNormal(&data->axisDir[x], &Values::RightVec, &worldMatrix);
-      D3DXVec3TransformNormal(&data->axisDir[y], &Values::UpVec, &worldMatrix);
+    {
+      D3DXVec3TransformNormal(&data->axisDir[x], &Values::RightVec, &world);
+      D3DXVec3TransformNormal(&data->axisDir[y], &Values::UpVec, &world);
 
-      // 정규화
+      // 정규화 ( 길이를 1로 만들어서 방향 데이터만 남을 수 있도록? )
       D3DXVec3Normalize(&data->axisDir[x], &data->axisDir[x]);
       D3DXVec3Normalize(&data->axisDir[y], &data->axisDir[y]);
     }
-
     // Axis Length Update
-    { 
+    {
       Vector3 unitAxes[2] = {data->axisDir[x], data->axisDir[y]};
       Vector3 verticesPos[4] = {edge->LT, edge->LB, edge->RT, edge->RB};
       float minValues[2] = {INT_MAX, INT_MAX};
@@ -149,65 +164,64 @@ bool BoundingBox::AABB(BoundingBox* a, BoundingBox* b) {
 
 bool BoundingBox::OBB(BoundingBox* a, BoundingBox* b) {
   if (a != nullptr && b != nullptr) {
+    AxisData ad = *a->data;
+    AxisData bd = *b->data;
 
-  AxisData ad = *a->data;
-  AxisData bd = *b->data;
+    Vector3 centerDir, axis;
+    float centerProjDist, r1, r2;
 
-  Vector3 centerDir, axis;
-  float centerProjDist, r1, r2;
+    centerDir = ad.ceneterPos - bd.ceneterPos;
 
-  centerDir = ad.ceneterPos - bd.ceneterPos;
+    // a Rect : X axis
+    {
+      axis = ad.axisDir[x];
 
-  // a Rect : X axis
-  { 
-    axis = ad.axisDir[x];
+      centerProjDist = abs(D3DXVec3Dot(&centerDir, &axis));
 
-    centerProjDist = abs(D3DXVec3Dot(&centerDir, &axis));
+      r1 = ad.axisLen[x];
+      r2 = abs(D3DXVec3Dot(&bd.axisDir[x], &axis) * bd.axisLen[x]) +
+           abs(D3DXVec3Dot(&bd.axisDir[y], &axis) * bd.axisLen[y]);
 
-    r1 = ad.axisLen[x];
-    r2 = abs(D3DXVec3Dot(&bd.axisDir[x], &axis) * bd.axisLen[x]) +
-         abs(D3DXVec3Dot(&bd.axisDir[y], &axis) * bd.axisLen[y]);
+      if (centerProjDist > r1 + r2) return false;
+    }
+    // a Rect : Y axis
+    {
+      axis = ad.axisDir[y];
 
-    if (centerProjDist > r1 + r2) return false;
-  }
-  // a Rect : Y axis
-  {
-    axis = ad.axisDir[y];
+      centerProjDist = abs(D3DXVec3Dot(&centerDir, &axis));
 
-    centerProjDist = abs(D3DXVec3Dot(&centerDir, &axis));
+      r1 = ad.axisLen[y];
+      r2 = abs(D3DXVec3Dot(&bd.axisDir[x], &axis) * bd.axisLen[x]) +
+           abs(D3DXVec3Dot(&bd.axisDir[y], &axis) * bd.axisLen[y]);
 
-    r1 = ad.axisLen[y];
-    r2 = abs(D3DXVec3Dot(&bd.axisDir[x], &axis) * bd.axisLen[x]) +
-         abs(D3DXVec3Dot(&bd.axisDir[y], &axis) * bd.axisLen[y]);
+      if (centerProjDist > r1 + r2) return false;
+    }
+    // b Rect : X axis
+    {
+      axis = bd.axisDir[x];
 
-    if (centerProjDist > r1 + r2) return false;
-  }
-  // b Rect : X axis
-  {
-    axis = bd.axisDir[x];
+      centerProjDist = abs(D3DXVec3Dot(&centerDir, &axis));
 
-    centerProjDist = abs(D3DXVec3Dot(&centerDir, &axis));
+      r1 = bd.axisLen[x];
+      r2 = abs(D3DXVec3Dot(&ad.axisDir[x], &axis) * ad.axisLen[x]) +
+           abs(D3DXVec3Dot(&ad.axisDir[y], &axis) * ad.axisLen[y]);
 
-    r1 = bd.axisLen[x];
-    r2 = abs(D3DXVec3Dot(&ad.axisDir[x], &axis) * ad.axisLen[x]) +
-         abs(D3DXVec3Dot(&ad.axisDir[y], &axis) * ad.axisLen[y]);
+      if (centerProjDist > r1 + r2) return false;
+    }
+    // b Rect : Y axis
+    {
+      axis = bd.axisDir[y];
 
-    if (centerProjDist > r1 + r2) return false;
-  }
-  // b Rect : Y axis
-  {
-    axis = bd.axisDir[y];
+      centerProjDist = abs(D3DXVec3Dot(&centerDir, &axis));
 
-    centerProjDist = abs(D3DXVec3Dot(&centerDir, &axis));
+      r1 = bd.axisLen[y];
+      r2 = abs(D3DXVec3Dot(&ad.axisDir[x], &axis) * ad.axisLen[x]) +
+           abs(D3DXVec3Dot(&ad.axisDir[y], &axis) * ad.axisLen[y]);
 
-    r1 = bd.axisLen[y];
-    r2 = abs(D3DXVec3Dot(&ad.axisDir[x], &axis) * ad.axisLen[x]) +
-         abs(D3DXVec3Dot(&ad.axisDir[y], &axis) * ad.axisLen[y]);
+      if (centerProjDist > r1 + r2) return false;
+    }
 
-    if (centerProjDist > r1 + r2) return false;
-  }
-
-  return true;
+    return true;
   } else {
     return false;
   }

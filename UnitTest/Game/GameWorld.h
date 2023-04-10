@@ -1,6 +1,8 @@
 #pragma once
 #include "Geometries/TextureRect.h"
-#include "Game/GameObject.h"
+#include "Level/Level.h"
+
+#include "Level/SampleLevel/TestLevel.h"
 
 class GameWorld {
  public:
@@ -11,6 +13,5 @@ class GameWorld {
   void render(double interpolation);
   
  private:
-  std::vector<GameObject*> objects;
-  
+  Level* level = nullptr;
 };
