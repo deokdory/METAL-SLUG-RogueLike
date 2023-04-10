@@ -11,6 +11,7 @@ class IMovement {
 
   void moveLeft();
   void moveRight();
+  void breaking();
   void jump();
 
   void SetLevel(Level* level) { this->level = level; }
@@ -23,6 +24,7 @@ class IMovement {
   float gravity = 20.0f;
   float jumpPower = 20.f;
 
+  float xSpeedMax = 10.f;
   float xSpeed = 0.f;
   float accel = 1.f;
 };

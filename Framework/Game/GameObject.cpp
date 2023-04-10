@@ -1,11 +1,14 @@
 #include "Framework.h"
 #include "GameObject.h"
 
-GameObject::GameObject(Vector3 position, Vector3 size) {
+GameObject::GameObject(Vector3 position, Vector3 size) 
+: position(position), size(size) {
+
   animRect = new AnimationRect(position, size);
   animator = new Animator();
 
-  hitbox = new BoundingBox();
+  hitbox = new BoundingBox(position, size, 0.0f, Color(0, 0, 1, 0.3f));
+
 }
 
 GameObject::~GameObject() {
@@ -17,8 +20,12 @@ GameObject::~GameObject() {
 
 
 void GameObject::update() { 
+
+  animRect->SetPosition(position);
+  animRect->SetSize(size);
+
   animRect->Update();
-  hitbox->Update(size);
+  hitbox->Update(position, size, 0.0f);
   animator->Update();
 }
 void GameObject::render() {

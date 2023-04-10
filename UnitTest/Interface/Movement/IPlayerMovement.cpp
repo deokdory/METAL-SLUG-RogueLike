@@ -9,11 +9,13 @@ void IPlayerMovement::update() {
     moveLeft();
   } else if (Keyboard::Get()->Press('D') && !Keyboard::Get()->Press('A')) {
     moveRight();
+  } else {
+    breaking();
   }
 
-  if (Keyboard::Get()->Down(VK_SPACE)) {
-    jump();
-  }
+  //if (Keyboard::Get()->Down(VK_SPACE)) {
+  //  jump();
+  //}
   __super::update();
 }
     

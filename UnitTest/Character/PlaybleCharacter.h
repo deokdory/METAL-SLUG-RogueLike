@@ -8,6 +8,9 @@ class PlaybleCharacter : public Character {
   PlaybleCharacter(Vector3 position, Vector3 size);
   ~PlaybleCharacter();
 
+  virtual void update();
+  virtual void render();
+
  private:
   IPlayerMovement* movement = nullptr;
 };

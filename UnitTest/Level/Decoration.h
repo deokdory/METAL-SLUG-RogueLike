@@ -4,13 +4,13 @@
 
 class Decoration {
  public:
-  Decoration(Vector3 position, Vector3 size);
+  Decoration();
   ~Decoration();
 
   void update();
   void render();
 
  private:
-  AnimationRect* animRect;
-  Animator* animator;
+  AnimationRect* animRect = nullptr;
+  Animator* animator = nullptr;
 };

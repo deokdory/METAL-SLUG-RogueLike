@@ -11,9 +11,9 @@ class GameObject {
   virtual void render();
 
   void move(Vector3 position) {
-    position.x += position.x;
-    position.y += position.y;
-    position.z += position.z;
+    this->position.x += position.x;
+    this->position.y += position.y;
+    this->position.z += position.z;
   };
 
   Vector3 getPosition() { return position; }

@@ -53,8 +53,6 @@ using namespace std;
 #include "Systems/Mouse.h"
 #include "Systems/Time.h"
 
-#include "Game/GameManager.h"
-
 #include "Utilities/Gui.h"
 
 typedef D3DXVECTOR3 Vector3;
