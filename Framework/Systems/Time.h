@@ -1,20 +1,19 @@
 #pragma once
 
-class Time : public SingletonBase<Time>
-{
-public:
-	friend class SingletonBase<Time>;
+class Time : public SingletonBase<Time> {
+ public:
+  friend class SingletonBase<Time>;
 
-	static bool Stopped() { return isTimerStopped; }
-	static float Delta() { return isTimerStopped ? 0.0f : timeElapsed; }
+  static bool Stopped() { return isTimerStopped; }
+  static double Delta() { return isTimerStopped ? 0.0f : timeElapsed; }
 
-	void Update();
+  void Update();
 
-	void Start();
-	void Stop();
+  void Start();
+  void Stop();
 
-	float FPS() const { return framePerSecond; }
-	float Running() const { return runningTime; }
+	double FPS() const { return framePerSecond; }
+	double Running() const { return runningTime; }
 
 private:
 	Time(void);
@@ -31,6 +30,6 @@ private:
 	INT64 fpsUpdateInterval;///< fps 업데이트 간격
 
 	UINT frameCount;///< 프레임 수
-	float runningTime;///< 진행 시간
-	float framePerSecond;///< FPS
+	double runningTime;///< 진행 시간
+	double framePerSecond;///< FPS
 };
