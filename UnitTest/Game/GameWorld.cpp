@@ -7,4 +7,4 @@ GameWorld::~GameWorld() { SAFE_DELETE(level); }
 
 void GameWorld::update() { level->update(); }
 
-void GameWorld::render(double interpolation) { level->render(); }
+void GameWorld::render() { level->render(); }

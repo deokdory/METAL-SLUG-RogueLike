@@ -93,6 +93,9 @@ WPARAM Window::Run(IObject* mainObj)
 
 	Time::Get()->Start();
 
+	RECT fpsRect = {0, 0, 100, 50};
+
+
 	while (true)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
