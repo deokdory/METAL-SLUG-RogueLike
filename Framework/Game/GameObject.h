@@ -7,25 +7,24 @@ class GameObject {
   GameObject(Vector3 position, Vector3 size);
   virtual ~GameObject();
 
-  virtual void update() = 0;
-  virtual void render() = 0;
+  virtual void update();
+  virtual void render();
 
   void move(Vector3 position) {
-    position_.x += position.x;
-    position_.y += position.y;
-    position_.z += position.z;
+    position.x += position.x;
+    position.y += position.y;
+    position.z += position.z;
   };
 
-  Vector3 getPosition() { return position_; }
-  Vector3 getSize() { return size_; }
+  Vector3 getPosition() { return position; }
+  Vector3 getSize() { return size; }
 
  protected:
-  AnimationRect* animRect_ = nullptr;
-  Animator* animator_ = nullptr;
+  AnimationRect* animRect = nullptr;
+  Animator* animator = nullptr;
 
-  BoundingBox* bottom_ = nullptr;
-  BoundingBox* hitbox_ = nullptr;
+  BoundingBox* hitbox = nullptr;
 
-  Vector3 position_;
-  Vector3 size_;
+  Vector3 position;
+  Vector3 size;
 };

@@ -185,6 +185,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="Game\Decoration.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Geometries\AnimationRect.h" />
     <ClInclude Include="Geometries\Rect.h" />

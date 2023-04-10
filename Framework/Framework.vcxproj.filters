@@ -63,5 +63,6 @@
     <ClInclude Include="Geometries\AnimationRect.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Systems\Camera.h" />
+    <ClInclude Include="Game\Decoration.h" />
   </ItemGroup>
 </Project>
