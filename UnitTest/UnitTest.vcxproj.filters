@@ -3,15 +3,21 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Program.h" />
-    <ClInclude Include="Character\Player.h" />
     <ClInclude Include="Game\Game.h" />
-    <ClInclude Include="Map\SampleStage\SamplePlate.h" />
+    <ClInclude Include="Level\SampleStage\SamplePlate.h" />
+    <ClInclude Include="Character\Character.h" />
+    <ClInclude Include="Interface\IMovement.h" />
+    <ClInclude Include="Game\GameWorld.h" />
+    <ClInclude Include="Level\Level.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="Character\Player.cpp" />
     <ClCompile Include="Game\Game.cpp" />
-    <ClCompile Include="Map\SampleStage\SamplePlate.cpp" />
+    <ClCompile Include="Level\SampleStage\SamplePlate.cpp" />
+    <ClCompile Include="Character\Character.cpp" />
+    <ClCompile Include="Interface\IMovement.cpp" />
+    <ClCompile Include="Game\GameWorld.cpp" />
+    <ClCompile Include="Level\Level.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Framework.lib" />
