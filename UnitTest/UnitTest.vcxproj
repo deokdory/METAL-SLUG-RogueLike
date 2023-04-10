@@ -147,16 +147,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Character\Player.h" />
+    <ClInclude Include="Character\Character.h" />
     <ClInclude Include="Game\Game.h" />
-    <ClInclude Include="Map\SampleStage\SamplePlate.h" />
+    <ClInclude Include="Game\GameWorld.h" />
+    <ClInclude Include="Interface\IMovement.h" />
+    <ClInclude Include="Level\Level.h" />
+    <ClInclude Include="Level\SampleStage\SamplePlate.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Character\Player.cpp" />
+    <ClCompile Include="Character\Character.cpp" />
     <ClCompile Include="Game\Game.cpp" />
-    <ClCompile Include="Map\SampleStage\SamplePlate.cpp" />
+    <ClCompile Include="Game\GameWorld.cpp" />
+    <ClCompile Include="Interface\IMovement.cpp" />
+    <ClCompile Include="Level\SampleStage\SamplePlate.cpp" />
+    <ClCompile Include="Level\Level.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>

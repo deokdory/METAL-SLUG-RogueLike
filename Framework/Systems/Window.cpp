@@ -78,6 +78,7 @@ Window::~Window()
 
 WPARAM Window::Run(IObject* mainObj)
 {
+
 	MSG msg = { 0 }; //½º´ÏÇÎ
 
 	this->mainObj = mainObj;
@@ -88,8 +89,6 @@ WPARAM Window::Run(IObject* mainObj)
 	Time::Create();
 	Gui::Create();
 	
-	GameManager::Create();
-
 	this->mainObj->Init();
 
 	Time::Get()->Start();

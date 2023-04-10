@@ -66,7 +66,7 @@ void Animator::Update() {
     currentFrame = currentClip->keyFrames[currentFrameIndex];
     deltaTime = .0f;
   } else {
-    deltaTime += Time::Delta();
+    deltaTime += GameManager::Get()->GetGlobalSpeed() * Time::Delta();
   }
 }
 
