@@ -7,6 +7,7 @@ TestLevel::TestLevel() { init(); }
 void TestLevel::init() {
   objects.push_back(
       new PlaybleCharacter(Values::CenterOfScreen, Vector3(300, 300, 0.f)));
+
 }
 
 void TestLevel::update() { __super::update(); }

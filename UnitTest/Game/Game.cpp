@@ -13,15 +13,17 @@ void Game::Update() {
   double currTime = Time::Get()->Running();
   double elapsedTime = currTime - prevTime;
   elapsedTotal += elapsedTime;
-    gameWorld->update();
 
   if (elapsedTotal > MS_PER_UPDATE) {
-    elapsedTotal -= MS_PER_UPDATE;
+    gameWorld->update();
   }
 }
 
 void Game::Render() {
+  if (elapsedTotal > MS_PER_UPDATE) {
     gameWorld->render();
+    elapsedTotal -= MS_PER_UPDATE;
+  }
 }
 
 void Game::PostRender() {}

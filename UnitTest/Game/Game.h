@@ -13,7 +13,7 @@ class Game : public IObject {
  private:
   GameWorld* gameWorld = nullptr;
 
-  const UINT32 UPDATES_PER_SECOND = 120;
+  const UINT32 UPDATES_PER_SECOND = 60;
   const double MS_PER_UPDATE = 1.0 / UPDATES_PER_SECOND;
 
   double prevTime = 0.0;

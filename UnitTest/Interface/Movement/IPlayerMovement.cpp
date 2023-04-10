@@ -13,9 +13,9 @@ void IPlayerMovement::update() {
     breaking();
   }
 
-  //if (Keyboard::Get()->Down(VK_SPACE)) {
-  //  jump();
-  //}
+  if (Keyboard::Get()->Down(VK_SPACE)) {
+    jump();
+  }
   __super::update();
 }
     

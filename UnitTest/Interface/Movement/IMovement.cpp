@@ -36,12 +36,12 @@ void IMovement::moveRight() {
 }
 
 void IMovement::breaking() {
-  //if (xSpeed > 0.5f)
-  //  xSpeed -= accel;
-  //else if (xSpeed < -0.5f)
-  //  xSpeed += accel;
-  //else
-  //  xSpeed = 0.f;
+  if (xSpeed > 0.5f)
+    xSpeed -= accel;
+  else if (xSpeed < -0.5f)
+    xSpeed += accel;
+  else
+    xSpeed = 0.f;
 }
 
 void IMovement::jump() { ySpeed = jumpPower; }

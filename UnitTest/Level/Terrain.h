@@ -3,10 +3,17 @@
 
 class Terrain {
  public:
-  Terrain();
+  Terrain(Vector3 position, Vector3 size, float rotation, std::wstring path);
   ~Terrain();
+
+  virtual void update();
+  virtual void render();
 
   private:
   TextureRect* textureRect;
   BoundingBox* collision;
+
+  Vector3 position;
+  Vector3 size;
+  float rotation;
 };
