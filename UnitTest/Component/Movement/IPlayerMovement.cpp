@@ -12,8 +12,8 @@ void IPlayerMovement::jumpBegin() {
       ySpeed = jumpPower;     // 점프 ( 최소 점프 단위 )
       isFalling = true;
 
-      auto move = Vector3(xSpeed, ySpeed, 0) * delta;
-      object->move(move);
+      //auto move = Vector3(xSpeed, ySpeed, 0) * delta;
+      //object->move(move);
     }
   }
 

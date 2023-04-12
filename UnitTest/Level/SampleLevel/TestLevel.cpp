@@ -20,6 +20,8 @@ void TestLevel::init() {
 
 }
 
-void TestLevel::update() { __super::update(); }
+void TestLevel::update() { 
+  Camera::Get()->SetPosition(objects[0]->getPosition());
+  __super::update(); }
 
 void TestLevel::render() { __super::render(); }

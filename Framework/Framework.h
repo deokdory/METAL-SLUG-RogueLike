@@ -94,6 +94,8 @@ typedef UINT		uint;
 #include "Utilities/String.h"
 #include "Utilities/Path.h"
 
+#include "Systems/Camera.h"
+
 #define WinMaxWidth 1280
 #define WinMaxHeight 720
 

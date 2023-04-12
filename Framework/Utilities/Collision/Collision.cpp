@@ -37,14 +37,14 @@ void Collision::update() {
   if (bottom) {
     Vector3 bottomPos = {objPos.x, objPos.y - objSize.y / 2 + collisionThickness / 2,
                          objPos.z};
-    Vector3 bottomSize = {objSize.x, collisionThickness, objSize.z};
+    Vector3 bottomSize = {objSize.x - 2, collisionThickness, objSize.z};
 
     bottom->Update(bottomPos, bottomSize, objRotation);
   }
   if (top) {
     Vector3 topPos = {objPos.x, objPos.y + objSize.y / 2 - collisionThickness / 2,
                          objPos.z};
-    Vector3 topSize = {objSize.x, collisionThickness, objSize.z};
+    Vector3 topSize = {objSize.x - 2, collisionThickness, objSize.z};
 
     top->Update(topPos, topSize, objRotation);
   }
@@ -63,7 +63,7 @@ void Collision::InitializeBase() {
 void Collision::InitializeBottom() {
   Vector3 bottomPos = {
       objPos.x, objPos.y - objSize.y / 2 + collisionThickness / 2, objPos.z};
-  Vector3 bottomSize = {objSize.x, collisionThickness, objSize.z};
+  Vector3 bottomSize = {objSize.x - 2, collisionThickness, objSize.z};
 
   bottom =
       new BoundingBox(bottomPos, bottomSize, objRotation, Color(1, 0, 1, 0.5f));
@@ -72,7 +72,7 @@ void Collision::InitializeBottom() {
 void Collision::InitializeTop() {
   Vector3 topPos = {objPos.x, objPos.y + objSize.y / 2 - collisionThickness / 2,
                     objPos.z};
-  Vector3 topSize = {objSize.x, collisionThickness, objSize.z};
+  Vector3 topSize = {objSize.x - 2, collisionThickness, objSize.z};
 
   top = new BoundingBox(topPos, topSize, objRotation, Color(1, 0, 1, 0.5f));
 }

@@ -2,10 +2,7 @@
 #include "Camera.h"
 
 void Camera::Update() {
-  if (prevView != view) {
-    prevView = view;
     UpdateView();
-  }
 }
 
 void Camera::Render() { vpb->SetVSBuffer(1); }
@@ -14,6 +11,12 @@ void Camera::UpdateView() {
   D3DXMatrixLookAtLH(&view, &position, &(position + Values::FwdVec),
                      &Values::UpVec);
   vpb->SetView(view);
+}
+
+void Camera::SetPosition(Vector3 position) {
+  this->position.x = position.x - WinMaxWidth / 2;
+  this->position.y = position.y - WinMaxHeight / 2;
+  this->position.z = position.z - 1;
 }
 
 void Camera::UnProjection(Vector3* out, Vector3 source, Matrix world) {

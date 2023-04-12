@@ -9,6 +9,8 @@ class Camera : public SingletonBase<Camera> {
 
   void UpdateView();
 
+  void SetPosition(Vector3 position);
+
   void UnProjection(Vector3* out, Vector3 source, Matrix world);
 
  private:
