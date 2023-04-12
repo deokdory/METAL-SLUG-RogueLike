@@ -5,6 +5,7 @@
 void Game::Init() { 
   gameWorld = new GameWorld();
   prevTime = Time::Get()->Running();
+  Time::Get()->InitNewTimer("game");
 }
 
 void Game::Destroy() { SAFE_DELETE(gameWorld); }
@@ -15,7 +16,8 @@ void Game::Update() {
   elapsedTotal += elapsedTime;
 
   if (elapsedTotal > MS_PER_UPDATE) {
-  gameWorld->update();
+    gameWorld->update();
+    Time::Get()->UpdateTimer("game");
   }
 }
 

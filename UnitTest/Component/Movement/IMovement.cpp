@@ -8,13 +8,15 @@ void IMovement::update() {
 
   if (isFalling) state = ObjState::FALLING;
 
+  delta = Time::Get()->GetTimerDelta("game");
+  accel = accelOrigin;
+
   switch (state) {
     case ObjState::FALLING:
-      accel = accelOrigin / 2;
+      accel /= 2;
       break;
 
     default:
-      accel = accelOrigin;
       break;
   }
 
@@ -36,7 +38,7 @@ void IMovement::update() {
   }
 
   Vector3 move = {xSpeed, ySpeed, 0.f};
-  object->move(move);
+  object->move(move * delta);
 }
 
 void IMovement::moveLeft() {

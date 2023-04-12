@@ -59,3 +59,33 @@ void Time::Stop()
 	runningTime += (float)(stopTime - lastTime) / (float)ticksPerSecond;
 	isTimerStopped = true;
 }
+
+void Time::InitNewTimer(std::string name) { timer.insert(std::make_pair(name, runningTime)); }
+
+void Time::UpdateTimer(std::string name) {
+  if (timer.empty()) return;
+
+  auto find = timer.find(name);
+  if (find != timer.end()) find->second = runningTime;
+}
+
+double Time::GetTimer(std::string name) {
+  if (timer.empty()) return 0;
+
+  auto find = timer.find(name);
+  if (find != timer.end())
+    return find->second;
+  else
+    return 0;
+}
+
+double Time::GetTimerDelta(std::string name) {
+  if (timer.empty()) return 0;
+
+  auto find = timer.find(name);
+  if (find != timer.end())
+    return runningTime - find->second;
+  else
+    return 0;
+
+}

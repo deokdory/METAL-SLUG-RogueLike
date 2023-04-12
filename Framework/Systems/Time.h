@@ -8,17 +8,21 @@ class Time : public SingletonBase<Time> {
   static double Delta() { return isTimerStopped ? 0.0f : timeElapsed; }
 
   void Update();
-  void GameUpdate();
 
   void Start();
   void Stop();
 
-	double FPS() const { return framePerSecond; }
-	double Running() const { return runningTime; }
+  double FPS() const { return framePerSecond; }
+  double Running() const { return runningTime; }
 
-private:
-	Time(void);
-	~Time(void);
+  void InitNewTimer(std::string name);
+  void UpdateTimer(std::string name);
+  double GetTimer(std::string name);
+  double GetTimerDelta(std::string name);
+
+ private:
+  Time(void);
+  ~Time(void);
 
 	static bool isTimerStopped;///< 타이머 중지
 	static float timeElapsed;///< 이전 프레임으로부터 경과시간
@@ -32,4 +36,6 @@ private:
 	UINT frameCount;///< 프레임 수
 	double runningTime;///< 진행 시간
 	double framePerSecond;///< FPS
+
+	std::map<std::string, double> timer;
 };
