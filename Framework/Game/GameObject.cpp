@@ -2,33 +2,30 @@
 #include "GameObject.h"
 
 GameObject::GameObject(Vector3 position, Vector3 size) 
-: position(position), size(size) {
-
-  animRect = new AnimationRect(position, size);
-  animator = new Animator();
-
-  hitbox = new BoundingBox(position, size, 0.0f, Color(0, 0, 1, 0.3f));
-
+: position(position), size(size), rotation(0) {
+  collision = new Collision(this);
 }
 
 GameObject::~GameObject() {
-  SAFE_DELETE(hitbox);
-
-  SAFE_DELETE(animator);
-  SAFE_DELETE(animRect);
+  SAFE_DELETE(graphic);
+  SAFE_DELETE(collision);
 }
 
-
-void GameObject::update() { 
-
-  animRect->SetPosition(position);
-  animRect->SetSize(size);
-
-  animRect->Update();
-  hitbox->Update(position, size, 0.0f);
-  animator->Update();
+void GameObject::update() {
+  if (graphic != nullptr) graphic->update();
+  collision->update();
 }
 void GameObject::render() {
-  animRect->Render();
-  hitbox->Render();
+  if (graphic != nullptr) graphic->render();
+  collision->render();
+}
+
+void GameObject::move(Vector3 position) { this->position += position; }
+
+void GameObject::InitGraphic(Animator* animator) {
+  graphic = new AnimatedGraphic(this, animator);
+}
+
+void GameObject::InitGraphic(std::wstring path) {
+  graphic = new TexturedGraphic(this, path);
 }

@@ -7,7 +7,7 @@ AnimationRect::AnimationRect(Vector3 position, Vector3 size)
   : TextureRect(position, size, .0f) {
   SetShader(ShaderPath + L"Animation.hlsl");
 
-  animator = new Animator();
+  //animator = new Animator();
 
   // Sampler
   {

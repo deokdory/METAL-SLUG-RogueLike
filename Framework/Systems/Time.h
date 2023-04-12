@@ -8,6 +8,7 @@ class Time : public SingletonBase<Time> {
   static double Delta() { return isTimerStopped ? 0.0f : timeElapsed; }
 
   void Update();
+  void GameUpdate();
 
   void Start();
   void Stop();
@@ -21,7 +22,6 @@ private:
 
 	static bool isTimerStopped;///< 타이머 중지
 	static float timeElapsed;///< 이전 프레임으로부터 경과시간
-
 
 	INT64 ticksPerSecond;///< 초당 틱카운트
 	INT64 currentTime;///< 현재 시간

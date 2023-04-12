@@ -1,6 +1,6 @@
 #pragma once
 #include "Game/GameObject.h"
-#include "Interface/Movement/IMovement.h"
+#include "Component/Movement/IMovement.h"
 
 class Character : public GameObject {
  public:
@@ -9,4 +9,7 @@ class Character : public GameObject {
 
   virtual void update();
   virtual void render();
+
+  private:
+  IMovement* movement;
 };

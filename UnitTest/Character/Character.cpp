@@ -2,10 +2,19 @@
 #include "Character.h"
 
 Character::Character(Vector3 position, Vector3 size) 
-: GameObject(position, size) {}
+: GameObject(position, size) {
 
-Character::~Character() {}
+  movement = new IMovement(this);
+}
 
-void Character::update() { __super::update(); }
+Character::~Character() { SAFE_DELETE(movement); }
 
-void Character::render() { __super::render(); }
+void Character::update() { 
+  movement->update();
+  __super::update(); 
+}
+
+void Character::render() {
+  movement->render();
+  __super::render(); 
+}

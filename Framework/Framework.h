@@ -44,9 +44,9 @@ using namespace std;
 //////////////////////////////////////////
 
 #include "Interfaces/IObject.h"
+#include "Interfaces/IGraphic.h"
 
 #include "Utilities/SingletonBase.h"
-#include "Utilities/RealRandom.h"
 
 #include "Systems/Graphics.h"
 #include "Systems/Keyboard.h"
@@ -89,6 +89,7 @@ typedef UINT		uint;
 
 #include "Utilities/DirectHelper.h"
 #include "Utilities/BoundingBox.h"
+#include "Utilities/Collision/Collision.h"
 #include "Utilities/String.h"
 #include "Utilities/Path.h"
 

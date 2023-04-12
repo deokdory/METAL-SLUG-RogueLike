@@ -10,7 +10,7 @@ class GameWorld {
   ~GameWorld();
 
   void update();
-  void render(double interpolation);
+  void render();
   
  private:
   Level* level = nullptr;
