@@ -51,6 +51,10 @@ Animator::~Animator() {
 }
 
 void Animator::Update() { 
+
+  auto currTime = Time::Get()->Running();
+  auto deltaTime = currTime - prevTime;
+
   if (deltaTime > currentClip->playRate) {
     if (currentClip->bReversed == false) {
       currentFrameIndex++;
@@ -64,9 +68,7 @@ void Animator::Update() {
       }
     }
     currentFrame = currentClip->keyFrames[currentFrameIndex];
-    deltaTime = .0f;
-  } else {
-    deltaTime += Time::Delta();
+    prevTime = currTime;
   }
 }
 
@@ -82,7 +84,7 @@ void Animator::SetCurrentAnimClip(std::wstring clipName) {
 
   if (CheckExist(clipName)) {
     currentClip = animClips.find(clipName)->second;
-    deltaTime = .0f;
+    prevTime = .0f;
     
     // 역재생이 활성화 상태인 경우
     if (currentClip->bReversed == true) {
@@ -92,5 +94,6 @@ void Animator::SetCurrentAnimClip(std::wstring clipName) {
     }
     // 현재 프레임 업데이트
     currentFrame = currentClip->keyFrames[currentFrameIndex];
+    prevTime = Time::Get()->Running();
   }
 }

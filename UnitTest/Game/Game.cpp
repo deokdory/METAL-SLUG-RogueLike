@@ -15,7 +15,7 @@ void Game::Update() {
   elapsedTotal += elapsedTime;
 
   if (elapsedTotal > MS_PER_UPDATE) {
-    gameWorld->update();
+  gameWorld->update();
   }
 }
 

@@ -1,6 +1,18 @@
 #include "Framework.h"
 #include "BoundingBox.h"
 
+BoundingBox::BoundingBox(GameObject* object, Color color)
+    : position(object->getPosition()),
+      size(object->getSize()),
+      rotation(object->getRotation()),
+      color(color) {
+
+  edge = new RectEdge();
+  data = new AxisData();
+
+  Init();
+}
+
 BoundingBox::BoundingBox(Vector3 position, Vector3 size, float rotation,
                          Color color)
     : position(position), size(size), rotation(rotation), color(color) {
@@ -63,6 +75,23 @@ void BoundingBox::Update(Vector3 position, Vector3 size, float rotation) {
   this->position = position;
   this->size = size;
   this->rotation = rotation;
+
+  world = DXMath::Scaling(size) * DXMath::RotationInDegree(rotation) *
+          DXMath::Translation(position);
+
+  wb->SetWorld(world);
+
+  if (Keyboard::Get()->Down(VK_F1)) {
+    cb->SwitchRender();
+  }
+
+  UpdateCollisionData();
+}
+
+void BoundingBox::Update(GameObject* object) {
+  this->position = object->getPosition();
+  this->size = object->getSize();
+  this->rotation = object->getRotation();
 
   world = DXMath::Scaling(size) * DXMath::RotationInDegree(rotation) *
           DXMath::Translation(position);

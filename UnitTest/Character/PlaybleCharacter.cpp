@@ -24,6 +24,8 @@ PlaybleCharacter::PlaybleCharacter(Vector3 position, Vector3 size)
     AnimationClip* Hit = new AnimationClip(L"Hit", srcTex, 1, Vector2(64, 0),
                                            Vector2(85, 19));  // 22 x 20
 
+    Animator* animator = new Animator();
+
     animator->AddAnimClip(Idle);
     animator->AddAnimClip(Run);
     animator->AddAnimClip(Jump);
@@ -31,19 +33,27 @@ PlaybleCharacter::PlaybleCharacter(Vector3 position, Vector3 size)
 
     animator->SetCurrentAnimClip(L"Idle");
 
-    animRect->SetAnimator(animator);
+    InitGraphic(animator);
 
     SAFE_DELETE(srcTex);
   }
-
   movement = new IPlayerMovement(this);
+
+  collision->InitializeBase();
+  collision->InitializeBottom();
+  collision->InitializeTop();
 }
 
 PlaybleCharacter::~PlaybleCharacter() {}
 
 void PlaybleCharacter::update() {
   movement->update();
-  __super::update();
+  graphic->update();
+  collision->update();
 }
 
-void PlaybleCharacter::render() { __super::render(); }
+void PlaybleCharacter::render() {
+  movement->render();
+  graphic->render();
+  collision->render();
+}

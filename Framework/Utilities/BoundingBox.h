@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Game/GameObject.h"
 enum { x = 0, y };
 
 struct RectEdge {
@@ -30,13 +30,19 @@ class CollisionBuffer : public ShaderBuffer {
 
 class BoundingBox {
  public:
+  BoundingBox(GameObject* object, Color color);
   BoundingBox(Vector3 position, Vector3 size, float rotation, Color color);
+
   ~BoundingBox();
 
   void Init();
 
   void Update(Vector3 position, Vector3 size, float rotation);
+  void Update(GameObject* object);
+
   void Render();
+
+  RectEdge* GetRect() { return edge; }
 
   void UpdateCollisionData();
 

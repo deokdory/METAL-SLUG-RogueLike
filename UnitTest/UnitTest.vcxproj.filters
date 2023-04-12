@@ -5,28 +5,29 @@
     <ClInclude Include="Program.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Character\Character.h" />
-    <ClInclude Include="Interface\Movement\IMovement.h" />
+    <ClInclude Include="Component\Movement\IMovement.h" />
     <ClInclude Include="Game\GameWorld.h" />
     <ClInclude Include="Level\Level.h" />
     <ClInclude Include="Level\Decoration.h" />
-    <ClInclude Include="Level\Terrain.h" />
+    <ClInclude Include="Objects\Terrain.h" />
     <ClInclude Include="Level\SampleLevel\TestLevel.h" />
     <ClInclude Include="Level\Background.h" />
-    <ClInclude Include="Interface\Movement\IPlayerMovement.h" />
+    <ClInclude Include="Component\Movement\IPlayerMovement.h" />
     <ClInclude Include="Character\PlaybleCharacter.h" />
+    <ClInclude Include="Game\Decoration.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Character\Character.cpp" />
-    <ClCompile Include="Interface\Movement\IMovement.cpp" />
+    <ClCompile Include="Component\Movement\IMovement.cpp" />
     <ClCompile Include="Game\GameWorld.cpp" />
     <ClCompile Include="Level\Level.cpp" />
     <ClCompile Include="Level\Decoration.cpp" />
-    <ClCompile Include="Level\Terrain.cpp" />
+    <ClCompile Include="Objects\Terrain.cpp" />
     <ClCompile Include="Level\SampleLevel\TestLevel.cpp" />
     <ClCompile Include="Level\Background.cpp" />
-    <ClCompile Include="Interface\Movement\IPlayerMovement.cpp" />
+    <ClCompile Include="Component\Movement\IPlayerMovement.cpp" />
     <ClCompile Include="Character\PlaybleCharacter.cpp" />
   </ItemGroup>
   <ItemGroup>

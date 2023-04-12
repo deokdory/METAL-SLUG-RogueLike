@@ -27,8 +27,10 @@
     <ClCompile Include="Renders\Resources\Texture2D.cpp" />
     <ClCompile Include="Utilities\Animator.cpp" />
     <ClCompile Include="Geometries\AnimationRect.cpp" />
-    <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Systems\Camera.cpp" />
+    <ClCompile Include="Utilities\Collision\Collision.cpp" />
+    <ClCompile Include="Game\GameObject.cpp" />
+    <ClCompile Include="Interfaces\IGraphic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\Graphics.h" />
@@ -61,8 +63,9 @@
     <ClInclude Include="Renders\Resources\Texture2D.h" />
     <ClInclude Include="Utilities\Animator.h" />
     <ClInclude Include="Geometries\AnimationRect.h" />
-    <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Systems\Camera.h" />
-    <ClInclude Include="Game\Decoration.h" />
+    <ClInclude Include="Utilities\Collision\Collision.h" />
+    <ClInclude Include="Game\GameObject.h" />
+    <ClInclude Include="Interfaces\IGraphic.h" />
   </ItemGroup>
 </Project>

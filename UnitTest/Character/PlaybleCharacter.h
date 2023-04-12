@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Character.h"
-#include "Interface/Movement/IPlayerMovement.h"
+#include "Component/Movement/IPlayerMovement.h"
 
 class PlaybleCharacter : public Character {
  public:
@@ -10,6 +10,8 @@ class PlaybleCharacter : public Character {
 
   virtual void update();
   virtual void render();
+
+  IPlayerMovement* GetMovement() { return movement; }
 
  private:
   IPlayerMovement* movement = nullptr;

@@ -44,5 +44,5 @@ class Animator {
   UINT currentFrameIndex = 0;
   Vector2 currentFrame = Values::ZeroVec2;
 
-  float deltaTime = .0f;
+  double prevTime = 0.0;
 };
