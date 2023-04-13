@@ -31,11 +31,11 @@ class IMovement {
 
   float ySpeed = 0.0f;
   float gravity = 40.0f;
-  float jumpPower = 600.0f;
+  float jumpPower = 800.0f;
 
-  float fallingSpeedMax = -800.0f;
+  float fallingSpeedMax = -1200.0f;
 
-  float xSpeedMax = 400.0f;
+  float xSpeedMax = 600.0f;
   float xSpeed = 0.f;
 
   float accelOrigin = 25.f;

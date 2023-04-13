@@ -6,7 +6,11 @@ TestLevel::TestLevel() { init(); }
 
 void TestLevel::init() {
   auto player =
-      new PlaybleCharacter(Values::CenterOfScreen, Vector3(100, 100, 0.f));
+      new Agent(Values::CenterOfScreen, Vector3(100, 100, 0.f));
+  player->InitGraphic(Animations::getEriLowerTest(),
+                      Animations::getEriUpperTest());
+  //player->InitGraphic(Animations::getKnight());
+
   player->GetMovement()->SetLevel(this);
 
   objects.push_back(player);
@@ -18,10 +22,10 @@ void TestLevel::init() {
   terrains.push_back(new Terrain(Vector3(300, 400, 0), Vector3(100, 100, 0),
                                  TexturePath + L"SamplePlate.png"));
 
+  __super::init();
 }
 
 void TestLevel::update() { 
-  Camera::Get()->SetPosition(objects[0]->getPosition());
   __super::update(); }
 
 void TestLevel::render() { __super::render(); }

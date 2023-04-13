@@ -33,10 +33,6 @@ void AnimatedGraphic::update() {
 void AnimatedGraphic::render() { 
   animRect->Render(); }
 
-void AnimatedGraphic::getAnimator(Animator** animator) {
-  *(animator) = this->animator;
-}
-
 TexturedGraphic::TexturedGraphic(GameObject* object, std::wstring path)
 : IGraphic(object) {
   textureRect = new TextureRect(object->getPosition(), object->getSize(),
@@ -47,6 +43,90 @@ TexturedGraphic::~TexturedGraphic() {
   SAFE_DELETE(textureRect);
 }
 
-void TexturedGraphic::update() { textureRect->Update(); }
+void TexturedGraphic::update() { 
+  textureRect->SetPosition(object->getPosition());
+  textureRect->SetSize(object->getSize());
+  textureRect->SetRotation(object->getRotation());
+
+  textureRect->Update(); 
+}
 
 void TexturedGraphic::render() { textureRect->Render(); }
+
+AgentGraphic::AgentGraphic(GameObject* object, Animator* lowerAnim,
+                           Animator* upperAnim)
+    : IGraphic(object), lowerAnim(lowerAnim), upperAnim(upperAnim) {
+
+  auto objPos = object->getPosition();
+
+  auto lowerSize = lowerAnim->GetFrameSize();
+  auto upperSize = upperAnim->GetFrameSize();
+
+  auto lowerRepos = lowerAnim->GetReposition();
+  auto upperRepos = upperAnim->GetReposition();
+
+  auto lowerPos = Vector3(objPos.x, objPos.y - lowerSize.y / 2, objPos.z) +
+                  Vector3(lowerRepos.x, lowerRepos.y, 0.f);
+
+  lowerRect = new AnimationRect(lowerPos, {lowerSize.x, lowerSize.y, 0.0f});
+
+  auto upperPos = Vector3(objPos.x, objPos.y + upperSize.y / 2, objPos.z) +
+                  Vector3(upperRepos.x, upperRepos.y, 0.f);
+
+  upperRect = new AnimationRect(upperPos, {upperSize.x, upperSize.y, 0.0f});
+
+  lowerRect->SetAnimator(lowerAnim);
+  upperRect->SetAnimator(upperAnim);
+}
+
+AgentGraphic::~AgentGraphic() {
+  SAFE_DELETE(upperRect);
+  SAFE_DELETE(lowerRect);
+
+  SAFE_DELETE(upperAnim);
+  SAFE_DELETE(lowerAnim);
+}
+
+void AgentGraphic::update() {
+
+  if (lowerAnim != nullptr && upperAnim != nullptr) {
+
+    auto objPos = object->getPosition();
+    auto objSize = object->getSize();
+
+    auto lowerSize = lowerAnim->GetFrameSize();
+    auto upperSize = upperAnim->GetFrameSize();
+
+    auto totalSize = lowerSize + upperSize;
+
+    auto lowerRepos = lowerAnim->GetReposition();
+    auto upperRepos = upperAnim->GetReposition();
+
+    auto lowerPos =
+        Vector3(objPos.x, objPos.y - objSize.y / 2 + lowerSize.y / 2,
+                objPos.z) +
+        Vector3(lowerRepos.x, lowerRepos.y, 0.f);
+
+    auto upperPos =
+        Vector3(objPos.x, lowerPos.y + lowerSize.y / 2 + upperSize.y / 2,
+                objPos.z) +
+        Vector3(lowerRepos.x, lowerRepos.y, 0.f);
+
+    lowerAnim->Update();
+    upperAnim->Update();
+
+    lowerRect->SetPosition(lowerPos);
+    lowerRect->SetSize({lowerSize.x, lowerSize.y, 0.0f});
+
+    upperRect->SetPosition(upperPos);
+    upperRect->SetSize({upperSize.x, upperSize.y, 0.0f});
+
+    lowerRect->Update();
+    upperRect->Update();
+  }
+}
+
+void AgentGraphic::render() {
+  lowerRect->Render();
+  upperRect->Render();
+}

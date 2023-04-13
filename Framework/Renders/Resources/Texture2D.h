@@ -25,6 +25,7 @@ class Texture2D {
   static void ReadPixel(ID3D11Texture2D* texture, std::vector<Color>* pixels);
 
   ID3D11ShaderResourceView* GetSRV() { return srv; }
+
   float GetWidth() { return (float)metaData.width; }
   float GetHeight() { return (float)metaData.height; }
   std::wstring GetFilePath() { return filePath; }

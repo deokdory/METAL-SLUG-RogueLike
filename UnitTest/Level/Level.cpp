@@ -21,13 +21,14 @@ Level::~Level() {
 }
 
 void Level::init() {
-  
-}
-
-void Level::update() {
   for (auto terr : terrains) {
     terr->update();
   }
+}
+void Level::update() {
+  //for (auto terr : terrains) {
+  //  terr->update();
+  //}
   for (auto obj : objects) {
     obj->update();
   }

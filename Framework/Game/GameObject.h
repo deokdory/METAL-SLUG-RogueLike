@@ -30,6 +30,7 @@ class GameObject {
   ObjState& GetState() { return state; }
 
   void InitGraphic(Animator* animator);
+  void InitGraphic(Animator* lowerAnim, Animator* upperAnim);
   void InitGraphic(std::wstring path);
 
   class Collision* GetCollision() {
@@ -37,6 +38,7 @@ class GameObject {
   }
 
  protected:
+
   class IGraphic* graphic = nullptr;
   class Collision* collision = nullptr;
 

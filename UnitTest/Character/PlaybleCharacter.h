@@ -3,10 +3,10 @@
 #include "Character.h"
 #include "Component/Movement/IPlayerMovement.h"
 
-class PlaybleCharacter : public Character {
+class Agent : public Character {
  public:
-  PlaybleCharacter(Vector3 position, Vector3 size);
-  ~PlaybleCharacter();
+  Agent(Vector3 position, Vector3 size);
+  ~Agent();
 
   virtual void update();
   virtual void render();

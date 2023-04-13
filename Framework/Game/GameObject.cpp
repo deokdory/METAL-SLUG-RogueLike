@@ -26,6 +26,10 @@ void GameObject::InitGraphic(Animator* animator) {
   graphic = new AnimatedGraphic(this, animator);
 }
 
+void GameObject::InitGraphic(Animator* lowerAnim, Animator* upperAnim) {
+  graphic = new AgentGraphic(this, lowerAnim, upperAnim);
+}
+
 void GameObject::InitGraphic(std::wstring path) {
   graphic = new TexturedGraphic(this, path);
 }
