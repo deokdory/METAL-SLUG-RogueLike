@@ -7,6 +7,8 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation,
       size(size),
       rotation(rotation) {
 
+  Texture2D* texture = new Texture2D(path);
+
   // vertices
   vertices.assign(4, VertexTexture());
 
@@ -49,10 +51,9 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation,
 
   // Shader Resource View
   {
-    HRESULT hr = D3DX11CreateShaderResourceViewFromFile(
-        DEVICE, path.c_str(), nullptr, nullptr, &shaderResourceView, nullptr);
-    CHECK(hr);
+    shaderResourceView = texture->GetSRV();
   }
+  SAFE_DELETE(texture);
 }
 
 TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation) 

@@ -14,7 +14,7 @@ struct VertexColor {
 	Color color;		// 정점 색상
 
 	static D3D11_INPUT_ELEMENT_DESC descs[];	// 정점 데이터 구조 서술
-	static const uint count = 2;				// 원소 개수
+	static const UINT count = 2;				// 원소 개수
 
 };
 
@@ -30,5 +30,5 @@ struct VertexTexture {
 	Vector2 uv;			// 텍스트(?) 좌표
 
 	static D3D11_INPUT_ELEMENT_DESC descs[];	// 정점 데이터 구조 서술
-	static const uint count = 2;				// 원소 개수
+	static const UINT count = 2;				// 원소 개수
 };

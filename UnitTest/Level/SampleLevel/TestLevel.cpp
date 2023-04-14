@@ -2,14 +2,17 @@
 #include "TestLevel.h"
 #include "Character/PlaybleCharacter.h"
 
+#include "Character/Animations.h"
+
 TestLevel::TestLevel() { init(); }
 
 void TestLevel::init() {
   auto player =
       new Agent(Values::CenterOfScreen, Vector3(100, 100, 0.f));
-  player->InitGraphic(Animations::getEriLowerTest(),
-                      Animations::getEriUpperTest());
-  //player->InitGraphic(Animations::getKnight());
+
+  player->InitGraphic(AGENT_GRAPHIC);
+  player->setGraphicResource(Animations::getEriLowerTest(), LOWER);
+  player->setGraphicResource(Animations::getEriUpperTest(), UPPER);
 
   player->GetMovement()->SetLevel(this);
 

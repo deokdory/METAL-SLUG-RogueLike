@@ -4,7 +4,7 @@
 
 InputLayout::~InputLayout() { SAFE_RELEASE(inputLayout); }
 
-void InputLayout::Create(D3D11_INPUT_ELEMENT_DESC* desc, uint count,
+void InputLayout::Create(D3D11_INPUT_ELEMENT_DESC* desc, UINT count,
                          ID3DBlob* blob) {
   // 하나라도 없으면 프로그램 종료
   if (!desc || !count || !blob) CHECK(false);

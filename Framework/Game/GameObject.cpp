@@ -22,14 +22,28 @@ void GameObject::render() {
 
 void GameObject::move(Vector3 position) { this->position += position; }
 
-void GameObject::InitGraphic(Animator* animator) {
-  graphic = new AnimatedGraphic(this, animator);
+void GameObject::InitGraphic(UINT type) {
+  switch (type) {
+    case TEXTURE_GRAPHIC: {
+      graphic = new TexturedGraphic(this);
+      return;
+    }
+    case ANIMATION_GRAPHIC: {
+      graphic = new AnimatedGraphic(this);
+      return;
+    }
+    case AGENT_GRAPHIC: {
+      graphic = new AgentGraphic(this);
+      return;
+    }
+    default:
+      return;
+  }
 }
 
-void GameObject::InitGraphic(Animator* lowerAnim, Animator* upperAnim) {
-  graphic = new AgentGraphic(this, lowerAnim, upperAnim);
+void GameObject::setGraphicResource(Animator* animator, UINT slot) {
+  graphic->setResource(animator, slot);
 }
-
-void GameObject::InitGraphic(std::wstring path) {
-  graphic = new TexturedGraphic(this, path);
+void GameObject::setGraphicResource(std::wstring path) {
+  graphic->setResource(path);
 }

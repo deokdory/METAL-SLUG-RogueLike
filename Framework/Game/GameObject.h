@@ -29,9 +29,9 @@ class GameObject {
 
   ObjState& GetState() { return state; }
 
-  void InitGraphic(Animator* animator);
-  void InitGraphic(Animator* lowerAnim, Animator* upperAnim);
-  void InitGraphic(std::wstring path);
+  void InitGraphic(UINT type);
+  void setGraphicResource(Animator* animator, UINT slot = 0);
+  void setGraphicResource(std::wstring path);
 
   class Collision* GetCollision() {
     return collision;

@@ -1,4 +1,8 @@
 #pragma once
+
+enum slot { LOWER = 1, UPPER };
+enum IGraphicType { TEXTURE_GRAPHIC = 0, ANIMATION_GRAPHIC, AGENT_GRAPHIC };
+
 class IGraphic {
  public:
   IGraphic(class GameObject* object);
@@ -7,10 +11,8 @@ class IGraphic {
   virtual void update() = 0;
   virtual void render() = 0;
 
-  virtual class Animator* getAnimator() { return nullptr; }
-
-  virtual class Animator* getUpperAnimator() { return nullptr; }
-  virtual class Animator* getLowerAnimator() { return nullptr; }
+  virtual void setResource(class Animator* animator, UINT slot = 0) {}
+  virtual void setResource(std::wstring path) {}
 
   protected:
   class GameObject* object = nullptr;
@@ -18,13 +20,13 @@ class IGraphic {
 
 class AnimatedGraphic : public IGraphic {
  public:
-  AnimatedGraphic(class GameObject* object, class Animator* animator);
+  AnimatedGraphic(class GameObject* object);
   ~AnimatedGraphic();
 
   virtual void update();
   virtual void render();
 
-  virtual class Animator* getAnimator() { return animator; }
+  virtual void setResource(class Animator* animator, UINT slot = 0);
 
  private:
   class AnimationRect* animRect = nullptr;
@@ -33,11 +35,13 @@ class AnimatedGraphic : public IGraphic {
 
 class TexturedGraphic : public IGraphic {
  public:
-  TexturedGraphic(class GameObject* object, std::wstring path);
+  TexturedGraphic(class GameObject* object);
   ~TexturedGraphic();
 
   virtual void update();
   virtual void render();
+
+  virtual void setResource(std::wstring path);
 
  private:
   class TextureRect* textureRect = nullptr;
@@ -45,15 +49,13 @@ class TexturedGraphic : public IGraphic {
 
 class AgentGraphic : public IGraphic {
  public:
-  AgentGraphic(class GameObject* object, class Animator* lowerAnim,
-               class Animator* upperAnim);
+  AgentGraphic(class GameObject* object);
   ~AgentGraphic();
 
   virtual void update();
   virtual void render();
 
-  virtual class Animator* getLowerAnimator() { return lowerAnim; }
-  virtual class Animator* getUpperAnimator() { return upperAnim; }
+  virtual void setResource(class Animator* animator, UINT slot = 0);
 
   private:
   class AnimationRect* lowerRect = nullptr;

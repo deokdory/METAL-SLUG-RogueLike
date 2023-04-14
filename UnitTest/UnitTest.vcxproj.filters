@@ -15,6 +15,7 @@
     <ClInclude Include="Component\Movement\IPlayerMovement.h" />
     <ClInclude Include="Character\PlaybleCharacter.h" />
     <ClInclude Include="Game\Decoration.h" />
+    <ClInclude Include="Character\Animations.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="Level\Background.cpp" />
     <ClCompile Include="Component\Movement\IPlayerMovement.cpp" />
     <ClCompile Include="Character\PlaybleCharacter.cpp" />
+    <ClCompile Include="Character\Animations.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Framework.lib" />

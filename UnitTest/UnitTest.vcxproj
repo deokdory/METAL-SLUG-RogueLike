@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Character\Animations.h" />
     <ClInclude Include="Character\Character.h" />
     <ClInclude Include="Character\PlaybleCharacter.h" />
     <ClInclude Include="Game\Decoration.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Character\Animations.cpp" />
     <ClCompile Include="Character\Character.cpp" />
     <ClCompile Include="Character\PlaybleCharacter.cpp" />
     <ClCompile Include="Game\Game.cpp" />

@@ -59,11 +59,3 @@ class Animator {
 
   double prevTime = 0.0;
 };
-
-class Animations {
- public:
-  // Test
-  static Animator* getKnight();
-  static Animator* getEriUpperTest();
-  static Animator* getEriLowerTest();
-};

@@ -10,74 +10,70 @@ IGraphic::IGraphic(GameObject* object) : object(object) {}
 
 IGraphic::~IGraphic() {}
 
-AnimatedGraphic::AnimatedGraphic(GameObject* object, Animator* animator) 
-: IGraphic(object), animator(animator) {
-  animRect = new AnimationRect(object->getPosition(), object->getSize());
-  animRect->SetAnimator(animator);
-}
+AnimatedGraphic::AnimatedGraphic(GameObject* object)
+: IGraphic(object) {}
 
 AnimatedGraphic::~AnimatedGraphic() {
-  SAFE_DELETE(animator);
   SAFE_DELETE(animRect);
+  SAFE_DELETE(animator);
 }
 
 void AnimatedGraphic::update() {
+
+  if (animRect && animator) {
+
     animRect->SetPosition(object->getPosition());
     animRect->SetSize(object->getSize());
     animRect->SetRotation(object->getRotation());
 
     animRect->Update();
     animator->Update();
+
+  }
 }
 
 void AnimatedGraphic::render() { 
-  animRect->Render(); }
-
-TexturedGraphic::TexturedGraphic(GameObject* object, std::wstring path)
-: IGraphic(object) {
-  textureRect = new TextureRect(object->getPosition(), object->getSize(),
-                                object->getRotation(), path);
+  if (animRect) animRect->Render();
 }
+
+void AnimatedGraphic::setResource(Animator* animator, UINT slot) {
+  SAFE_DELETE(animRect);
+  SAFE_DELETE(this->animator);
+
+  animRect = new AnimationRect(object->getPosition(), object->getSize());
+  this->animator = animator;
+
+  this->animator->SetCurrentAnimClip(L"idle");
+  animRect->SetAnimator(animator);
+}
+
+TexturedGraphic::TexturedGraphic(GameObject* object)
+: IGraphic(object) {}
 
 TexturedGraphic::~TexturedGraphic() {
   SAFE_DELETE(textureRect);
 }
 
 void TexturedGraphic::update() { 
-  textureRect->SetPosition(object->getPosition());
-  textureRect->SetSize(object->getSize());
-  textureRect->SetRotation(object->getRotation());
+  if (textureRect) {
+    textureRect->SetPosition(object->getPosition());
+    textureRect->SetSize(object->getSize());
+    textureRect->SetRotation(object->getRotation());
 
-  textureRect->Update(); 
+    textureRect->Update();
+  }
 }
 
-void TexturedGraphic::render() { textureRect->Render(); }
+void TexturedGraphic::render() { if(textureRect) textureRect->Render(); }
 
-AgentGraphic::AgentGraphic(GameObject* object, Animator* lowerAnim,
-                           Animator* upperAnim)
-    : IGraphic(object), lowerAnim(lowerAnim), upperAnim(upperAnim) {
-
-  auto objPos = object->getPosition();
-
-  auto lowerSize = lowerAnim->GetFrameSize();
-  auto upperSize = upperAnim->GetFrameSize();
-
-  auto lowerRepos = lowerAnim->GetReposition();
-  auto upperRepos = upperAnim->GetReposition();
-
-  auto lowerPos = Vector3(objPos.x, objPos.y - lowerSize.y / 2, objPos.z) +
-                  Vector3(lowerRepos.x, lowerRepos.y, 0.f);
-
-  lowerRect = new AnimationRect(lowerPos, {lowerSize.x, lowerSize.y, 0.0f});
-
-  auto upperPos = Vector3(objPos.x, objPos.y + upperSize.y / 2, objPos.z) +
-                  Vector3(upperRepos.x, upperRepos.y, 0.f);
-
-  upperRect = new AnimationRect(upperPos, {upperSize.x, upperSize.y, 0.0f});
-
-  lowerRect->SetAnimator(lowerAnim);
-  upperRect->SetAnimator(upperAnim);
+void TexturedGraphic::setResource(std::wstring path) {
+  SAFE_DELETE(textureRect);
+  textureRect = new TextureRect(object->getPosition(), object->getSize(),
+                                object->getRotation(), path);
 }
+
+AgentGraphic::AgentGraphic(GameObject* object)
+    : IGraphic(object) {}
 
 AgentGraphic::~AgentGraphic() {
   SAFE_DELETE(upperRect);
@@ -89,44 +85,67 @@ AgentGraphic::~AgentGraphic() {
 
 void AgentGraphic::update() {
 
-  if (lowerAnim != nullptr && upperAnim != nullptr) {
+  auto objPos = object->getPosition();
+  auto objSize = object->getSize();
 
-    auto objPos = object->getPosition();
-    auto objSize = object->getSize();
+  if (lowerAnim && lowerRect) {
+    lowerAnim->Update();
 
     auto lowerSize = lowerAnim->GetFrameSize();
-    auto upperSize = upperAnim->GetFrameSize();
-
-    auto totalSize = lowerSize + upperSize;
-
     auto lowerRepos = lowerAnim->GetReposition();
-    auto upperRepos = upperAnim->GetReposition();
 
     auto lowerPos =
-        Vector3(objPos.x, objPos.y - objSize.y / 2 + lowerSize.y / 2,
-                objPos.z) +
-        Vector3(lowerRepos.x, lowerRepos.y, 0.f);
-
-    auto upperPos =
-        Vector3(objPos.x, lowerPos.y + lowerSize.y / 2 + upperSize.y / 2,
-                objPos.z) +
-        Vector3(lowerRepos.x, lowerRepos.y, 0.f);
-
-    lowerAnim->Update();
-    upperAnim->Update();
-
+        Vector3(objPos.x, objPos.y - objSize.y / 2 + lowerSize.y / 2, objPos.z);
     lowerRect->SetPosition(lowerPos);
     lowerRect->SetSize({lowerSize.x, lowerSize.y, 0.0f});
 
+    lowerRect->Update();
+  }
+
+  if (upperAnim && upperRect) {
+    upperAnim->Update();
+
+    auto upperSize = upperAnim->GetFrameSize();
+    auto upperRepos = upperAnim->GetReposition();
+
+    auto upperPos =
+        Vector3(objPos.x, objPos.y + objSize.y / 2 - upperSize.y / 2, objPos.z);
     upperRect->SetPosition(upperPos);
     upperRect->SetSize({upperSize.x, upperSize.y, 0.0f});
 
-    lowerRect->Update();
     upperRect->Update();
   }
 }
 
 void AgentGraphic::render() {
-  lowerRect->Render();
-  upperRect->Render();
+  if(lowerRect) lowerRect->Render();
+  if(upperRect) upperRect->Render();
+}
+
+void AgentGraphic::setResource(Animator* animator, UINT slot) { 
+  switch (slot) {
+    case LOWER: {
+      SAFE_DELETE(lowerRect);
+      SAFE_DELETE(lowerAnim);
+
+      lowerRect = new AnimationRect(object->getPosition(), object->getSize());
+      lowerAnim = animator;
+
+      lowerAnim->SetCurrentAnimClip(L"idle");
+      lowerRect->SetAnimator(animator);
+      break;
+    }
+
+    case UPPER: {
+      SAFE_DELETE(upperRect);
+      SAFE_DELETE(upperAnim);
+
+      upperRect = new AnimationRect(object->getPosition(), object->getSize());
+      upperAnim = animator;
+
+      upperAnim->SetCurrentAnimClip(L"idle");
+      upperRect->SetAnimator(animator);
+      break;
+    }
+  }
 }
