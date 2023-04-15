@@ -8,8 +8,10 @@ class TestLevel : public Level {
  public:
   TestLevel();
 
- private:
   virtual void init();
   virtual void update();
   virtual void render();
+ private:
+
+  class HUD* playerHud = nullptr;
 };

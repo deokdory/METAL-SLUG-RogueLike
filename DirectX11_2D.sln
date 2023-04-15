@@ -21,6 +21,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Shaders", "_Shaders", "{FD
 		_Shaders\VertexTextureOutline.hlsl = _Shaders\VertexTextureOutline.hlsl
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{4EECD6BD-1273-4C8D-8598-1752C9B78AED}"
+	ProjectSection(SolutionItems) = preProject
+		_Shaders\UI\ColorUI.hlsl = _Shaders\UI\ColorUI.hlsl
+		_Shaders\UI\TextureUI.hlsl = _Shaders\UI\TextureUI.hlsl
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -48,6 +54,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4EECD6BD-1273-4C8D-8598-1752C9B78AED} = {FD8271F3-ABEB-471D-A5A6-F0D790A04E43}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D6D4ED3D-CEFA-42A1-911B-B5F0E2FF39F4}

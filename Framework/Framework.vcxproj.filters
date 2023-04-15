@@ -31,6 +31,8 @@
     <ClCompile Include="Utilities\Collision\Collision.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Interfaces\IGraphic.cpp" />
+    <ClCompile Include="Utilities\UI.cpp" />
+    <ClCompile Include="Game\UI\ProgressBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\Graphics.h" />
@@ -67,5 +69,7 @@
     <ClInclude Include="Utilities\Collision\Collision.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Interfaces\IGraphic.h" />
+    <ClInclude Include="Utilities\UI.h" />
+    <ClInclude Include="Game\UI\ProgressBar.h" />
   </ItemGroup>
 </Project>

@@ -13,6 +13,8 @@ class Camera : public SingletonBase<Camera> {
 
   void UnProjection(Vector3* out, Vector3 source, Matrix world);
 
+  const Vector3 GetPosition() { return position; }
+
  private:
   Camera();
   ~Camera();

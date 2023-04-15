@@ -3,6 +3,7 @@
 #include "Character/PlaybleCharacter.h"
 
 #include "Character/Animations.h"
+#include "UI/HUD.h"
 
 TestLevel::TestLevel() { init(); }
 
@@ -25,10 +26,14 @@ void TestLevel::init() {
   terrains.push_back(new Terrain(Vector3(300, 400, 0), Vector3(100, 100, 0),
                                  TexturePath + L"SamplePlate.png"));
 
+  playerHud = new HUD();
   __super::init();
 }
 
 void TestLevel::update() { 
+  playerHud->Update();
   __super::update(); }
 
-void TestLevel::render() { __super::render(); }
+void TestLevel::render() {
+  playerHud->Render();
+  __super::render(); }

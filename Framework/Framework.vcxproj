@@ -156,6 +156,8 @@
   <ItemGroup>
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
+    <ClCompile Include="Game\UI\ProgressBar.cpp" />
+    <ClCompile Include="Utilities\UI.cpp" />
     <ClCompile Include="Geometries\AnimationRect.cpp" />
     <ClCompile Include="Geometries\Rect.cpp" />
     <ClCompile Include="Geometries\TextureRect.cpp" />
@@ -188,6 +190,8 @@
   <ItemGroup>
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Game\GameObject.h" />
+    <ClInclude Include="Game\UI\ProgressBar.h" />
+    <ClInclude Include="Utilities\UI.h" />
     <ClInclude Include="Geometries\AnimationRect.h" />
     <ClInclude Include="Geometries\Rect.h" />
     <ClInclude Include="Geometries\TextureRect.h" />
