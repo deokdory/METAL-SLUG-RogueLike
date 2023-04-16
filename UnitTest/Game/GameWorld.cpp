@@ -9,9 +9,9 @@ GameWorld::~GameWorld() {
   SAFE_DELETE(level);
 }
 
-void GameWorld::update() {
+void GameWorld::Update() {
   Camera::Get()->Update();
-  level->update();
+  level->Update();
 }
 
-void GameWorld::render() { level->render(); }
+void GameWorld::Render() { level->Render(); }

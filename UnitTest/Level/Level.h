@@ -10,8 +10,8 @@ class Level {
   virtual ~Level();
 
   virtual void init();
-  virtual void update();
-  virtual void render();
+  virtual void Update();
+  virtual void Render();
 
   std::vector<Terrain*>& GetTerrains() { return terrains; }
   std::vector<GameObject*>& GetObjects() { return objects; }

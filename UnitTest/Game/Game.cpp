@@ -16,14 +16,14 @@ void Game::Update() {
   elapsedTotal += elapsedTime;
 
   if (elapsedTotal > MS_PER_UPDATE) {
-    gameWorld->update();
+    gameWorld->Update();
     Time::Get()->UpdateTimer("game");
   }
 }
 
 void Game::Render() {
   if (elapsedTotal > MS_PER_UPDATE) {
-    gameWorld->render();
+    gameWorld->Render();
     elapsedTotal -= MS_PER_UPDATE;
   }
 }

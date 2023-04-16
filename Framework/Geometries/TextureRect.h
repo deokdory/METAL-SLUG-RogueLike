@@ -35,7 +35,7 @@ class TextureRect {
   void Render();
   void GUI();
 
-  void Move(Vector2 move);
+  void Move(Vector2 Move);
   void SetPosition(Vector3 position) { this->position = position; }
   void SetSize(Vector3 size) { this->size = size; }
   void SetRotation(float rotation) { this->rotation = rotation; }

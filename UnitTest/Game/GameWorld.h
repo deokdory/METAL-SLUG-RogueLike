@@ -5,13 +5,13 @@
 #include "Level/SampleLevel/TestLevel.h"
 
 class GameWorld {
- public:
+public:
   GameWorld();
   ~GameWorld();
 
-  void update();
-  void render();
-  
- private:
+  void Update();
+  void Render();
+
+private:
   Level* level = nullptr;
 };

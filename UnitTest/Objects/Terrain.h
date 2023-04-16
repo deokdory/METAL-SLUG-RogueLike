@@ -6,10 +6,10 @@ class Terrain : public GameObject {
   Terrain(Vector3 position, Vector3 size, std::wstring path);
   ~Terrain();
 
-  virtual void update();
-  virtual void render();
+  virtual void Update();
+  virtual void Render();
 
-  Vector3 getPosition() { return position; }
-  Vector3 getSize() { return size; }
-  float getRotation() { return rotation; }
+  Vector3 GetPosition() { return position; }
+  Vector3 GetSize() { return size; }
+  float GetRotation() { return rotation; }
 };

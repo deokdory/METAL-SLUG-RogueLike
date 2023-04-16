@@ -3,13 +3,14 @@
 
 // playRate가 0 미만일 경우 재생되지 않음
 AnimationClip::AnimationClip(std::wstring clipName, Texture2D* srcTex,
-                             UINT frameCount, Vector2 startPos, Vector2 endPos,
-                             bool bReversed, float playRate,
-                             Vector2 reposition)
-    : clipName(clipName),
-      frameCount(frameCount),
-      bReversed(bReversed), 
-      playRate(playRate) {
+  UINT frameCount, Vector2 startPos, Vector2 endPos,
+  bool bReversed, float playRate,
+  Vector2 reposition)
+  : clipName(clipName),
+  frameCount(frameCount),
+  bReversed(bReversed),
+  playRate(playRate),
+  reposition(reposition) {
 
   srv = srcTex->GetSRV();
 
@@ -58,21 +59,23 @@ void Animator::Update() {
   // if (playRate < 0.0f) {
   auto deltaTime = currTime - prevTime;
 
-  if (deltaTime > playRate) {
-    if (currentClip->bReversed == false) {
-      currentFrameIndex++;
-      if (currentFrameIndex == currentClip->frameCount) {
-        currentFrameIndex = 0;
+  if (playRate > 0) {
+    if (deltaTime > playRate) {
+      if (currentClip->bReversed == false) {
+        currentFrameIndex++;
+        if (currentFrameIndex == currentClip->frameCount) {
+          currentFrameIndex = 0;
+        }
       }
-    } else {
-      currentFrameIndex--;
-      if (currentFrameIndex == -1) {
-        currentFrameIndex = currentClip->frameCount - 1;
+      else {
+        currentFrameIndex--;
+        if (currentFrameIndex == -1) {
+          currentFrameIndex = currentClip->frameCount - 1;
+        }
       }
+      prevTime = currTime;
     }
-    prevTime = currTime;
   }
-
   //}
   currentFrame = currentClip->keyframes[currentFrameIndex];
 }
@@ -84,17 +87,19 @@ void Animator::AddAnimClip(AnimationClip* animClip) {
 void Animator::SetCurrentAnimClip(std::wstring clipName) {
   if (currentClip == nullptr && CheckExist(clipName) == true) {
     currentClip = animClips.find(clipName)->second;
-  } else if (currentClip != nullptr && currentClip->clipName == clipName)
+  }
+  else if (currentClip != nullptr && currentClip->clipName == clipName)
     return;
 
   if (CheckExist(clipName)) {
     currentClip = animClips.find(clipName)->second;
     prevTime = .0f;
-    
+
     // 역재생이 활성화 상태인 경우
     if (currentClip->bReversed == true) {
       currentFrameIndex = currentClip->frameCount - 1;
-    } else {
+    }
+    else {
       currentFrameIndex = 0;
     }
     // 현재 프레임 업데이트

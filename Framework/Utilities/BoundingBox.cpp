@@ -1,21 +1,9 @@
 #include "Framework.h"
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox(GameObject* object, Color color)
-    : position(object->getPosition()),
-      size(object->getSize()),
-      rotation(object->getRotation()),
-      color(color) {
-
-  edge = new RectEdge();
-  data = new AxisData();
-
-  Init();
-}
-
 BoundingBox::BoundingBox(Vector3 position, Vector3 size, float rotation,
-                         Color color)
-    : position(position), size(size), rotation(rotation), color(color) {
+  Color color)
+  : position(position), size(size), rotation(rotation), color(color) {
   edge = new RectEdge();
   data = new AxisData();
 
@@ -48,7 +36,7 @@ void BoundingBox::Init() {
   vb = new VertexBuffer();
   vb->Create(vertices, D3D11_USAGE_DYNAMIC);
 
-  indices = {0, 1, 2, 0, 3, 1};
+  indices = { 0, 1, 2, 0, 3, 1 };
   ib = new IndexBuffer();
   ib->Create(indices, D3D11_USAGE_IMMUTABLE);
 
@@ -70,6 +58,98 @@ void BoundingBox::Init() {
   desc.RenderTarget[0].BlendEnable = true;
   States::CreateBlendState(&desc, &bs);
 }
+void BoundingBox::SetAnchorPoint(UINT point) {
+
+  if (point < 0 || point > 8) return;
+  {
+    switch (point) {
+    case 0: {
+      MapVertexBuffer();
+      vertices[0].position = Vector3(-0.5f, -0.5f, 0.0f);
+      vertices[1].position = Vector3(0.5f, 0.5f, 0.0f);
+      vertices[2].position = Vector3(0.5f, -0.5f, 0.0f);
+      vertices[3].position = Vector3(-0.5f, 0.5f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 1: {
+      MapVertexBuffer();
+      vertices[0].position = Vector3(0.0f, -1.0f, 0.0f);
+      vertices[1].position = Vector3(1.0f, 0.0f, 0.0f);
+      vertices[2].position = Vector3(1.0f, -1.0f, 0.0f);
+      vertices[3].position = Vector3(0.0f, 0.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 2: {
+      MapVertexBuffer();
+      vertices[0].position = Vector3(-0.5f, -1.0f, 0.0f);
+      vertices[1].position = Vector3(0.5f, 0.0f, 0.0f);
+      vertices[2].position = Vector3(0.5f, -1.0f, 0.0f);
+      vertices[3].position = Vector3(-0.5f, 0.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 3: {
+      MapVertexBuffer();
+      vertices[0].position = Vector3(-1.0f, -1.0f, 0.0f);
+      vertices[1].position = Vector3(0.0f, 0.0f, 0.0f);
+      vertices[2].position = Vector3(0.0f, -1.0f, 0.0f);
+      vertices[3].position = Vector3(-1.0f, 0.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 4: {
+      MapVertexBuffer();
+      vertices[0].position = Vector3(0.0f, -0.5f, 0.0f);
+      vertices[1].position = Vector3(1.0f, 0.5f, 0.0f);
+      vertices[2].position = Vector3(1.0f, -0.5f, 0.0f);
+      vertices[3].position = Vector3(0.0f, 0.5f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 5: {
+      MapVertexBuffer();
+      vertices[0].position = Vector3(-1.0f, -0.5f, 0.0f);
+      vertices[1].position = Vector3(0.0f, 0.5f, 0.0f);
+      vertices[2].position = Vector3(0.0f, -0.5f, 0.0f);
+      vertices[3].position = Vector3(-1.0f, 0.5f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 6: {
+      MapVertexBuffer();
+      vertices[0].position = Vector3(0.0f, 0.0f, 0.0f);
+      vertices[1].position = Vector3(1.0f, 1.0f, 0.0f);
+      vertices[2].position = Vector3(1.0f, 0.0f, 0.0f);
+      vertices[3].position = Vector3(0.0f, 1.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 7: {
+      MapVertexBuffer();
+      vertices[0].position = Vector3(-0.5f, 0.0f, 0.0f);
+      vertices[1].position = Vector3(0.5f, 1.0f, 0.0f);
+      vertices[2].position = Vector3(0.5f, 0.0f, 0.0f);
+      vertices[3].position = Vector3(-0.5f, 1.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 8: {
+      MapVertexBuffer();
+      vertices[0].position = Vector3(-1.0f, 0.0f, 0.0f);
+      vertices[1].position = Vector3(0.0f, 1.0f, 0.0f);
+      vertices[2].position = Vector3(0.0f, 0.0f, 0.0f);
+      vertices[3].position = Vector3(-1.0f, 1.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    default: {
+      return;
+    }
+    }
+  }
+}
 
 void BoundingBox::Update(Vector3 position, Vector3 size, float rotation) {
   this->position = position;
@@ -77,24 +157,7 @@ void BoundingBox::Update(Vector3 position, Vector3 size, float rotation) {
   this->rotation = rotation;
 
   world = DXMath::Scaling(size) * DXMath::RotationInDegree(rotation) *
-          DXMath::Translation(position);
-
-  wb->SetWorld(world);
-
-  if (Keyboard::Get()->Down(VK_F1)) {
-    cb->SwitchRender();
-  }
-
-  UpdateCollisionData();
-}
-
-void BoundingBox::Update(GameObject* object) {
-  this->position = object->getPosition();
-  this->size = object->getSize();
-  this->rotation = object->getRotation();
-
-  world = DXMath::Scaling(size) * DXMath::RotationInDegree(rotation) *
-          DXMath::Translation(position);
+    DXMath::Translation(position);
 
   wb->SetWorld(world);
 
@@ -110,8 +173,8 @@ void BoundingBox::Render() {
   ib->SetIA();
   il->SetIA();
   DC->IASetPrimitiveTopology(
-      D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // 토폴로지 ( 그리는 방식 )
-                                               // 검색해보길 권장
+    D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // 토폴로지 ( 그리는 방식 )
+                                             // 검색해보길 권장
 
   vs->SetShader();
   wb->SetVSBuffer(0);
@@ -154,10 +217,10 @@ void BoundingBox::UpdateCollisionData() {
     }
     // Axis Length Update
     {
-      Vector3 unitAxes[2] = {data->axisDir[x], data->axisDir[y]};
-      Vector3 verticesPos[4] = {edge->LT, edge->LB, edge->RT, edge->RB};
-      float minValues[2] = {INT_MAX, INT_MAX};
-      float maxValues[2] = {INT_MIN, INT_MIN};
+      Vector3 unitAxes[2] = { data->axisDir[x], data->axisDir[y] };
+      Vector3 verticesPos[4] = { edge->LT, edge->LB, edge->RT, edge->RB };
+      float minValues[2] = { INT_MAX, INT_MAX };
+      float maxValues[2] = { INT_MIN, INT_MIN };
 
       for (int i = 0; i < 4; i++) {
         Vector3 point = verticesPos[i];
@@ -179,13 +242,24 @@ void BoundingBox::UpdateCollisionData() {
   }
 }
 
+void BoundingBox::MapVertexBuffer() {
+  DC->Map(vb->GetResource(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+}
+
+void BoundingBox::UnmapVertexBuffer() {
+  std::memcpy(subResource.pData, vertices.data(),
+    sizeof(vertices[0]) * vertices.size());
+  DC->Unmap(vb->GetResource(), 0);
+
+}
+
 bool BoundingBox::AABB(BoundingBox* a, BoundingBox* b) {
   if (a != nullptr && b != nullptr) {
     RectEdge aEdge = *a->edge;
     RectEdge bEdge = *b->edge;
 
     if (aEdge.RB.x >= bEdge.LT.x && aEdge.LT.x <= bEdge.RB.x &&
-        aEdge.LT.y >= bEdge.RB.y && aEdge.RB.y <= bEdge.LT.y)
+      aEdge.LT.y >= bEdge.RB.y && aEdge.RB.y <= bEdge.LT.y)
       return true;
   }
   return false;
@@ -209,7 +283,7 @@ bool BoundingBox::OBB(BoundingBox* a, BoundingBox* b) {
 
       r1 = ad.axisLen[x];
       r2 = abs(D3DXVec3Dot(&bd.axisDir[x], &axis) * bd.axisLen[x]) +
-           abs(D3DXVec3Dot(&bd.axisDir[y], &axis) * bd.axisLen[y]);
+        abs(D3DXVec3Dot(&bd.axisDir[y], &axis) * bd.axisLen[y]);
 
       if (centerProjDist > r1 + r2) return false;
     }
@@ -221,7 +295,7 @@ bool BoundingBox::OBB(BoundingBox* a, BoundingBox* b) {
 
       r1 = ad.axisLen[y];
       r2 = abs(D3DXVec3Dot(&bd.axisDir[x], &axis) * bd.axisLen[x]) +
-           abs(D3DXVec3Dot(&bd.axisDir[y], &axis) * bd.axisLen[y]);
+        abs(D3DXVec3Dot(&bd.axisDir[y], &axis) * bd.axisLen[y]);
 
       if (centerProjDist > r1 + r2) return false;
     }
@@ -233,7 +307,7 @@ bool BoundingBox::OBB(BoundingBox* a, BoundingBox* b) {
 
       r1 = bd.axisLen[x];
       r2 = abs(D3DXVec3Dot(&ad.axisDir[x], &axis) * ad.axisLen[x]) +
-           abs(D3DXVec3Dot(&ad.axisDir[y], &axis) * ad.axisLen[y]);
+        abs(D3DXVec3Dot(&ad.axisDir[y], &axis) * ad.axisLen[y]);
 
       if (centerProjDist > r1 + r2) return false;
     }
@@ -245,13 +319,14 @@ bool BoundingBox::OBB(BoundingBox* a, BoundingBox* b) {
 
       r1 = bd.axisLen[y];
       r2 = abs(D3DXVec3Dot(&ad.axisDir[x], &axis) * ad.axisLen[x]) +
-           abs(D3DXVec3Dot(&ad.axisDir[y], &axis) * ad.axisLen[y]);
+        abs(D3DXVec3Dot(&ad.axisDir[y], &axis) * ad.axisLen[y]);
 
       if (centerProjDist > r1 + r2) return false;
     }
 
     return true;
-  } else {
+  }
+  else {
     return false;
   }
 }

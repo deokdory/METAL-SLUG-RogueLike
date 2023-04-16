@@ -22,23 +22,23 @@ Level::~Level() {
 
 void Level::init() {
   for (auto terr : terrains) {
-    terr->update();
+    terr->Update();
   }
 }
-void Level::update() {
+void Level::Update() {
   //for (auto terr : terrains) {
-  //  terr->update();
+  //  terr->Update();
   //}
   for (auto obj : objects) {
-    obj->update();
+    obj->Update();
   }
 }
 
-void Level::render() {
+void Level::Render() {
   for (auto terr : terrains) {
-    terr->render();
+    terr->Render();
   }
   for (auto obj : objects) {
-    obj->render();
+    obj->Render();
   }
 }

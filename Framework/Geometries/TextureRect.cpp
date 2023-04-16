@@ -2,10 +2,10 @@
 #include "TextureRect.h"
 
 TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation,
-                         std::wstring path)
-    : position(position),
-      size(size),
-      rotation(rotation) {
+  std::wstring path)
+  : position(position),
+  size(size),
+  rotation(rotation) {
 
   Texture2D* texture = new Texture2D(path);
 
@@ -27,7 +27,7 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation,
   vertexBuffer->Create(vertices, D3D11_USAGE_DYNAMIC);
 
   // index Buffer
-  incides = {0, 1, 2, 0, 3, 1};
+  incides = { 0, 1, 2, 0, 3, 1 };
   indexBuffer = new IndexBuffer();
   indexBuffer->Create(incides, D3D11_USAGE_IMMUTABLE);
 
@@ -56,8 +56,8 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation,
   SAFE_DELETE(texture);
 }
 
-TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation) 
-: position(position), size(size), rotation(rotation) {
+TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation)
+  : position(position), size(size), rotation(rotation) {
   // vertices
   vertices.assign(4, VertexTexture());
 
@@ -76,10 +76,10 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation)
   vertexBuffer->Create(vertices, D3D11_USAGE_DYNAMIC);
 
   // index Buffer
-  incides = {0, 1, 2, 0, 3, 1};
+  incides = { 0, 1, 2, 0, 3, 1 };
   indexBuffer = new IndexBuffer();
   indexBuffer->Create(incides, D3D11_USAGE_IMMUTABLE);
-  
+
   // Texture Buffer
   textureBuffer = new TextureBuffer();
 
@@ -109,8 +109,8 @@ TextureRect::~TextureRect() {
   SAFE_DELETE(vertexBuffer);
 }
 
-void TextureRect::Move(Vector2 move) { 
-  position += {move.x, move.y, 0.0f};
+void TextureRect::Move(Vector2 Move) {
+  position += {Move.x, Move.y, 0.0f};
 }
 
 void TextureRect::MapVertexBuffer() {
@@ -119,9 +119,9 @@ void TextureRect::MapVertexBuffer() {
 
 void TextureRect::UnmapVertexBuffer() {
   std::memcpy(subResource.pData, vertices.data(),
-              sizeof(vertices[0]) * vertices.size());
+    sizeof(vertices[0]) * vertices.size());
   DC->Unmap(vertexBuffer->GetResource(), 0);
-  
+
 }
 
 void TextureRect::SetShader(std::wstring shaderpath) {
@@ -138,126 +138,126 @@ void TextureRect::SetAnchorPoint(int point) {
 
   {
     switch (point) {
-      case 0: {
-        MapVertexBuffer();
-        vertices[0].position = verticesLocalPosition[0] =
-            Vector3(-0.5f, -0.5f, 0.0f);
-        vertices[1].position = verticesLocalPosition[1] =
-            Vector3(0.5f, 0.5f, 0.0f);
-        vertices[2].position = verticesLocalPosition[2] =
-            Vector3(0.5f, -0.5f, 0.0f);
-        vertices[3].position = verticesLocalPosition[3] =
-            Vector3(-0.5f, 0.5f, 0.0f);
-        UnmapVertexBuffer();
-        return;
-      }
-      case 1: {
-        MapVertexBuffer();
-        vertices[0].position = verticesLocalPosition[0] =
-            Vector3(0.0f, -1.0f, 0.0f);
-        vertices[1].position = verticesLocalPosition[1] =
-            Vector3(1.0f, 0.0f, 0.0f);
-        vertices[2].position = verticesLocalPosition[2] =
-            Vector3(1.0f, -1.0f, 0.0f);
-        vertices[3].position = verticesLocalPosition[3] =
-            Vector3(0.0f, 0.0f, 0.0f);
-        UnmapVertexBuffer();
-        return;
-      }
-      case 2: {
-        MapVertexBuffer();
-        vertices[0].position = verticesLocalPosition[0] =
-            Vector3(-0.5f, -1.0f, 0.0f);
-        vertices[1].position = verticesLocalPosition[1] =
-            Vector3(0.5f, 0.0f, 0.0f);
-        vertices[2].position = verticesLocalPosition[2] =
-            Vector3(0.5f, -1.0f, 0.0f);
-        vertices[3].position = verticesLocalPosition[3] =
-            Vector3(-0.5f, 0.0f, 0.0f);
-        UnmapVertexBuffer();
-        return;
-      }
-      case 3: {
-        MapVertexBuffer();
-        vertices[0].position = verticesLocalPosition[0] =
-            Vector3(-1.0f, -1.0f, 0.0f);
-        vertices[1].position = verticesLocalPosition[1] =
-            Vector3(0.0f, 0.0f, 0.0f);
-        vertices[2].position = verticesLocalPosition[2] =
-            Vector3(0.0f, -1.0f, 0.0f);
-        vertices[3].position = verticesLocalPosition[3] =
-            Vector3(-1.0f, 0.0f, 0.0f);
-        UnmapVertexBuffer();
-        return;
-      }
-      case 4: {
-        MapVertexBuffer();
-        vertices[0].position = verticesLocalPosition[0] =
-            Vector3(0.0f, -0.5f, 0.0f);
-        vertices[1].position = verticesLocalPosition[1] =
-            Vector3(1.0f, 0.5f, 0.0f);
-        vertices[2].position = verticesLocalPosition[2] =
-            Vector3(1.0f, -0.5f, 0.0f);
-        vertices[3].position = verticesLocalPosition[3] =
-            Vector3(0.0f, 0.5f, 0.0f);
-        UnmapVertexBuffer();
-        return;
-      }
-      case 5: {
-        MapVertexBuffer();
-        vertices[0].position = verticesLocalPosition[0] =
-            Vector3(-1.0f, -0.5f, 0.0f);
-        vertices[1].position = verticesLocalPosition[1] =
-            Vector3(0.0f, 0.5f, 0.0f);
-        vertices[2].position = verticesLocalPosition[2] =
-            Vector3(0.0f, -0.5f, 0.0f);
-        vertices[3].position = verticesLocalPosition[3] =
-            Vector3(-1.0f, 0.5f, 0.0f);
-        UnmapVertexBuffer();
-        return;
-      }
-      case 6: {
-        MapVertexBuffer();
-        vertices[0].position = verticesLocalPosition[0] =
-            Vector3(0.0f, 0.0f, 0.0f);
-        vertices[1].position = verticesLocalPosition[1] =
-            Vector3(1.0f, 1.0f, 0.0f);
-        vertices[2].position = verticesLocalPosition[2] =
-            Vector3(1.0f, 0.0f, 0.0f);
-        vertices[3].position = verticesLocalPosition[3] =
-            Vector3(0.0f, 1.0f, 0.0f);
-        UnmapVertexBuffer();
-        return;
-      }
-      case 7: {
-        MapVertexBuffer();
-        vertices[0].position = verticesLocalPosition[0] =
-            Vector3(-0.5f, 0.0f, 0.0f);
-        vertices[1].position = verticesLocalPosition[1] =
-            Vector3(0.5f, 1.0f, 0.0f);
-        vertices[2].position = verticesLocalPosition[2] =
-            Vector3(0.5f, 0.0f, 0.0f);
-        vertices[3].position = verticesLocalPosition[3] =
-            Vector3(-0.5f, 1.0f, 0.0f);
-        UnmapVertexBuffer();
-        return;
-      }
-      case 8: {
-        MapVertexBuffer();
-        vertices[0].position = verticesLocalPosition[0] =
-            Vector3(-1.0f, 0.0f, 0.0f);
-        vertices[1].position = verticesLocalPosition[1] =
-            Vector3(0.0f, 1.0f, 0.0f);
-        vertices[2].position = verticesLocalPosition[2] =
-            Vector3(0.0f, 0.0f, 0.0f);
-        vertices[3].position = verticesLocalPosition[3] =
-            Vector3(-1.0f, 1.0f, 0.0f);
-        UnmapVertexBuffer();
-        return;
-      }
-      default: {
-        return;
-      }
+    case 0: {
+      MapVertexBuffer();
+      vertices[0].position = verticesLocalPosition[0] =
+        Vector3(-0.5f, -0.5f, 0.0f);
+      vertices[1].position = verticesLocalPosition[1] =
+        Vector3(0.5f, 0.5f, 0.0f);
+      vertices[2].position = verticesLocalPosition[2] =
+        Vector3(0.5f, -0.5f, 0.0f);
+      vertices[3].position = verticesLocalPosition[3] =
+        Vector3(-0.5f, 0.5f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 1: {
+      MapVertexBuffer();
+      vertices[0].position = verticesLocalPosition[0] =
+        Vector3(0.0f, -1.0f, 0.0f);
+      vertices[1].position = verticesLocalPosition[1] =
+        Vector3(1.0f, 0.0f, 0.0f);
+      vertices[2].position = verticesLocalPosition[2] =
+        Vector3(1.0f, -1.0f, 0.0f);
+      vertices[3].position = verticesLocalPosition[3] =
+        Vector3(0.0f, 0.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 2: {
+      MapVertexBuffer();
+      vertices[0].position = verticesLocalPosition[0] =
+        Vector3(-0.5f, -1.0f, 0.0f);
+      vertices[1].position = verticesLocalPosition[1] =
+        Vector3(0.5f, 0.0f, 0.0f);
+      vertices[2].position = verticesLocalPosition[2] =
+        Vector3(0.5f, -1.0f, 0.0f);
+      vertices[3].position = verticesLocalPosition[3] =
+        Vector3(-0.5f, 0.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 3: {
+      MapVertexBuffer();
+      vertices[0].position = verticesLocalPosition[0] =
+        Vector3(-1.0f, -1.0f, 0.0f);
+      vertices[1].position = verticesLocalPosition[1] =
+        Vector3(0.0f, 0.0f, 0.0f);
+      vertices[2].position = verticesLocalPosition[2] =
+        Vector3(0.0f, -1.0f, 0.0f);
+      vertices[3].position = verticesLocalPosition[3] =
+        Vector3(-1.0f, 0.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 4: {
+      MapVertexBuffer();
+      vertices[0].position = verticesLocalPosition[0] =
+        Vector3(0.0f, -0.5f, 0.0f);
+      vertices[1].position = verticesLocalPosition[1] =
+        Vector3(1.0f, 0.5f, 0.0f);
+      vertices[2].position = verticesLocalPosition[2] =
+        Vector3(1.0f, -0.5f, 0.0f);
+      vertices[3].position = verticesLocalPosition[3] =
+        Vector3(0.0f, 0.5f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 5: {
+      MapVertexBuffer();
+      vertices[0].position = verticesLocalPosition[0] =
+        Vector3(-1.0f, -0.5f, 0.0f);
+      vertices[1].position = verticesLocalPosition[1] =
+        Vector3(0.0f, 0.5f, 0.0f);
+      vertices[2].position = verticesLocalPosition[2] =
+        Vector3(0.0f, -0.5f, 0.0f);
+      vertices[3].position = verticesLocalPosition[3] =
+        Vector3(-1.0f, 0.5f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 6: {
+      MapVertexBuffer();
+      vertices[0].position = verticesLocalPosition[0] =
+        Vector3(0.0f, 0.0f, 0.0f);
+      vertices[1].position = verticesLocalPosition[1] =
+        Vector3(1.0f, 1.0f, 0.0f);
+      vertices[2].position = verticesLocalPosition[2] =
+        Vector3(1.0f, 0.0f, 0.0f);
+      vertices[3].position = verticesLocalPosition[3] =
+        Vector3(0.0f, 1.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 7: {
+      MapVertexBuffer();
+      vertices[0].position = verticesLocalPosition[0] =
+        Vector3(-0.5f, 0.0f, 0.0f);
+      vertices[1].position = verticesLocalPosition[1] =
+        Vector3(0.5f, 1.0f, 0.0f);
+      vertices[2].position = verticesLocalPosition[2] =
+        Vector3(0.5f, 0.0f, 0.0f);
+      vertices[3].position = verticesLocalPosition[3] =
+        Vector3(-0.5f, 1.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    case 8: {
+      MapVertexBuffer();
+      vertices[0].position = verticesLocalPosition[0] =
+        Vector3(-1.0f, 0.0f, 0.0f);
+      vertices[1].position = verticesLocalPosition[1] =
+        Vector3(0.0f, 1.0f, 0.0f);
+      vertices[2].position = verticesLocalPosition[2] =
+        Vector3(0.0f, 0.0f, 0.0f);
+      vertices[3].position = verticesLocalPosition[3] =
+        Vector3(-1.0f, 1.0f, 0.0f);
+      UnmapVertexBuffer();
+      return;
+    }
+    default: {
+      return;
+    }
     }
   }
 }

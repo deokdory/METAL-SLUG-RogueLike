@@ -45,7 +45,6 @@ using namespace std;
 //////////////////////////////////////////
 
 #include "Interfaces/IObject.h"
-#include "Interfaces/IGraphic.h"
 
 #include "Utilities/SingletonBase.h"
 
@@ -90,14 +89,13 @@ typedef UINT		uint;
 
 #include "Utilities/DirectHelper.h"
 #include "Utilities/BoundingBox.h"
-#include "Utilities/Collision/Collision.h"
 #include "Utilities/String.h"
 #include "Utilities/Path.h"
 
 #include "Systems/Camera.h"
 
-#define WinMaxWidth 1280
-#define WinMaxHeight 720
+#define WinMaxWidth 1920
+#define WinMaxHeight 1080
 
 const wstring ShaderPath = L"../_Shaders/";
 const wstring TexturePath = L"../_Textures/";

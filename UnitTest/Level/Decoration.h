@@ -7,8 +7,8 @@ class Decoration {
   Decoration();
   ~Decoration();
 
-  void update();
-  void render();
+  void Update();
+  void Render();
 
  private:
   AnimationRect* animRect = nullptr;

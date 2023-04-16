@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "TestLevel.h"
-#include "Character/PlaybleCharacter.h"
+#include "Character/Agent.h"
+
+#include "Component/Input/AgentInput.h"
+#include "Component/Graphic/AgentGraphic.h"
 
 #include "Character/Animations.h"
 #include "UI/HUD.h"
@@ -9,11 +12,13 @@ TestLevel::TestLevel() { init(); }
 
 void TestLevel::init() {
   auto player =
-      new Agent(Values::CenterOfScreen, Vector3(100, 100, 0.f));
+      new Agent(Values::CenterOfScreen, Vector3(50, 120, 0.f));
 
-  player->InitGraphic(AGENT_GRAPHIC);
-  player->setGraphicResource(Animations::getEriLowerTest(), LOWER);
-  player->setGraphicResource(Animations::getEriUpperTest(), UPPER);
+
+  player->InitGraphic(IGraphic::Type::AGENT_GRAPHIC);
+
+  player->SetGraphicResource(Animations::getEriLower(), IGraphic::Slot::LOWER);
+  player->SetGraphicResource(Animations::getEriUpper(), IGraphic::Slot::UPPER);
 
   player->GetMovement()->SetLevel(this);
 
@@ -30,10 +35,10 @@ void TestLevel::init() {
   __super::init();
 }
 
-void TestLevel::update() { 
+void TestLevel::Update() { 
   playerHud->Update();
-  __super::update(); }
+  __super::Update(); }
 
-void TestLevel::render() {
+void TestLevel::Render() {
   playerHud->Render();
-  __super::render(); }
+  __super::Render(); }

@@ -43,40 +43,31 @@ void AnimationRect::Update() {
   if (bFliped) {
     MapVertexBuffer();
     {
-      vertices[0].uv.x = 
-          animator->GetCurrentFrame().x + animator->GetTexelFrameSize().x;
-      vertices[0].uv.y =
-          animator->GetCurrentFrame().y + animator->GetTexelFrameSize().y;
+      vertices[0].uv.x = animator->GetCurrentFrame().x + animator->GetTexelFrameSize().x;
+      vertices[0].uv.y = animator->GetCurrentFrame().y + animator->GetTexelFrameSize().y;
 
-      vertices[1].uv.x =
-          animator->GetCurrentFrame().x;
+      vertices[1].uv.x = animator->GetCurrentFrame().x;
       vertices[1].uv.y = animator->GetCurrentFrame().y;
 
-      vertices[2].uv.x =
-          animator->GetCurrentFrame().x;
-      vertices[2].uv.y =
-          animator->GetCurrentFrame().y + animator->GetTexelFrameSize().y;
+      vertices[2].uv.x = animator->GetCurrentFrame().x;
+      vertices[2].uv.y = animator->GetCurrentFrame().y + animator->GetTexelFrameSize().y;
 
-      vertices[3].uv.x = 
-          animator->GetCurrentFrame().x + animator->GetTexelFrameSize().x;
+      vertices[3].uv.x = animator->GetCurrentFrame().x + animator->GetTexelFrameSize().x;
       vertices[3].uv.y = animator->GetCurrentFrame().y;
     }
     UnmapVertexBuffer();
-  } else {
+  }
+  else {
     MapVertexBuffer();
     {
       vertices[0].uv.x = animator->GetCurrentFrame().x;
-      vertices[0].uv.y =
-          animator->GetCurrentFrame().y + animator->GetTexelFrameSize().y;
+      vertices[0].uv.y = animator->GetCurrentFrame().y + animator->GetTexelFrameSize().y;
 
-      vertices[1].uv.x =
-          animator->GetCurrentFrame().x + animator->GetTexelFrameSize().x;
+      vertices[1].uv.x = animator->GetCurrentFrame().x + animator->GetTexelFrameSize().x;
       vertices[1].uv.y = animator->GetCurrentFrame().y;
 
-      vertices[2].uv.x =
-          animator->GetCurrentFrame().x + animator->GetTexelFrameSize().x;
-      vertices[2].uv.y =
-          animator->GetCurrentFrame().y + animator->GetTexelFrameSize().y;
+      vertices[2].uv.x = animator->GetCurrentFrame().x + animator->GetTexelFrameSize().x;
+      vertices[2].uv.y = animator->GetCurrentFrame().y + animator->GetTexelFrameSize().y;
 
       vertices[3].uv.x = animator->GetCurrentFrame().x;
       vertices[3].uv.y = animator->GetCurrentFrame().y;

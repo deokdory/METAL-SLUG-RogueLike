@@ -9,8 +9,8 @@ class TestLevel : public Level {
   TestLevel();
 
   virtual void init();
-  virtual void update();
-  virtual void render();
+  virtual void Update();
+  virtual void Render();
  private:
 
   class HUD* playerHud = nullptr;

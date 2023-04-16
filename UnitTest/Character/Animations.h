@@ -4,7 +4,7 @@
 class Animations {
  public:
   // Test
-  static Animator* getKnight();
-  static Animator* getEriUpperTest();
-  static Animator* getEriLowerTest();
+  //static Animator* getKnight();
+  static Animator* getEriUpper();
+  static Animator* getEriLower();
 };

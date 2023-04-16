@@ -1,83 +1,135 @@
 #include "stdafx.h"
 #include "Animations.h"
 
-Animator* Animations::getKnight() {
-  Texture2D* srcTex = new Texture2D(TexturePath + L"Ye_Oldy_Knight_Guy.png");
+//Animator* Animations::getKnight() {
+//  Texture2D* srcTex = new Texture2D(TexturePath + L"Ye_Oldy_Knight_Guy.png");
+//
+//  Vector2 texSize = Vector2(srcTex->GetWidth(), srcTex->GetHeight());
+//
+//  AnimationClip* Idle =
+//      new AnimationClip(L"Idle", srcTex, 4, Vector2(0, 0), Vector2(64, 19),
+//                        false, 1.0f / 3.0f);  // 16, 20
+//
+//  AnimationClip* Run =
+//      new AnimationClip(L"Run", srcTex, 6, Vector2(0, 21), Vector2(96, 41),
+//                        false, 1.0f / 6.0f);  // 16, 21
+//
+//  AnimationClip* Jump = new AnimationClip(L"Jump", srcTex, 1, Vector2(0, 42),
+//                                          Vector2(16, 63));  // 17, 22
+//
+//  AnimationClip* Hit = new AnimationClip(L"Hit", srcTex, 1, Vector2(64, 0),
+//                                         Vector2(85, 19));  // 22 x 20
+//
+//  Animator* animator = new Animator();
+//
+//  animator->AddAnimClip(Idle);
+//  animator->AddAnimClip(Run);
+//  animator->AddAnimClip(Jump);
+//  animator->AddAnimClip(Hit);
+//
+//  animator->SetCurrentAnimClip(L"Idle");
+//
+//  SAFE_DELETE(srcTex);
+//  return animator;
+//}
 
-  Vector2 texSize = Vector2(srcTex->GetWidth(), srcTex->GetHeight());
+Animator* Animations::getEriUpper() {
+  Texture2D* srcTex = new Texture2D(TexturePath + L"eri_upper_x2.png");
 
-  AnimationClip* Idle =
-      new AnimationClip(L"Idle", srcTex, 4, Vector2(0, 0), Vector2(64, 19),
-                        false, 1.0f / 3.0f);  // 16, 20
+  AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(919, 125), false, -1.f, Vector2(16, -53));
 
-  AnimationClip* Run =
-      new AnimationClip(L"Run", srcTex, 6, Vector2(0, 21), Vector2(96, 41),
-                        false, 1.0f / 6.0f);  // 16, 21
-
-  AnimationClip* Jump = new AnimationClip(L"Jump", srcTex, 1, Vector2(0, 42),
-                                          Vector2(16, 63));  // 17, 22
-
-  AnimationClip* Hit = new AnimationClip(L"Hit", srcTex, 1, Vector2(64, 0),
-                                         Vector2(85, 19));  // 22 x 20
+  AnimationClip* reload_rifle = new AnimationClip(L"reload_rifle", srcTex, 5, Vector2(0, 126), Vector2(449, 188), false, 1.0f / 5.0f);
+  AnimationClip* knife1_rifle = new AnimationClip(L"knife1_rifle", srcTex, 6, Vector2(0, 190), Vector2(599, 269), false, 1.0f / 12.0f);
+  AnimationClip* knife2_rifle = new AnimationClip(L"knife2_rifle", srcTex, 8, Vector2(0, 270), Vector2(831, 341), false, 1.0f / 12.0f);
+  AnimationClip* throw_rifle = new AnimationClip(L"throw_rifle", srcTex, 5, Vector2(450, 126), Vector2(919, 189), false, 1.0f / 12.0f);
 
   Animator* animator = new Animator();
 
-  animator->AddAnimClip(Idle);
-  animator->AddAnimClip(Run);
-  animator->AddAnimClip(Jump);
-  animator->AddAnimClip(Hit);
-
-  animator->SetCurrentAnimClip(L"Idle");
-
-  SAFE_DELETE(srcTex);
-  return animator;
-}
-
-Animator* Animations::getEriUpperTest() {
-  //Texture2D* srcTex = new Texture2D(TexturePath + L"upper_aim_rifle.png");
-  Texture2D* srcTex = new Texture2D(TexturePath + L"eri_test.png");
-
-  AnimationClip* aimRifle =
-      new AnimationClip(L"aimRifle", srcTex, 10, Vector2(0, 0),
-                        Vector2(459, 62), false, 1.0f / 3.0f);
-
-  Animator* animator = new Animator();
-
-  animator->AddAnimClip(aimRifle);
+  animator->AddAnimClip(aim_rifle);
+  animator->AddAnimClip(reload_rifle);
+  animator->AddAnimClip(knife1_rifle);
+  animator->AddAnimClip(knife2_rifle);
+  animator->AddAnimClip(throw_rifle);
 
   animator->SetCurrentAnimClip(L"aimRifle");
-  // animator->SetCurrentFrame(4);
 
   SAFE_DELETE(srcTex);
   return animator;
 }
 
-Animator* Animations::getEriLowerTest() {
-  Texture2D* srcTex = new Texture2D(TexturePath + L"eri_test.png");
+Animator* Animations::getEriLower() {
+  Texture2D* srcTex = new Texture2D(TexturePath + L"eri_lower_x2.png");
 
-  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 1, Vector2(0, 30),
-                                          Vector2(19, 53), false, -1.0f);
-  AnimationClip* run =
-      new AnimationClip(L"run", srcTex, 12, Vector2(0, 208), Vector2(360, 234),
-                        false, 1.0f / 12.0f);
+  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 1, Vector2(0, 0), Vector2(39, 51), false, -1.0f);
+  AnimationClip* run = new AnimationClip(L"run", srcTex, 12, Vector2(40, 0), Vector2(749, 51), false, 1.0f / 12.0f);
 
-  AnimationClip* jumpBeginRunning =
-      new AnimationClip(L"jumpBeginRunning", srcTex, 3, Vector2(0, 54),
-                        Vector2(104, 79), false, 1.0f / 3.0f);
+  AnimationClip* jumpBegin_run = new AnimationClip(L"jumpBegin_run", srcTex, 3, Vector2(0, 53), Vector2(207, 103), false, 1.0f / 6.0f, Vector2(10, 0));
+  AnimationClip* jumpEnd_run = new AnimationClip(L"jumpEnd_run", srcTex, 3, Vector2(0, 104), Vector2(207, 154), false, 1.0f / 3.0f);
 
-  AnimationClip* jumpEndRunning =
-      new AnimationClip(L"jumpEndRunning", srcTex, 3, Vector2(0, 80),
-                        Vector2(104, 105), false, 1.0f / 3.0f);
+  AnimationClip* jumpBegin_stand = new AnimationClip(L"jumpBegin_stand", srcTex, 3, Vector2(206, 52), Vector2(409, 113), false, 1.0 / 3.0f);
+  AnimationClip* jumpEnd_stand = new AnimationClip(L"jumpEnd_stand", srcTex, 3, Vector2(206, 114), Vector2(409, 177), false, 1.0 / 3.0f);
 
   Animator* animator = new Animator();
 
   animator->AddAnimClip(idle);
   animator->AddAnimClip(run);
-  animator->AddAnimClip(jumpBeginRunning);
-  animator->AddAnimClip(jumpEndRunning);
+  animator->AddAnimClip(jumpBegin_run);
+  animator->AddAnimClip(jumpEnd_run);
+  animator->AddAnimClip(jumpBegin_stand);
+  animator->AddAnimClip(jumpEnd_stand);
 
-  animator->SetCurrentAnimClip(L"run");
+  animator->SetCurrentAnimClip(L"idle");
 
   SAFE_DELETE(srcTex);
   return animator;
 }
+
+//Animator* Animations::getEriUpper() {
+//  Texture2D* srcTex = new Texture2D(TexturePath + L"eri_upper.png");
+//
+//  AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(459, 62), false, 1.0f / 12.0f, Vector2(8, 0));
+//  AnimationClip* reload_rifle = new AnimationClip(L"reload_rifle", srcTex, 5, Vector2(0, 63), Vector2(224, 93), false, 1.0f / 5.0f);
+//  AnimationClip* knife1_rifle = new AnimationClip(L"knife1_rifle", srcTex, 6, Vector2(0, 95), Vector2(299, 134), false, 1.0f / 12.0f);
+//  AnimationClip* knife2_rifle = new AnimationClip(L"knife2_rifle", srcTex, 8, Vector2(0, 135), Vector2(415, 170), false, 1.0f / 12.0f);
+//  AnimationClip* throw_rifle = new AnimationClip(L"throw_rifle", srcTex, 5, Vector2(225, 63), Vector2(459, 94), false, 1.0f / 12.0f);
+//
+//  Animator* animator = new Animator();
+//
+//  animator->AddAnimClip(aim_rifle);
+//  animator->AddAnimClip(reload_rifle);
+//  animator->AddAnimClip(knife1_rifle);
+//  animator->AddAnimClip(knife2_rifle);
+//  animator->AddAnimClip(throw_rifle);
+//
+//  animator->SetCurrentAnimClip(L"aimRifle");
+//
+//  SAFE_DELETE(srcTex);
+//  return animator;
+//}
+
+//Animator* Animations::getEriLower() {
+//  Texture2D* srcTex = new Texture2D(TexturePath + L"eri_lower.png");
+//
+//  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 1, Vector2(0, 0), Vector2(19, 25), false, -1.0f);
+//  AnimationClip* run = new AnimationClip(L"run", srcTex, 12, Vector2(20, 0), Vector2(374, 25), false, 1.0f / 12.0f);
+//
+//  AnimationClip* jumpBegin_run = new AnimationClip(L"jumpBegin_run", srcTex, 3, Vector2(0, 26), Vector2(103, 50), false, 1.0f / 3.0f);
+//  AnimationClip* jumpEnd_run = new AnimationClip(L"jumpEnd_run", srcTex, 3, Vector2(0, 51), Vector2(103, 76), false, 1.0f / 3.0f);
+//
+//  AnimationClip* jumpBegin_stand = new AnimationClip(L"jumpBegin_stand", srcTex, 3, Vector2(103, 26), Vector2(204, 56), false, 1.0 / 3.0f);
+//  AnimationClip* jumpEnd_stand = new AnimationClip(L"jumpEnd_stand", srcTex, 3, Vector2(103, 57), Vector2(204, 88), false, 1.0 / 3.0f);
+//
+//  Animator* animator = new Animator();
+//
+//  animator->AddAnimClip(idle);
+//  animator->AddAnimClip(run);
+//  animator->AddAnimClip(jumpBegin_run);
+//  animator->AddAnimClip(jumpEnd_run);
+//  animator->AddAnimClip(jumpBegin_stand);
+//  animator->AddAnimClip(jumpEnd_stand);
+//
+//  animator->SetCurrentAnimClip(L"idle");
+//
+//  SAFE_DELETE(srcTex);
+//  return animator;
+//}
