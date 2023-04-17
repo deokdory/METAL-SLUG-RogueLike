@@ -94,8 +94,8 @@ typedef UINT		uint;
 
 #include "Systems/Camera.h"
 
-#define WinMaxWidth 1920
-#define WinMaxHeight 1080
+#define WinMaxWidth 1280
+#define WinMaxHeight 720
 
 const wstring ShaderPath = L"../_Shaders/";
 const wstring TexturePath = L"../_Textures/";

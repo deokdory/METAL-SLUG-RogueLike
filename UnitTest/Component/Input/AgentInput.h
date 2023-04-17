@@ -26,6 +26,8 @@ protected:
   class Agent* agent = nullptr;
   class Level* level = nullptr;
 
+  class Rect* mouseRect = nullptr;
+
   BoundingBox* xSpeedBoxL = nullptr;
   BoundingBox* xSpeedBoxR = nullptr;
 

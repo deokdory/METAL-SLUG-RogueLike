@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "AgentInput.h"
 
+#include "Geometries/Rect.h"
 #include "Level/Level.h"
 
 #include "Component/Collision/Collision.h"
@@ -8,6 +9,9 @@
 
 AgentInput::AgentInput(Agent* agent) :agent(agent)
 {
+  auto mousePos = Mouse::Get()->GetPosition() + Camera::Get()->GetPosition();
+
+  mouseRect = new Rect(mousePos, Vector3(100, 100, 0), 0.f);
   agentSize = agent->GetSize();
 
   Vector3 left, right, top, bottom;
@@ -32,10 +36,14 @@ AgentInput::AgentInput(Agent* agent) :agent(agent)
 
 void AgentInput::Update() {
   //delta = Time::Get()->GetTimerDelta("game");
+  auto mousePos = Mouse::Get()->GetPosition() + Camera::Get()->GetPosition();
+
+  mouseRect->SetPosition(mousePos);
+  mouseRect->Update();
+
   agentSize = agent->GetSize();
   auto state = agent->GetState();
 
-  auto mousePos = Mouse::Get()->GetPosition() + Camera::Get()->GetPosition();
   Vector3 agentTop = Values::ZeroVec3;
   agentTop.y = WinMaxHeight;
 
@@ -171,6 +179,7 @@ void AgentInput::Render() {
   xSpeedBoxR->Render();
   ySpeedBoxT->Render();
   ySpeedBoxB->Render();
+  mouseRect->Render();
 }
 
 void AgentInput::CollisionCheck() {
