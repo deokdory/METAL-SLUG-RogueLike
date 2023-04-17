@@ -14,6 +14,8 @@ public:
   virtual void SetCurrentAnimation(std::wstring name, Slot slot = NONE);
   virtual void SetCurrentFrame(UINT index, Slot slot = NONE);
   
+  virtual Matrix GetWorld(Slot slot = NONE);
+
 private:
   class AnimationRect* lowerRect = nullptr;
   class AnimationRect* upperRect = nullptr;

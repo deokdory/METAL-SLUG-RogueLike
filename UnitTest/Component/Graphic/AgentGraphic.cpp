@@ -133,3 +133,22 @@ void AgentGraphic::SetCurrentFrame(UINT index, Slot slot)
     break;
   }
 }
+
+Matrix AgentGraphic::GetWorld(Slot slot)
+{
+  switch (slot)
+  {
+  case IGraphic::NONE:
+    break;
+  case IGraphic::LOWER:
+    return lowerRect->GetWorld();
+    break;
+  case IGraphic::UPPER:
+    return upperRect->GetWorld();
+    break;
+  case IGraphic::MERGED:
+    break;
+  default:
+    break;
+  }
+}

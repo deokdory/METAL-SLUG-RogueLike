@@ -11,6 +11,8 @@ public:
 
   virtual void SetResource(std::wstring path);
 
+  virtual Matrix GetWorld(Slot slot = NONE);
+
 private:
   class TextureRect* textureRect = nullptr;
 };

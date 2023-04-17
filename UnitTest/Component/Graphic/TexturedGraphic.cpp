@@ -32,3 +32,8 @@ void TexturedGraphic::SetResource(std::wstring path) {
   textureRect = new TextureRect(object->GetPosition(), object->GetSize(),
     object->GetRotation(), path);
 }
+
+Matrix TexturedGraphic::GetWorld(Slot slot)
+{
+  return textureRect->GetWorld();
+}

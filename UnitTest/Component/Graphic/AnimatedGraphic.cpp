@@ -53,3 +53,8 @@ void AnimatedGraphic::SetCurrentFrame(UINT index, Slot slot)
 {
   animator->SetCurrentFrame(index);
 }
+
+Matrix AnimatedGraphic::GetWorld(Slot slot)
+{
+  return animRect->GetWorld();
+}

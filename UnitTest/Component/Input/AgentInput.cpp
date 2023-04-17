@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "AgentInput.h"
 
-#include "Geometries/Rect.h"
+#include "Geometries/TextureRect.h"
 #include "Level/Level.h"
 
 #include "Component/Collision/Collision.h"
@@ -11,7 +11,7 @@ AgentInput::AgentInput(Agent* agent) :agent(agent)
 {
   auto mousePos = Mouse::Get()->GetPosition() + Camera::Get()->GetPosition();
 
-  mouseRect = new Rect(mousePos, Vector3(100, 100, 0), 0.f);
+  crosshair = new TextureRect(mousePos, Vector3(72, 72, 0), 0.f, TexturePath + L"crosshair003.png");
   agentSize = agent->GetSize();
 
   Vector3 left, right, top, bottom;
@@ -36,18 +36,46 @@ AgentInput::AgentInput(Agent* agent) :agent(agent)
 
 void AgentInput::Update() {
   //delta = Time::Get()->GetTimerDelta("game");
+
   auto mousePos = Mouse::Get()->GetPosition() + Camera::Get()->GetPosition();
 
-  mouseRect->SetPosition(mousePos);
-  mouseRect->Update();
+  crosshair->SetPosition(mousePos);
+  crosshair->Update();
+  {
+    Matrix mouseWorld = DXMath::Scaling({ 72, 72, 0 }) * DXMath::RotationInDegree(0) *
+      DXMath::Translation(mousePos);
 
+    auto mouseDist = mousePos - agent->GetPosition();
+
+    Vector3 agentAxisTop, agentAxisRight, agentAxisMouse;
+
+    D3DXVec3TransformNormal(&agentAxisTop, &Values::UpVec, &agent->GetGraphic()->GetWorld(IGraphic::Slot::UPPER));
+    D3DXVec3TransformNormal(&agentAxisRight, &Values::RightVec, &agent->GetGraphic()->GetWorld(IGraphic::Slot::UPPER));
+
+    D3DXVec3TransformNormal(&agentAxisMouse, &mouseDist, &agent->GetGraphic()->GetWorld(IGraphic::Slot::UPPER));
+
+    D3DXVec3Normalize(&agentAxisTop, &agentAxisTop);
+    D3DXVec3Normalize(&agentAxisRight, &agentAxisRight);
+    D3DXVec3Normalize(&agentAxisMouse, &agentAxisMouse);
+
+    auto aimAngle = D3DXVec3Dot(&agentAxisTop, &agentAxisMouse);
+    auto rightAngle = D3DXVec3Dot(&agentAxisRight, &agentAxisMouse);
+
+    aimAngle = std::acos(aimAngle);
+    aimAngle = D3DXToDegree(aimAngle);
+
+    if (rightAngle < 0) aimAngle *= -1;
+
+    std::cout << aimAngle << std::endl;
+
+    if (aimAngle > 90) agent->GetGraphic()->SetCurrentFrame(5, IGraphic::Slot::UPPER);
+    else agent->GetGraphic()->SetCurrentFrame(9, IGraphic::Slot::UPPER);
+  }
   agentSize = agent->GetSize();
   auto state = agent->GetState();
 
-  Vector3 agentTop = Values::ZeroVec3;
-  agentTop.y = WinMaxHeight;
-
   accel = accelOrigin;
+
   if (isFalling) accel /= 2;
   if (Keyboard::Get()->Press('A') && !Keyboard::Get()->Press('D')) {
     MoveLeft();
@@ -179,7 +207,7 @@ void AgentInput::Render() {
   xSpeedBoxR->Render();
   ySpeedBoxT->Render();
   ySpeedBoxB->Render();
-  mouseRect->Render();
+  crosshair->Render();
 }
 
 void AgentInput::CollisionCheck() {

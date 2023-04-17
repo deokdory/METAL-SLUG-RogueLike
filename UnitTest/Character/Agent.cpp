@@ -32,8 +32,7 @@ void Agent::Update() {
 void Agent::Render() {
   Camera::Get()->SetPosition(position);
 
-
-  movement->Render();
   graphic->Render();
   collision->Render();
+  movement->Render();
 }
