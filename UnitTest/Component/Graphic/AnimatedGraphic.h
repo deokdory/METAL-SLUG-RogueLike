@@ -9,6 +9,8 @@ public:
   virtual void Update();
   virtual void Render();
 
+  virtual class Animator* GetAnimator(Slot slot = NONE) { return animator; }
+
   virtual void SetResource(class Animator* animator, Slot slot = NONE);
 
   virtual void SetCurrentAnimation(std::wstring name, Slot slot = NONE);

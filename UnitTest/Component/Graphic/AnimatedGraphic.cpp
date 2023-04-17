@@ -18,6 +18,9 @@ void AnimatedGraphic::Update() {
 
   if (animRect && animator) {
 
+    if (object->GetFliped()) animRect->SetIsFliped(true);
+    else animRect->SetIsFliped(false);
+
     animRect->SetPosition(object->GetPosition());
     animRect->SetSize(object->GetSize());
     animRect->SetRotation(object->GetRotation());
@@ -42,6 +45,7 @@ void AnimatedGraphic::SetResource(class Animator* animator, Slot slot) {
 
   this->animator->SetCurrentAnimClip(L"idle");
   animRect->SetAnimator(animator);
+
 }
 
 void AnimatedGraphic::SetCurrentAnimation(std::wstring name, Slot slot)

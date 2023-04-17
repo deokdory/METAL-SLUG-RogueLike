@@ -20,16 +20,15 @@ Agent::Agent(Vector3 position, Vector3 size)
 
 Agent::~Agent() {}
 
-void Agent::Update() {
-
-
+void Agent::Update() 
+{
   movement->Update();
   graphic->Update();
   collision->Update();
-
 }
 
-void Agent::Render() {
+void Agent::Render() 
+{
   Camera::Get()->SetPosition(position);
 
   graphic->Render();

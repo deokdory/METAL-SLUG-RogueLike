@@ -40,9 +40,9 @@
     <ClCompile Include="Component\Graphic\AgentGraphic.cpp" />
     <ClCompile Include="Component\Graphic\AnimatedGraphic.cpp" />
     <ClCompile Include="Component\Graphic\TexturedGraphic.cpp" />
-    <ClCompile Include="Component\Graphic\IGraphic.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Component\Collision\Collision.cpp" />
+    <ClCompile Include="Component\Graphic\IGraphic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Framework.lib" />

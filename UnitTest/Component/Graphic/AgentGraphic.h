@@ -11,6 +11,8 @@ public:
 
   virtual void SetResource(class Animator* animator, Slot slot = NONE);
 
+  virtual class Animator* GetAnimator(Slot slot);
+
   virtual void SetCurrentAnimation(std::wstring name, Slot slot = NONE);
   virtual void SetCurrentFrame(UINT index, Slot slot = NONE);
   

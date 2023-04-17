@@ -9,7 +9,8 @@
 AgentGraphic::AgentGraphic(GameObject* object)
   : IGraphic(object) {}
 
-AgentGraphic::~AgentGraphic() {
+AgentGraphic::~AgentGraphic() 
+{
   SAFE_DELETE(upperRect);
   SAFE_DELETE(lowerRect);
 
@@ -31,10 +32,18 @@ void AgentGraphic::Update() {
   lowerPos = upperPos = Values::ZeroVec3;
 
   if (lowerAnim && lowerRect) {
+
     lowerAnim->Update();
 
     lowerSize = lowerAnim->GetFrameSize();
     lowerRepos = lowerAnim->GetReposition();
+
+    if (object->GetFliped()) 
+    {
+      lowerRect->SetIsFliped(true);
+      lowerRepos.x *= -1;
+    }
+    else lowerRect->SetIsFliped(false);
 
     lowerPos = Vector3(objPos.x, objPos.y - objSize.y / 2 + lowerSize.y / 2, objPos.z) + Vector3(lowerRepos.x, lowerRepos.y, 0);
 
@@ -45,10 +54,18 @@ void AgentGraphic::Update() {
   }
 
   if (upperAnim && upperRect) {
+
     upperAnim->Update();
 
     upperSize = upperAnim->GetFrameSize();
     upperRepos = upperAnim->GetReposition();
+
+    if (object->GetFliped())
+    {
+      upperRect->SetIsFliped(true);
+      upperRepos.x *= -1;
+    }
+    else upperRect->SetIsFliped(false);
 
     if (lowerPos != Values::ZeroVec2)
       upperPos = Vector3(objPos.x, lowerPos.y + lowerSize.y / 2 + upperSize.y / 2, objPos.z)
@@ -80,6 +97,7 @@ void AgentGraphic::SetResource(Animator* animator, Slot slot) {
     lowerAnim->SetCurrentAnimClip(L"idle");
     lowerRect->SetAnimator(animator);
     break;
+
   case UPPER:
     upperRect = new AnimationRect(object->GetPosition(), object->GetSize());
     upperAnim = animator;
@@ -92,12 +110,28 @@ void AgentGraphic::SetResource(Animator* animator, Slot slot) {
   }
 }
 
+Animator* AgentGraphic::GetAnimator(Slot slot)
+{
+  switch (slot)
+  {
+  case IGraphic::LOWER:
+    return lowerAnim;
+  case IGraphic::UPPER:
+    return upperAnim;
+  case IGraphic::NONE:
+  case IGraphic::MERGED:
+  default:
+    return nullptr;
+  }
+}
+
 void AgentGraphic::SetCurrentAnimation(std::wstring name, Slot slot)
 {
   switch (slot)
   {
   case NONE:
     break;
+
   case LOWER:
     lowerAnim->SetCurrentAnimClip(name);
     break;
@@ -108,6 +142,7 @@ void AgentGraphic::SetCurrentAnimation(std::wstring name, Slot slot)
     lowerAnim->SetCurrentAnimClip(name);
     upperAnim->SetCurrentAnimClip(name);
     break;
+
   default:
     break;
   }
@@ -129,6 +164,7 @@ void AgentGraphic::SetCurrentFrame(UINT index, Slot slot)
     lowerAnim->SetCurrentFrame(index);
     upperAnim->SetCurrentFrame(index);
     break;
+
   default:
     break;
   }

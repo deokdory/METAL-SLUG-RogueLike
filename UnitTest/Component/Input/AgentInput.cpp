@@ -64,12 +64,20 @@ void AgentInput::Update() {
     aimAngle = std::acos(aimAngle);
     aimAngle = D3DXToDegree(aimAngle);
 
-    if (rightAngle < 0) aimAngle *= -1;
+    if (rightAngle < 0) agent->SetFliped(true);
+    else agent->SetFliped(false);
 
-    std::cout << aimAngle << std::endl;
-
-    if (aimAngle > 90) agent->GetGraphic()->SetCurrentFrame(5, IGraphic::Slot::UPPER);
-    else agent->GetGraphic()->SetCurrentFrame(9, IGraphic::Slot::UPPER);
+    //std::cout << aimAngle << std::endl;
+    if      (abs(aimAngle) < 10.f)  agent->GetGraphic()->SetCurrentFrame(9, IGraphic::Slot::UPPER);
+    else if (abs(aimAngle) < 25.f)  agent->GetGraphic()->SetCurrentFrame(8, IGraphic::Slot::UPPER);
+    else if (abs(aimAngle) < 35.f)  agent->GetGraphic()->SetCurrentFrame(7, IGraphic::Slot::UPPER);
+    else if (abs(aimAngle) < 55.f)  agent->GetGraphic()->SetCurrentFrame(6, IGraphic::Slot::UPPER);
+    else if (abs(aimAngle) < 90.f)  agent->GetGraphic()->SetCurrentFrame(5, IGraphic::Slot::UPPER);
+    else if (abs(aimAngle) < 115.f) agent->GetGraphic()->SetCurrentFrame(4, IGraphic::Slot::UPPER);
+    else if (abs(aimAngle) < 145.f) agent->GetGraphic()->SetCurrentFrame(3, IGraphic::Slot::UPPER);
+    else if (abs(aimAngle) < 160.f) agent->GetGraphic()->SetCurrentFrame(2, IGraphic::Slot::UPPER);
+    else if (abs(aimAngle) < 170.f) agent->GetGraphic()->SetCurrentFrame(1, IGraphic::Slot::UPPER);
+    else if (abs(aimAngle) < 180.f) agent->GetGraphic()->SetCurrentFrame(0, IGraphic::Slot::UPPER);
   }
   agentSize = agent->GetSize();
   auto state = agent->GetState();
@@ -87,11 +95,27 @@ void AgentInput::Update() {
     SlowDown();
   }
 
+  //if (Mouse::Get()->Down(VK_RBUTTON))
+  //{
+  //  if (state != Agent::State::SLIDING)
+  //  {
+  //    agent->GetGraphic()->SetCurrentAnimation(L"knife1_rifle", IGraphic::Slot::UPPER);
+  //    state = Agent::State::MELEE_ATTACK;
+  //  }
+  //}
+
   if (Keyboard::Get()->Down(VK_SPACE)) JumpBegin();
   else if (Keyboard::Get()->Press(VK_SPACE)) Jumping();
   else JumpEnd();
+
   if (isFalling) {
     if (ySpeed > fallingSpeedMax) ySpeed -= gravity;
+
+    if (ySpeed < 0)
+      if (agent->GetGraphic()->GetAnimator(IGraphic::Slot::LOWER)->GetCurrentAnimClipName() == L"jumpBegin_run")
+        agent->GetGraphic()->SetCurrentAnimation(L"jumpEnd_run", IGraphic::Slot::LOWER);
+      else if (agent->GetGraphic()->GetAnimator(IGraphic::Slot::LOWER)->GetCurrentAnimClipName() == L"jumpBegin_stand")
+        agent->GetGraphic()->SetCurrentAnimation(L"jumpEnd_stand", IGraphic::Slot::LOWER);
   }
   CollisionCheck();
 
@@ -200,7 +224,13 @@ void AgentInput::Jumping() {
   }
 }
 
-void AgentInput::JumpEnd() { isJumping = false; }
+void AgentInput::JumpEnd()
+{
+  if (isJumping)
+  {
+    isJumping = false;
+  }
+}
 
 void AgentInput::Render() {
   xSpeedBoxL->Render();

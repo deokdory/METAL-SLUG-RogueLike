@@ -2,13 +2,13 @@
 #include "Animator.h"
 
 // playRate가 0 미만일 경우 재생되지 않음
-AnimationClip::AnimationClip(std::wstring clipName, Texture2D* srcTex,
-  UINT frameCount, Vector2 startPos, Vector2 endPos,
-  bool bReversed, float playRate,
-  Vector2 reposition)
+AnimationClip::AnimationClip(std::wstring clipName, Texture2D* srcTex, UINT frameCount,
+  Vector2 startPos, Vector2 endPos, float playRate, bool bReversed, bool bLoop, Vector2 reposition)
+
   : clipName(clipName),
   frameCount(frameCount),
   bReversed(bReversed),
+  bLoop(bLoop),
   playRate(playRate),
   reposition(reposition) {
 
@@ -56,27 +56,33 @@ void Animator::Update() {
   auto playRate = currentClip->playRate;
   auto currTime = Time::Get()->Running();
 
-  // if (playRate < 0.0f) {
   auto deltaTime = currTime - prevTime;
 
-  if (playRate > 0) {
+  if (playRate > 0 && bFinished == false) {
     if (deltaTime > playRate) {
       if (currentClip->bReversed == false) {
         currentFrameIndex++;
         if (currentFrameIndex == currentClip->frameCount) {
-          currentFrameIndex = 0;
+          if (currentClip->bLoop) currentFrameIndex = 0;
+          else {
+            currentFrameIndex = currentClip->frameCount - 1;
+            bFinished = true;
+          }
         }
       }
       else {
         currentFrameIndex--;
         if (currentFrameIndex == -1) {
-          currentFrameIndex = currentClip->frameCount - 1;
+          if (currentClip->bLoop) currentFrameIndex = currentClip->frameCount - 1;
+          else {
+            currentFrameIndex = 0;
+            bFinished = true;
+          }
         }
       }
-      prevTime = currTime;
+    prevTime = currTime;
     }
   }
-  //}
   currentFrame = currentClip->keyframes[currentFrameIndex];
 }
 
@@ -105,6 +111,8 @@ void Animator::SetCurrentAnimClip(std::wstring clipName) {
     // 현재 프레임 업데이트
     currentFrame = currentClip->keyframes[currentFrameIndex];
     prevTime = Time::Get()->Running();
+
+    bFinished = false;
   }
 }
 

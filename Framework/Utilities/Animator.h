@@ -5,8 +5,8 @@ class AnimationClip {
   friend class Animator;
 
   AnimationClip(std::wstring clipName, Texture2D* srcTex, UINT frameCount,
-                Vector2 startPos, Vector2 endPos,
-                bool bReversed = false, float playRate = 1.f / 15.f, Vector2 reposition = Values::ZeroVec2);
+                Vector2 startPos, Vector2 endPos, float playRate = 1.f / 15.f,
+                bool bReversed = false, bool bLoop = true, Vector2 reposition = Values::ZeroVec2);
 
  protected:
   std::wstring clipName = L"";
@@ -23,6 +23,7 @@ class AnimationClip {
   float playRate = 0.f;
 
   bool bReversed = false;
+  bool bLoop = true;
 };
 
 class Animator {
@@ -31,6 +32,8 @@ class Animator {
   ~Animator();
 
   void Update();
+
+  std::wstring GetCurrentAnimClipName() { return currentClip->clipName; }
 
   Vector2 GetCurrentFrame() { return currentFrame; }
   Vector2 GetTexelFrameSize() { return currentClip->texelFrameSize; }
@@ -45,6 +48,8 @@ class Animator {
 
   void SetCurrentFrame(UINT index);
 
+  bool GetFinished() { return bFinished; }
+
  private:
   bool CheckExist(std::wstring clipName) {
     return animClips.find(clipName) != animClips.end();
@@ -58,4 +63,5 @@ class Animator {
   Vector2 currentFrame = Values::ZeroVec2;
 
   double prevTime = 0.0;
+  bool bFinished = false;
 };

@@ -17,6 +17,9 @@ TexturedGraphic::~TexturedGraphic() {
 
 void TexturedGraphic::Update() {
   if (textureRect) {
+    if (object->GetFliped()) textureRect->SetIsFliped(true);
+    else textureRect->SetIsFliped(false);
+
     textureRect->SetPosition(object->GetPosition());
     textureRect->SetSize(object->GetSize());
     textureRect->SetRotation(object->GetRotation());

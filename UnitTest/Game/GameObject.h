@@ -23,6 +23,9 @@ class GameObject {
   void InitGraphic(IGraphic::Type type);
   void SetGraphicResource(Animator* animator, IGraphic::Slot slot);
   void SetGraphicResource(std::wstring path);
+  
+  void SetFliped(bool bFliped) { this->bFliped = bFliped; }
+  bool GetFliped() { return bFliped; }
 
   class Collision* GetCollision() {
     return collision;
@@ -36,5 +39,7 @@ class GameObject {
   Vector3 position;
   Vector3 size;
   float rotation = 0;
+
+  bool bFliped = false;
 
 };

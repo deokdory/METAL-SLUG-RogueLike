@@ -1,6 +1,12 @@
 #include "stdafx.h"
 #include "IGraphic.h"
 
-IGraphic::IGraphic(GameObject* object) : object(object) {}
+#include "Game/GameObject.h"
+
+IGraphic::IGraphic(GameObject* object)
+  : object(object)
+{
+  
+}
 
 IGraphic::~IGraphic() {}

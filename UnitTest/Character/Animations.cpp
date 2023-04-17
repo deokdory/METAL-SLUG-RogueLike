@@ -36,12 +36,12 @@
 Animator* Animations::getEriUpper() {
   Texture2D* srcTex = new Texture2D(TexturePath + L"eri_upper_x2.png");
 
-  AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(919, 125), false, -1.f, Vector2(16, -53));
+  AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(919, 125), -1.f, false, false, Vector2(16, -53));
 
-  AnimationClip* reload_rifle = new AnimationClip(L"reload_rifle", srcTex, 5, Vector2(0, 126), Vector2(449, 188), false, 1.0f / 5.0f);
-  AnimationClip* knife1_rifle = new AnimationClip(L"knife1_rifle", srcTex, 6, Vector2(0, 190), Vector2(599, 269), false, 1.0f / 12.0f);
-  AnimationClip* knife2_rifle = new AnimationClip(L"knife2_rifle", srcTex, 8, Vector2(0, 270), Vector2(831, 341), false, 1.0f / 12.0f);
-  AnimationClip* throw_rifle = new AnimationClip(L"throw_rifle", srcTex, 5, Vector2(450, 126), Vector2(919, 189), false, 1.0f / 12.0f);
+  AnimationClip* reload_rifle = new AnimationClip(L"reload_rifle", srcTex, 5, Vector2(0, 126), Vector2(449, 188), 1.0f / 5.0f,  false, false);
+  AnimationClip* knife1_rifle = new AnimationClip(L"knife1_rifle", srcTex, 6, Vector2(0, 190), Vector2(599, 269), 1.0f / 12.0f, false, false);
+  AnimationClip* knife2_rifle = new AnimationClip(L"knife2_rifle", srcTex, 8, Vector2(0, 270), Vector2(831, 341), 1.0f / 12.0f, false, false);
+  AnimationClip* throw_rifle = new AnimationClip(L"throw_rifle", srcTex, 5, Vector2(450, 126), Vector2(919, 189), 1.0f / 12.0f, false, false);
 
   Animator* animator = new Animator();
 
@@ -60,14 +60,14 @@ Animator* Animations::getEriUpper() {
 Animator* Animations::getEriLower() {
   Texture2D* srcTex = new Texture2D(TexturePath + L"eri_lower_x2.png");
 
-  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 1, Vector2(0, 0), Vector2(39, 51), false, -1.0f);
-  AnimationClip* run = new AnimationClip(L"run", srcTex, 12, Vector2(40, 0), Vector2(749, 51), false, 1.0f / 12.0f);
+  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 1, Vector2(0, 0), Vector2(39, 51), -1.0f, false, false);
+  AnimationClip* run = new AnimationClip(L"run", srcTex, 12, Vector2(40, 0), Vector2(749, 51), 1.0f / 12.0f, false, true);
 
-  AnimationClip* jumpBegin_run = new AnimationClip(L"jumpBegin_run", srcTex, 3, Vector2(0, 53), Vector2(207, 103), false, 1.0f / 6.0f, Vector2(10, 0));
-  AnimationClip* jumpEnd_run = new AnimationClip(L"jumpEnd_run", srcTex, 3, Vector2(0, 104), Vector2(207, 154), false, 1.0f / 3.0f);
+  AnimationClip* jumpBegin_run = new AnimationClip(L"jumpBegin_run", srcTex, 3, Vector2(0, 53), Vector2(207, 103), 1.0f / 12.0f, false, false, Vector2(10, 0));
+  AnimationClip* jumpEnd_run = new AnimationClip(L"jumpEnd_run", srcTex, 3, Vector2(0, 104), Vector2(207, 154), 1.0f / 6.0f, false, false, Vector2(10, 0));
 
-  AnimationClip* jumpBegin_stand = new AnimationClip(L"jumpBegin_stand", srcTex, 3, Vector2(206, 52), Vector2(409, 113), false, 1.0 / 3.0f);
-  AnimationClip* jumpEnd_stand = new AnimationClip(L"jumpEnd_stand", srcTex, 3, Vector2(206, 114), Vector2(409, 177), false, 1.0 / 3.0f);
+  AnimationClip* jumpBegin_stand = new AnimationClip(L"jumpBegin_stand", srcTex, 6, Vector2(208, 52), Vector2(615, 113), 1.0 / 24.0f, false, false);
+  AnimationClip* jumpEnd_stand = new AnimationClip(L"jumpEnd_stand", srcTex, 6, Vector2(208, 52), Vector2(615, 113), 1.0 / 12.0f, true, false);
 
   Animator* animator = new Animator();
 

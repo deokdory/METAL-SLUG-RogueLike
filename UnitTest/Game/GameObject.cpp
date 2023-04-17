@@ -53,6 +53,7 @@ void GameObject::InitGraphic(IGraphic::Type type) {
 void GameObject::SetGraphicResource(Animator* animator, IGraphic::Slot slot) {
   graphic->SetResource(animator, slot);
 }
+
 void GameObject::SetGraphicResource(std::wstring path) {
   graphic->SetResource(path);
 }

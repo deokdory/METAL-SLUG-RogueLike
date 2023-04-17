@@ -11,9 +11,7 @@
 TestLevel::TestLevel() { init(); }
 
 void TestLevel::init() {
-  auto player =
-      new Agent(Values::CenterOfScreen, Vector3(50, 120, 0.f));
-
+  auto player = new Agent(Values::CenterOfScreen, Vector3(44, 80, 0.f));
 
   player->InitGraphic(IGraphic::Type::AGENT_GRAPHIC);
 
