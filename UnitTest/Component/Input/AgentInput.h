@@ -49,7 +49,7 @@ protected:
   float xSpeedMax = 4;
   float xSpeed = 0.f;
 
-  float accelOrigin = 0.2;
+  float accelOrigin = 0.2f;
   float accel = 0.f;
 
   bool isJumping = false;

@@ -17,6 +17,7 @@ public:
   virtual void SetCurrentFrame(UINT index, Slot slot = NONE);
 
   virtual Matrix GetWorld(Slot slot = NONE);
+  virtual Vector3 GetRectPosition(Slot slot = NONE) { return animRect->GetPosition(); }
 
 private:
   class AnimationRect* animRect = nullptr;

@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "TexturedGraphic.h"
 
-#include "Geometries/TextureRect.h"
-#include "Geometries/AnimationRect.h"
+//#include "Geometries/TextureRect.h"
+//#include "Geometries/AnimationRect.h"
 
 #include "Component/Graphic/IGraphic.h"
 

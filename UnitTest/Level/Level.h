@@ -13,6 +13,8 @@ class Level {
   virtual void Update();
   virtual void Render();
 
+  void PushObject(GameObject* object) { objects.push_back(object); }
+
   std::vector<Terrain*>& GetTerrains() { return terrains; }
   std::vector<GameObject*>& GetObjects() { return objects; }
   

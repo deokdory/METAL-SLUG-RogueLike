@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "AnimatedGraphic.h"
 
-#include "Geometries/TextureRect.h"
-#include "Geometries/AnimationRect.h"
+//#include "Geometries/TextureRect.h"
+//#include "Geometries/AnimationRect.h"
 
 #include "Game/GameObject.h"
 

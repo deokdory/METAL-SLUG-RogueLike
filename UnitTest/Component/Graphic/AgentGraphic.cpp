@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "AgentGraphic.h"
 
-#include "Geometries/TextureRect.h"
-#include "Geometries/AnimationRect.h"
+//#include "Geometries/TextureRect.h"
+//#include "Geometries/AnimationRect.h"
 
 #include "Game/GameObject.h"
 
@@ -186,5 +186,20 @@ Matrix AgentGraphic::GetWorld(Slot slot)
     break;
   default:
     break;
+  }
+}
+
+Vector3 AgentGraphic::GetRectPosition(Slot slot)
+{
+  switch (slot)
+  {
+  case IGraphic::LOWER:
+    return lowerRect->GetPosition();
+  case IGraphic::UPPER:
+    return upperRect->GetPosition();
+  case IGraphic::MERGED:
+  case IGraphic::NONE:
+  default:
+    return Values::ZeroVec3;
   }
 }

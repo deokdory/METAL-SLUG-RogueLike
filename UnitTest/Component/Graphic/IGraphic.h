@@ -1,4 +1,9 @@
 #pragma once
+
+#include "Geometries/TextureRect.h"
+#include "Geometries/AnimationRect.h"
+#include "Utilities/Animator.h"
+
 class IGraphic {
 public:
   enum Slot { NONE = 0, LOWER, UPPER, MERGED };
@@ -11,6 +16,7 @@ public:
   virtual void Render() = 0;
 
   virtual class Animator* GetAnimator(Slot slot = NONE) { return nullptr; }
+  virtual Vector3 GetRectPosition(Slot slot = NONE) { return Values::ZeroVec3; }
 
   virtual void SetResource(class Animator* animator, Slot slot = NONE) {}
   virtual void SetResource(std::wstring path) {}

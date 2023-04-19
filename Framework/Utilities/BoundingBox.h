@@ -16,7 +16,7 @@ struct AxisData {
 
 class CollisionBuffer : public ShaderBuffer {
  public:
-  CollisionBuffer() : ShaderBuffer(&data, sizeof(data)) { data.isOn = 1; }
+  CollisionBuffer() : ShaderBuffer(&data, sizeof(data)) { data.isOn = false; }
 
   void SwitchRender() { data.isOn = !data.isOn; }
 

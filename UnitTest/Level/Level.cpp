@@ -29,8 +29,12 @@ void Level::Update() {
   //for (auto terr : terrains) {
   //  terr->Update();
   //}
-  for (auto obj : objects) {
-    obj->Update();
+  //for (auto obj : objects) {
+  //  obj->Update();
+  //}
+  for (size_t i = 0; i < objects.size(); i++)
+  {
+    objects[i]->Update();
   }
 }
 

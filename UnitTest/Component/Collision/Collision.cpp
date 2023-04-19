@@ -9,7 +9,12 @@ Collision::Collision(GameObject* object)
   objSize(object->GetSize()),
   objRotation(object->GetRotation()) {}
 
-Collision::~Collision() { SAFE_DELETE(base); }
+Collision::~Collision() 
+{
+  SAFE_DELETE(base);
+  SAFE_DELETE(top);
+  SAFE_DELETE(bottom);
+}
 
 void Collision::Update() {
 

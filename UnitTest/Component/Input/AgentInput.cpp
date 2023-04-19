@@ -7,6 +7,8 @@
 #include "Component/Collision/Collision.h"
 #include "Character/Agent.h"
 
+#include "Component/Gun/Bullet/Bullet.h"
+
 AgentInput::AgentInput(Agent* agent) :agent(agent)
 {
   auto mousePos = Mouse::Get()->GetPosition() + Camera::Get()->GetPosition();
@@ -38,33 +40,34 @@ void AgentInput::Update() {
   //delta = Time::Get()->GetTimerDelta("game");
 
   auto mousePos = Mouse::Get()->GetPosition() + Camera::Get()->GetPosition();
+  mousePos.z = 0;
 
   crosshair->SetPosition(mousePos);
   crosshair->Update();
   {
-    Matrix mouseWorld = DXMath::Scaling({ 72, 72, 0 }) * DXMath::RotationInDegree(0) *
-      DXMath::Translation(mousePos);
-
     auto mouseDist = mousePos - agent->GetPosition();
 
     Vector3 agentAxisTop, agentAxisRight, agentAxisMouse;
 
-    D3DXVec3TransformNormal(&agentAxisTop, &Values::UpVec, &agent->GetGraphic()->GetWorld(IGraphic::Slot::UPPER));
-    D3DXVec3TransformNormal(&agentAxisRight, &Values::RightVec, &agent->GetGraphic()->GetWorld(IGraphic::Slot::UPPER));
+    //D3DXVec3TransformNormal(&agentAxisTop, &Values::UpVec, &agent->GetGraphic()->GetWorld(IGraphic::Slot::UPPER));
+    //D3DXVec3TransformNormal(&agentAxisRight, &Values::RightVec, &agent->GetGraphic()->GetWorld(IGraphic::Slot::UPPER));
 
-    D3DXVec3TransformNormal(&agentAxisMouse, &mouseDist, &agent->GetGraphic()->GetWorld(IGraphic::Slot::UPPER));
+    //D3DXVec3TransformNormal(&agentAxisMouse, &mouseDist, &agent->GetGraphic()->GetWorld(IGraphic::Slot::UPPER));
 
-    D3DXVec3Normalize(&agentAxisTop, &agentAxisTop);
-    D3DXVec3Normalize(&agentAxisRight, &agentAxisRight);
-    D3DXVec3Normalize(&agentAxisMouse, &agentAxisMouse);
+    //D3DXVec3Normalize(&agentAxisTop, &agentAxisTop);
+    //D3DXVec3Normalize(&agentAxisRight, &agentAxisRight);
+    D3DXVec3Normalize(&agentAxisMouse, &mouseDist);
 
-    auto aimAngle = D3DXVec3Dot(&agentAxisTop, &agentAxisMouse);
-    auto rightAngle = D3DXVec3Dot(&agentAxisRight, &agentAxisMouse);
+    auto aimAngle = D3DXVec3Dot(&Values::UpVec, &agentAxisMouse);
+    auto rightAngle = D3DXVec3Dot(&Values::RightVec, &agentAxisMouse);
 
     aimAngle = std::acos(aimAngle);
     aimAngle = D3DXToDegree(aimAngle);
 
-    if (rightAngle < 0) agent->SetFliped(true);
+    if (rightAngle < 0)
+    {
+      agent->SetFliped(true);
+    }
     else agent->SetFliped(false);
 
     //std::cout << aimAngle << std::endl;
@@ -78,13 +81,17 @@ void AgentInput::Update() {
     else if (abs(aimAngle) < 160.f) agent->GetGraphic()->SetCurrentFrame(2, IGraphic::Slot::UPPER);
     else if (abs(aimAngle) < 170.f) agent->GetGraphic()->SetCurrentFrame(1, IGraphic::Slot::UPPER);
     else if (abs(aimAngle) < 180.f) agent->GetGraphic()->SetCurrentFrame(0, IGraphic::Slot::UPPER);
+
+    if (Mouse::Get()->Down(0))
+    {
+      level->PushObject(new Bullet(agent, Bullet::Side::PLAYER, agentAxisMouse));
+    }
   }
   agentSize = agent->GetSize();
   auto state = agent->GetState();
 
   accel = accelOrigin;
 
-  if (isFalling) accel /= 2;
   if (Keyboard::Get()->Press('A') && !Keyboard::Get()->Press('D')) {
     MoveLeft();
   }
@@ -162,24 +169,29 @@ void AgentInput::Update() {
 
 void AgentInput::MoveLeft() {
   if (isFalling == false) agent->GetGraphic()->SetCurrentAnimation(L"run", IGraphic::Slot::LOWER);
+  auto speedMax = xSpeedMax;
+  if (agent->GetFliped() == false) speedMax = xSpeedMax / 2;
 
-  if (xSpeed > -xSpeedMax) {
+  if (xSpeed > -speedMax) {
     if (xSpeed > 0) SlowDown();
     xSpeed -= accel;
   }
   else
-    xSpeed = -xSpeedMax;
+    xSpeed = -speedMax;
 }
 
 void AgentInput::MoveRight() {
+  auto speedMax = xSpeedMax;
+    if (agent->GetFliped() == true) speedMax = xSpeedMax / 2;
+
   if (isFalling == false) agent->GetGraphic()->SetCurrentAnimation(L"run", IGraphic::Slot::LOWER);
 
-  if (xSpeed < xSpeedMax) {
+  if (xSpeed < speedMax) {
     if (xSpeed < 0) SlowDown();
     xSpeed += accel;
   }
   else
-    xSpeed = xSpeedMax;
+    xSpeed = speedMax;
 }
 
 void AgentInput::SlowDown() {

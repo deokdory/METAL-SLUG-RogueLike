@@ -18,7 +18,9 @@ Agent::Agent(Vector3 position, Vector3 size)
 
 } 
 
-Agent::~Agent() {}
+Agent::~Agent() {
+  SAFE_DELETE(movement);
+}
 
 void Agent::Update() 
 {
