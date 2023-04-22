@@ -13,6 +13,7 @@ public:
 
   virtual Matrix GetWorld(Slot slot = NONE);
   virtual Vector3 GetRectPosition(Slot slot = NONE) { return textureRect->GetPosition(); }
+  virtual Vector3 GetRectSize(Slot slot = NONE);
 
 private:
   class TextureRect* textureRect = nullptr;

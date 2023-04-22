@@ -8,7 +8,8 @@ public:
     PLAYER = 0, ENEMY
   };
 
-  Bullet(GameObject* fired, Side side, Vector3 axis, float speed = 16.0f, float damage = 2.0f);
+  Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath);
+
   ~Bullet();
 
   virtual void Update();
@@ -16,12 +17,15 @@ public:
 
   virtual void hit(GameObject* object);
 
-private:
+  Bullet* NewBullet(Vector3 position, Vector3 axis);
+
+protected:
+  Bullet(Vector3 position, Vector3 axis);
   GameObject* fired;
 
   Side side;
 
-  Vector3 axis;
+  Vector3 axis = Values::ZeroVec3;
 
   float damage;
   float speed;

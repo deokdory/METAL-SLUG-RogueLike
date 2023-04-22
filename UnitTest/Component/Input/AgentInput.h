@@ -36,6 +36,9 @@ protected:
 
   Vector3 agentSize;
 
+  class Gun* mainGun = nullptr;
+  class Gun* subGun = nullptr;
+
   double delta = 0.0;
 
   bool isFalling = false;

@@ -1,13 +1,15 @@
 #include "stdafx.h"
 #include "AgentInput.h"
 
+#include <Windows.h>
+
 #include "Geometries/TextureRect.h"
 #include "Level/Level.h"
 
 #include "Component/Collision/Collision.h"
 #include "Character/Agent.h"
 
-#include "Component/Gun/Bullet/Bullet.h"
+#include "Component/Gun/Gun.h"
 
 AgentInput::AgentInput(Agent* agent) :agent(agent)
 {
@@ -34,6 +36,8 @@ AgentInput::AgentInput(Agent* agent) :agent(agent)
 
   ySpeedBoxT->SetAnchorPoint(7);
   ySpeedBoxB->SetAnchorPoint(2);
+
+  //mainGun = Gun::HeavyMachinegun();
 }
 
 void AgentInput::Update() {
@@ -85,6 +89,10 @@ void AgentInput::Update() {
     if (Mouse::Get()->Down(0))
     {
       level->PushObject(new Bullet(agent, Bullet::Side::PLAYER, agentAxisMouse));
+      POINT point = { 0, 0 };
+
+      GetCursorPos(&point);
+      SetCursorPos(point.x, point.y - 7);
     }
   }
   agentSize = agent->GetSize();

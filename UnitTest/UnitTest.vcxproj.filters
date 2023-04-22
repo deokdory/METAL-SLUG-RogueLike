@@ -24,6 +24,7 @@
     <ClInclude Include="Component\Collision\Collision.h" />
     <ClInclude Include="Component\Gun\Bullet\Bullet.h" />
     <ClInclude Include="Component\Gun\Gun.h" />
+    <ClInclude Include="Game\GameManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
@@ -47,6 +48,7 @@
     <ClCompile Include="Component\Graphic\IGraphic.cpp" />
     <ClCompile Include="Component\Gun\Bullet\Bullet.cpp" />
     <ClCompile Include="Component\Gun\Gun.cpp" />
+    <ClCompile Include="Game\GameManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Framework.lib" />

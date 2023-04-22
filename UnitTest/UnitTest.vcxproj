@@ -159,6 +159,7 @@
     <ClInclude Include="Component\Gun\Gun.h" />
     <ClInclude Include="Game\Decoration.h" />
     <ClInclude Include="Game\Game.h" />
+    <ClInclude Include="Game\GameManager.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Game\GameWorld.h" />
     <ClInclude Include="Component\Input\AgentInput.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="Component\Graphic\TexturedGraphic.cpp" />
     <ClCompile Include="Component\Gun\Gun.cpp" />
     <ClCompile Include="Game\Game.cpp" />
+    <ClCompile Include="Game\GameManager.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Game\GameWorld.cpp" />
     <ClCompile Include="Component\Input\AgentInput.cpp" />

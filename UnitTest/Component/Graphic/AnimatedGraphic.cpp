@@ -62,3 +62,8 @@ Matrix AnimatedGraphic::GetWorld(Slot slot)
 {
   return animRect->GetWorld();
 }
+
+Vector3 AnimatedGraphic::GetRectSize(Slot slot)
+{
+  return animRect->GetSize();
+}

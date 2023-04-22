@@ -203,3 +203,18 @@ Vector3 AgentGraphic::GetRectPosition(Slot slot)
     return Values::ZeroVec3;
   }
 }
+
+Vector3 AgentGraphic::GetRectSize(Slot slot)
+{
+  switch (slot)
+  {
+  case IGraphic::LOWER:
+    if(lowerRect) lowerRect->GetSize();
+    return;
+  case IGraphic::UPPER:
+    if (upperRect) upperRect->GetSize();
+    return;
+  default:
+    return;
+ }
+}

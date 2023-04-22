@@ -17,6 +17,7 @@ public:
 
   virtual class Animator* GetAnimator(Slot slot = NONE) { return nullptr; }
   virtual Vector3 GetRectPosition(Slot slot = NONE) { return Values::ZeroVec3; }
+  virtual Vector3 GetRectSize(Slot slot = NONE) = 0;
 
   virtual void SetResource(class Animator* animator, Slot slot = NONE) {}
   virtual void SetResource(std::wstring path) {}
@@ -25,6 +26,7 @@ public:
   virtual void SetCurrentFrame(UINT index, Slot slot = NONE) {}
 
   virtual Matrix GetWorld(Slot slot = NONE) = 0;
+
 
 
 protected:
