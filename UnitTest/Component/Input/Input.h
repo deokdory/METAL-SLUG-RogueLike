@@ -13,7 +13,6 @@ public:
 
 protected:
   PlayerMovement* movement = nullptr;
+  Vector3 mouseWorldPos = Values::ZeroVec3;
   //PlayerCombat* combat = nullptr;
-
-  Vector3 axis = Values::ZeroVec3;
 };
