@@ -32,3 +32,21 @@ struct VertexTexture {
 	static D3D11_INPUT_ELEMENT_DESC descs[];	// 정점 데이터 구조 서술
 	static const UINT count = 2;				// 원소 개수
 };
+
+struct VertexTile
+{
+	VertexTile()
+		: position(Values::ZeroVec3), uv(Values::ZeroVec2), color(0, 0, 0, 0) {}
+
+	VertexTile(Vector3 position, Vector2 uv, Vector2 uv2, Color color, UINT index)
+		: position(position), uv(uv), uv2(uv2), color(color), index(index) {}
+
+		Vector3 position;
+		Vector2 uv;
+		Vector2 uv2;
+		Color color;
+		UINT index;
+
+		static D3D11_INPUT_ELEMENT_DESC descs[];
+		static const UINT count = 6;
+};
