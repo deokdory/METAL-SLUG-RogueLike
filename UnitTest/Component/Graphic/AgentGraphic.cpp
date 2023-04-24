@@ -7,7 +7,7 @@
 #include "Game/GameObject.h"
 
 AgentGraphic::AgentGraphic(GameObject* object)
-  : IGraphic(object) {}
+  : ObjectGraphic(object) {}
 
 AgentGraphic::~AgentGraphic() 
 {
@@ -89,7 +89,7 @@ void AgentGraphic::Render() {
 void AgentGraphic::SetResource(Animator* animator, Slot slot) {
   switch (slot)
   {
-  case NONE:
+  case NORMAL:
   case LOWER:
     lowerRect = new AnimationRect(object->GetPosition(), object->GetSize());
     lowerAnim = animator;
@@ -114,12 +114,12 @@ Animator* AgentGraphic::GetAnimator(Slot slot)
 {
   switch (slot)
   {
-  case IGraphic::LOWER:
+  case ObjectGraphic::LOWER:
     return lowerAnim;
-  case IGraphic::UPPER:
+  case ObjectGraphic::UPPER:
     return upperAnim;
-  case IGraphic::NONE:
-  case IGraphic::MERGED:
+  case ObjectGraphic::NORMAL:
+  case ObjectGraphic::MERGED:
   default:
     return nullptr;
   }
@@ -129,7 +129,7 @@ void AgentGraphic::SetCurrentAnimation(std::wstring name, Slot slot)
 {
   switch (slot)
   {
-  case NONE:
+  case NORMAL:
     break;
 
   case LOWER:
@@ -152,7 +152,7 @@ void AgentGraphic::SetCurrentFrame(UINT index, Slot slot)
 {
   switch (slot)
   {
-  case NONE:
+  case NORMAL:
     break;
   case LOWER:
     lowerAnim->SetCurrentFrame(index);
@@ -170,19 +170,19 @@ void AgentGraphic::SetCurrentFrame(UINT index, Slot slot)
   }
 }
 
-Matrix AgentGraphic::GetWorld(Slot slot)
+Matrix AgentGraphic::GetRectWorld(Slot slot)
 {
   switch (slot)
   {
-  case IGraphic::NONE:
+  case ObjectGraphic::NORMAL:
     break;
-  case IGraphic::LOWER:
-    return lowerRect->GetWorld();
+  case ObjectGraphic::LOWER:
+    return lowerRect->GetRectWorld();
     break;
-  case IGraphic::UPPER:
-    return upperRect->GetWorld();
+  case ObjectGraphic::UPPER:
+    return upperRect->GetRectWorld();
     break;
-  case IGraphic::MERGED:
+  case ObjectGraphic::MERGED:
     break;
   default:
     break;
@@ -193,12 +193,12 @@ Vector3 AgentGraphic::GetRectPosition(Slot slot)
 {
   switch (slot)
   {
-  case IGraphic::LOWER:
+  case ObjectGraphic::LOWER:
     return lowerRect->GetPosition();
-  case IGraphic::UPPER:
+  case ObjectGraphic::UPPER:
     return upperRect->GetPosition();
-  case IGraphic::MERGED:
-  case IGraphic::NONE:
+  case ObjectGraphic::MERGED:
+  case ObjectGraphic::NORMAL:
   default:
     return Values::ZeroVec3;
   }
@@ -208,9 +208,9 @@ Vector3 AgentGraphic::GetRectSize(Slot slot)
 {
   switch (slot)
   {
-  case IGraphic::LOWER:
+  case ObjectGraphic::LOWER:
     if(lowerRect) return lowerRect->GetSize();
-  case IGraphic::UPPER:
+  case ObjectGraphic::UPPER:
     if (upperRect) return upperRect->GetSize();
   default:
     return Values::ZeroVec3;

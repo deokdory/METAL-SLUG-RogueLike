@@ -19,10 +19,10 @@ class GameObject {
   Vector3 GetSize() { return size; }
   float GetRotation() { return rotation; }
 
-  IGraphic* GetGraphic() { return graphic; }
+  ObjectGraphic* GetGraphic() { return graphic; }
 
-  void InitGraphic(IGraphic::Type type);
-  void SetGraphicResource(Animator* animator, IGraphic::Slot slot);
+  void InitGraphic(ObjectGraphic::Type type);
+  void SetGraphicResource(Animator* animator, ObjectGraphic::Slot slot);
   void SetGraphicResource(std::wstring path);
   
   void SetFliped(bool bFliped) { this->bFliped = bFliped; }
@@ -34,7 +34,7 @@ class GameObject {
 
  protected:
 
-  class IGraphic* graphic = nullptr;
+  class ObjectGraphic* graphic = nullptr;
   class Collision* collision = nullptr;
 
   Vector3 position;

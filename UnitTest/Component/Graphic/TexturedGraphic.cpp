@@ -9,7 +9,7 @@
 #include "Game/GameObject.h"
 
 TexturedGraphic::TexturedGraphic(GameObject* object)
-  : IGraphic(object) {}
+  : ObjectGraphic(object) {}
 
 TexturedGraphic::~TexturedGraphic() {
   SAFE_DELETE(textureRect);
@@ -36,9 +36,9 @@ void TexturedGraphic::SetResource(std::wstring path) {
     object->GetRotation(), path);
 }
 
-Matrix TexturedGraphic::GetWorld(Slot slot)
+Matrix TexturedGraphic::GetRectWorld(Slot slot)
 {
-  return textureRect->GetWorld();
+  return textureRect->GetRectWorld();
 }
 
 Vector3 TexturedGraphic::GetRectSize(Slot slot)

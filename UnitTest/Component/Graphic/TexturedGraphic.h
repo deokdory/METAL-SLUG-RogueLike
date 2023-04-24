@@ -1,7 +1,7 @@
 #pragma once
 #include "Component/Graphic/IGraphic.h"
 
-class TexturedGraphic : public IGraphic {
+class TexturedGraphic : public ObjectGraphic {
 public:
   TexturedGraphic(class GameObject* object);
   ~TexturedGraphic();
@@ -11,9 +11,9 @@ public:
 
   virtual void SetResource(std::wstring path);
 
-  virtual Matrix GetWorld(Slot slot = NONE);
-  virtual Vector3 GetRectPosition(Slot slot = NONE) { return textureRect->GetPosition(); }
-  virtual Vector3 GetRectSize(Slot slot = NONE);
+  virtual Matrix GetRectWorld(Slot slot = NORMAL);
+  virtual Vector3 GetRectPosition(Slot slot = NORMAL) { return textureRect->GetPosition(); }
+  virtual Vector3 GetRectSize(Slot slot = NORMAL);
 
 private:
   class TextureRect* textureRect = nullptr;

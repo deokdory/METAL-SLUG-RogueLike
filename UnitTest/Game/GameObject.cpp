@@ -34,18 +34,18 @@ void GameObject::GUI()
 
 void GameObject::Move(Vector3 position) { this->position += position; }
 
-void GameObject::InitGraphic(IGraphic::Type type) {
+void GameObject::InitGraphic(ObjectGraphic::Type type) {
 
   switch (type) {
-  case IGraphic::Type::TEXTURE_GRAPHIC: {
+  case ObjectGraphic::Type::TEXTURE_GRAPHIC: {
       graphic = new TexturedGraphic(this);
       return;
     }
-    case IGraphic::Type::ANIMATION_GRAPHIC: {
+    case ObjectGraphic::Type::ANIMATION_GRAPHIC: {
       graphic = new AnimatedGraphic(this);
       return;
     }
-    case IGraphic::Type::AGENT_GRAPHIC: {
+    case ObjectGraphic::Type::AGENT_GRAPHIC: {
       graphic = new AgentGraphic(this);
       return;
     }
@@ -54,7 +54,7 @@ void GameObject::InitGraphic(IGraphic::Type type) {
   }
 }
 
-void GameObject::SetGraphicResource(Animator* animator, IGraphic::Slot slot) {
+void GameObject::SetGraphicResource(Animator* animator, ObjectGraphic::Slot slot) {
   graphic->SetResource(animator, slot);
 }
 

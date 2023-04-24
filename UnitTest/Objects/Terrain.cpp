@@ -6,7 +6,7 @@
 
 Terrain::Terrain(Vector3 position, Vector3 size, std::wstring path)
     : GameObject(position, size) {
-  InitGraphic(IGraphic::Type::TEXTURE_GRAPHIC);
+  InitGraphic(ObjectGraphic::Type::TEXTURE_GRAPHIC);
   SetGraphicResource(path);
 
   collision->InitializeBase();

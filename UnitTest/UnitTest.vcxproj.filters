@@ -19,7 +19,7 @@
     <ClInclude Include="Component\Graphic\AnimatedGraphic.h" />
     <ClInclude Include="Component\Graphic\TexturedGraphic.h" />
     <ClInclude Include="Component\Graphic\AgentGraphic.h" />
-    <ClInclude Include="Component\Graphic\IGraphic.h" />
+    <ClInclude Include="Component\Graphic\ObjectGraphic.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Component\Collision\Collision.h" />
     <ClInclude Include="Component\Gun\Bullet\Bullet.h" />
@@ -50,7 +50,7 @@
     <ClCompile Include="Component\Graphic\TexturedGraphic.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Component\Collision\Collision.cpp" />
-    <ClCompile Include="Component\Graphic\IGraphic.cpp" />
+    <ClCompile Include="Component\Graphic\ObjectGraphic.cpp" />
     <ClCompile Include="Component\Gun\Bullet\Bullet.cpp" />
     <ClCompile Include="Component\Gun\Gun.cpp" />
     <ClCompile Include="Game\GameManager.cpp" />

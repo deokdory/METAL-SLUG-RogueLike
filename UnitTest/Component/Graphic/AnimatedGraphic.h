@@ -1,7 +1,7 @@
 #pragma once
 #include "Component/Graphic/IGraphic.h"
 
-class AnimatedGraphic : public IGraphic {
+class AnimatedGraphic : public ObjectGraphic {
 public:
   AnimatedGraphic(class GameObject* object);
   ~AnimatedGraphic();
@@ -9,16 +9,16 @@ public:
   virtual void Update();
   virtual void Render();
 
-  virtual class Animator* GetAnimator(Slot slot = NONE) { return animator; }
+  virtual class Animator* GetAnimator(Slot slot = NORMAL) { return animator; }
 
-  virtual void SetResource(class Animator* animator, Slot slot = NONE);
+  virtual void SetResource(class Animator* animator, Slot slot = NORMAL);
 
-  virtual void SetCurrentAnimation(std::wstring name, Slot slot = NONE);
-  virtual void SetCurrentFrame(UINT index, Slot slot = NONE);
+  virtual void SetCurrentAnimation(std::wstring name, Slot slot = NORMAL);
+  virtual void SetCurrentFrame(UINT index, Slot slot = NORMAL);
 
-  virtual Matrix GetWorld(Slot slot = NONE);
-  virtual Vector3 GetRectPosition(Slot slot = NONE) { return animRect->GetPosition(); }
-  virtual Vector3 GetRectSize(Slot slot = NONE);
+  virtual Matrix GetRectWorld(Slot slot = NORMAL);
+  virtual Vector3 GetRectPosition(Slot slot = NORMAL) { return animRect->GetPosition(); }
+  virtual Vector3 GetRectSize(Slot slot = NORMAL);
 
 private:
   class AnimationRect* animRect = nullptr;

@@ -12,6 +12,7 @@ class AnimationRect : public TextureRect {
   bool IsFliped() { return this->bFliped; }
 
   void SetAnimator(class Animator* animator) { this->animator = animator; }
+  //class Animator* GetAnimator();
 
  private:
   class Animator* animator = nullptr;

@@ -16,6 +16,7 @@
 #include <string>
 #include <unordered_map>
 #include <map>
+#include <array>
 #include <assert.h>
 
 using namespace std;

@@ -13,10 +13,10 @@ TestLevel::TestLevel() { init(); }
 void TestLevel::init() {
   auto player = new Agent(Values::CenterOfScreen, Vector3(44, 80, 0.f));
 
-  player->InitGraphic(IGraphic::Type::AGENT_GRAPHIC);
+  player->InitGraphic(ObjectGraphic::Type::AGENT_GRAPHIC);
 
-  player->SetGraphicResource(Animations::getEriLower(), IGraphic::Slot::LOWER);
-  player->SetGraphicResource(Animations::getEriUpper(), IGraphic::Slot::UPPER);
+  player->SetGraphicResource(Animations::getEriLower(), ObjectGraphic::Slot::LOWER);
+  player->SetGraphicResource(Animations::getEriUpper(), ObjectGraphic::Slot::UPPER);
 
   player->GetMovement()->SetLevel(this);
 

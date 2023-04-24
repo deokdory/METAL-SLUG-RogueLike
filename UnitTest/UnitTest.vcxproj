@@ -156,7 +156,7 @@
     <ClInclude Include="Component\Collision\Collision.h" />
     <ClInclude Include="Component\Graphic\AgentGraphic.h" />
     <ClInclude Include="Component\Graphic\AnimatedGraphic.h" />
-    <ClInclude Include="Component\Graphic\IGraphic.h" />
+    <ClInclude Include="Component\Graphic\ObjectGraphic.h" />
     <ClInclude Include="Component\Graphic\TexturedGraphic.h" />
     <ClInclude Include="Component\Gun\Gun.h" />
     <ClInclude Include="Component\Input\Input.h" />
@@ -187,7 +187,7 @@
     <ClCompile Include="Component\Collision\Collision.cpp" />
     <ClCompile Include="Component\Graphic\AgentGraphic.cpp" />
     <ClCompile Include="Component\Graphic\AnimatedGraphic.cpp" />
-    <ClCompile Include="Component\Graphic\IGraphic.cpp" />
+    <ClCompile Include="Component\Graphic\ObjectGraphic.cpp" />
     <ClCompile Include="Component\Graphic\TexturedGraphic.cpp" />
     <ClCompile Include="Component\Gun\Gun.cpp" />
     <ClCompile Include="Component\Input\Input.cpp" />

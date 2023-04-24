@@ -7,7 +7,7 @@
 #include "Game/GameObject.h"
 
 AnimatedGraphic::AnimatedGraphic(GameObject* object)
-  : IGraphic(object) {}
+  : ObjectGraphic(object) {}
 
 AnimatedGraphic::~AnimatedGraphic() {
   SAFE_DELETE(animRect);
@@ -58,9 +58,9 @@ void AnimatedGraphic::SetCurrentFrame(UINT index, Slot slot)
   animator->SetCurrentFrame(index);
 }
 
-Matrix AnimatedGraphic::GetWorld(Slot slot)
+Matrix AnimatedGraphic::GetRectWorld(Slot slot)
 {
-  return animRect->GetWorld();
+  return animRect->GetRectWorld();
 }
 
 Vector3 AnimatedGraphic::GetRectSize(Slot slot)
