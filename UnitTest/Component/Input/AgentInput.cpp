@@ -149,42 +149,45 @@ void AgentInput::Update() {
   auto move = Vector3(xSpeed, ySpeed, 0);
   agent->Move(move);
 
-  Vector3 leftPos, rightPos, topPos, bottomPos;
-  leftPos = rightPos = topPos = bottomPos = agent->GetPosition();
-
-  topPos.y += agentSize.y / 2;
-  leftPos.x -= agentSize.x / 2;
-  rightPos.x += agentSize.x / 2;
-  bottomPos.y -= agentSize.y / 2;
-
-  Vector3 leftSize, rightSize, topSize, bottomSize;
-  leftSize = rightSize = topSize = bottomSize = agentSize;
-  leftSize.y = rightSize.y = agentSize.y;
-  topSize.x = bottomSize.x = agentSize.x;
-
-  if (ySpeed > 0) {
-    topSize.y = ySpeed;
-    bottomSize.y = 0;
+  // 기존 스피드박스 업데이트
+  {
+    //Vector3 leftPos, rightPos, topPos, bottomPos;
+    //leftPos = rightPos = topPos = bottomPos = agent->GetPosition();
+    //
+    //topPos.y += agentSize.y / 2;
+    //leftPos.x -= agentSize.x / 2;
+    //rightPos.x += agentSize.x / 2;
+    //bottomPos.y -= agentSize.y / 2;
+    //
+    //Vector3 leftSize, rightSize, topSize, bottomSize;
+    //leftSize = rightSize = topSize = bottomSize = agentSize;
+    //leftSize.y = rightSize.y = agentSize.y;
+    //topSize.x = bottomSize.x = agentSize.x;
+    //
+    //if (ySpeed > 0) {
+    //  topSize.y = ySpeed;
+    //  bottomSize.y = 0;
+    //}
+    //else {
+    //  topSize.y = 0;
+    //  bottomSize.y = -ySpeed;
+    //}
+    //
+    //if (xSpeed > 0) {
+    //  leftSize.x = 0;
+    //  rightSize.x = xSpeed;
+    //}
+    //else {
+    //  leftSize.x = -xSpeed;
+    //  rightSize.x = 0;
+    //}
+    //
+    //ySpeedBoxT->Update(topPos, topSize, 0);
+    //ySpeedBoxB->Update(bottomPos, bottomSize, 0);
+    //
+    //xSpeedBoxL->Update(leftPos, leftSize, 0);
+    //xSpeedBoxR->Update(rightPos, rightSize, 0);
   }
-  else {
-    topSize.y = 0;
-    bottomSize.y = -ySpeed;
-  }
-
-  if (xSpeed > 0) {
-    leftSize.x = 0;
-    rightSize.x = xSpeed;
-  }
-  else {
-    leftSize.x = -xSpeed;
-    rightSize.x = 0;
-  }
-
-  ySpeedBoxT->Update(topPos, topSize, 0);
-  ySpeedBoxB->Update(bottomPos, bottomSize, 0);
-
-  xSpeedBoxL->Update(leftPos, leftSize, 0);
-  xSpeedBoxR->Update(rightPos, rightSize, 0);
 }
 
 void AgentInput::GUI()
@@ -255,18 +258,15 @@ void AgentInput::Stop() {
 }
 
 void AgentInput::JumpBegin() {
-
   auto currTime = Time::Get()->Running();
   // 땅에 있다면 점프
   if (isFalling == false) {
-    if (xSpeed > 0.5 || xSpeed < -0.5) agent->GetGraphic()->SetCurrentAnimation(L"jumpBegin_run", IGraphic::Slot::LOWER);
-    else agent->GetGraphic()->SetCurrentAnimation(L"jumpBegin_stand", IGraphic::Slot::LOWER);
-
     jumpedTime = currTime;  // 점프키 누르는 길이 측정 시작
     isJumping = true;     // 점프키를 누르고 있음
     ySpeed = jumpPower;     // 점프 ( 최소 점프 단위 )
     isFalling = true;
   }
+
 }
 
 void AgentInput::Jumping() {

@@ -11,7 +11,11 @@ public:
   void SetGlobalSpeed(float speed);
   float GetGlobalSpeed();
 
+  float GetGlobalGravity();
+
 private:
   class Level* currentLevel = nullptr;
   float globalSpeed = 1.0f;
+
+  float globalGravity = 0.15f;
 };

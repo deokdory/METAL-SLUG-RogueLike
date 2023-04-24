@@ -22,3 +22,8 @@ float GameManager::GetGlobalSpeed()
 {
   return globalSpeed;
 }
+
+float GameManager::GetGlobalGravity()
+{
+  return globalGravity;
+}
