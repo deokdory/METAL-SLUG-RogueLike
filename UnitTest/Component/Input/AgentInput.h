@@ -4,7 +4,8 @@ class AgentInput {
 public:
   AgentInput(class Agent* agent);
 
-  virtual void Update();
+  void Update();
+  void GUI();
 
   void MoveLeft();
   void MoveRight();

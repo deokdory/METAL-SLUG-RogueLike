@@ -31,6 +31,8 @@ void TestLevel::init() {
 
   playerHud = new HUD();
   __super::init();
+
+  GameManager::Get()->SetCurrentLevel(this);
 }
 
 void TestLevel::Update() { 

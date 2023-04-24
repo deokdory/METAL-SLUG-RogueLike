@@ -41,7 +41,7 @@ Matrix TexturedGraphic::GetWorld(Slot slot)
   return textureRect->GetWorld();
 }
 
-Vector3 TexturedGraphic::GetRectSize(Slot slot = NONE)
+Vector3 TexturedGraphic::GetRectSize(Slot slot)
 {
   return textureRect->GetSize();
 }

@@ -8,6 +8,7 @@
 //pch pre compiled header
 
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <time.h>
 #include <stdlib.h>

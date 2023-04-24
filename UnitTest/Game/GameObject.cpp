@@ -28,6 +28,10 @@ void GameObject::Render() {
   collision->Render();
 }
 
+void GameObject::GUI()
+{
+}
+
 void GameObject::Move(Vector3 position) { this->position += position; }
 
 void GameObject::InitGraphic(IGraphic::Type type) {

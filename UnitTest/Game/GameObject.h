@@ -11,6 +11,7 @@ class GameObject {
 
   virtual void Update();
   virtual void Render();
+  virtual void GUI();
 
   void Move(Vector3 position);
 

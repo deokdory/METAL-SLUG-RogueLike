@@ -13,6 +13,7 @@ class Agent : public Character {
 
   virtual void Update();
   virtual void Render();
+  virtual void GUI();
 
   class AgentInput* GetMovement() { return movement; }
   State GetState() { return state; }

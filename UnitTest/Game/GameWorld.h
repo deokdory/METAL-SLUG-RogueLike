@@ -11,6 +11,7 @@ public:
 
   void Update();
   void Render();
+  void GUI();
 
 private:
   Level* level = nullptr;

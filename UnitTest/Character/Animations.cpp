@@ -62,6 +62,7 @@ Animator* Animations::getEriLower() {
 
   AnimationClip* idle = new AnimationClip(L"idle", srcTex, 1, Vector2(0, 0), Vector2(39, 51), -1.0f, false, false);
   AnimationClip* run = new AnimationClip(L"run", srcTex, 12, Vector2(40, 0), Vector2(749, 51), 1.0f / 12.0f, false, true);
+  AnimationClip* runBack = new AnimationClip(L"runBack", srcTex, 12, Vector2(40, 0), Vector2(749, 51), 1.0f / 12.0f, true, true);
 
   AnimationClip* jumpBegin_run = new AnimationClip(L"jumpBegin_run", srcTex, 3, Vector2(0, 53), Vector2(207, 103), 1.0f / 12.0f, false, false, Vector2(10, 0));
   AnimationClip* jumpEnd_run = new AnimationClip(L"jumpEnd_run", srcTex, 3, Vector2(0, 104), Vector2(207, 154), 1.0f / 6.0f, false, false, Vector2(10, 0));
@@ -73,6 +74,7 @@ Animator* Animations::getEriLower() {
 
   animator->AddAnimClip(idle);
   animator->AddAnimClip(run);
+  animator->AddAnimClip(runBack);
   animator->AddAnimClip(jumpBegin_run);
   animator->AddAnimClip(jumpEnd_run);
   animator->AddAnimClip(jumpBegin_stand);

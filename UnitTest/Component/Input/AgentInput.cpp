@@ -37,7 +37,7 @@ AgentInput::AgentInput(Agent* agent) :agent(agent)
   ySpeedBoxT->SetAnchorPoint(7);
   ySpeedBoxB->SetAnchorPoint(2);
 
-  //mainGun = Gun::HeavyMachinegun();
+  mainGun = Gun::InitHMG(agent);
 }
 
 void AgentInput::Update() {
@@ -86,14 +86,26 @@ void AgentInput::Update() {
     else if (abs(aimAngle) < 170.f) agent->GetGraphic()->SetCurrentFrame(1, IGraphic::Slot::UPPER);
     else if (abs(aimAngle) < 180.f) agent->GetGraphic()->SetCurrentFrame(0, IGraphic::Slot::UPPER);
 
-    if (Mouse::Get()->Down(0))
+    if (Mouse::Get()->Press(0))
     {
-      level->PushObject(new Bullet(agent, Bullet::Side::PLAYER, agentAxisMouse));
-      POINT point = { 0, 0 };
-
-      GetCursorPos(&point);
-      SetCursorPos(point.x, point.y - 7);
+      mainGun->PullTrigger();
     }
+    else if(!Mouse::Get()->Press(0) || !Mouse::Get()->Down(0) || Mouse::Get()->Up(0))
+    {
+      mainGun->ReleaseTrigger();
+    }
+
+    if (Keyboard::Get()->Down('B'))
+    {
+      mainGun->SwitchMode();
+    }
+
+    if (Keyboard::Get()->Down('R'))
+    {
+      mainGun->Reload();
+    }
+
+    mainGun->Update(agent->GetPosition(), agentAxisMouse);
   }
   agentSize = agent->GetSize();
   auto state = agent->GetState();
@@ -175,10 +187,24 @@ void AgentInput::Update() {
   xSpeedBoxR->Update(rightPos, rightSize, 0);
 }
 
+void AgentInput::GUI()
+{
+  mainGun->GUI();
+}
+
 void AgentInput::MoveLeft() {
-  if (isFalling == false) agent->GetGraphic()->SetCurrentAnimation(L"run", IGraphic::Slot::LOWER);
+  if (isFalling == false)
+  {
+    if (agent->GetFliped() == false)
+    {
+      agent->GetGraphic()->SetCurrentAnimation(L"runBack", IGraphic::Slot::LOWER);
+    }
+    else
+    {
+      agent->GetGraphic()->SetCurrentAnimation(L"run", IGraphic::Slot::LOWER);
+    }
+  }
   auto speedMax = xSpeedMax;
-  if (agent->GetFliped() == false) speedMax = xSpeedMax / 2;
 
   if (xSpeed > -speedMax) {
     if (xSpeed > 0) SlowDown();
@@ -189,10 +215,20 @@ void AgentInput::MoveLeft() {
 }
 
 void AgentInput::MoveRight() {
-  auto speedMax = xSpeedMax;
-    if (agent->GetFliped() == true) speedMax = xSpeedMax / 2;
+  if (isFalling == false)
+  {
+    if (agent->GetFliped() == true)
+    {
+      agent->GetGraphic()->SetCurrentAnimation(L"runBack", IGraphic::Slot::LOWER);
+    }
+    else
+    {
+      agent->GetGraphic()->SetCurrentAnimation(L"run", IGraphic::Slot::LOWER);
+    }
+  }
 
-  if (isFalling == false) agent->GetGraphic()->SetCurrentAnimation(L"run", IGraphic::Slot::LOWER);
+  auto speedMax = xSpeedMax;
+
 
   if (xSpeed < speedMax) {
     if (xSpeed < 0) SlowDown();

@@ -12,6 +12,7 @@ class Level {
   virtual void init();
   virtual void Update();
   virtual void Render();
+  virtual void GUI();
 
   void PushObject(GameObject* object) { objects.push_back(object); }
 

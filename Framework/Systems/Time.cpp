@@ -31,6 +31,7 @@ void Time::Update()
 	{
 		float tempCurrentTime = (float)currentTime / (float)ticksPerSecond;
 		float tempLastTime = (float)lastFPSUpdate / (float)ticksPerSecond;
+
 		framePerSecond = (float)frameCount / (tempCurrentTime - tempLastTime);
 
 		lastFPSUpdate = (INT64)currentTime;

@@ -209,12 +209,10 @@ Vector3 AgentGraphic::GetRectSize(Slot slot)
   switch (slot)
   {
   case IGraphic::LOWER:
-    if(lowerRect) lowerRect->GetSize();
-    return;
+    if(lowerRect) return lowerRect->GetSize();
   case IGraphic::UPPER:
-    if (upperRect) upperRect->GetSize();
-    return;
+    if (upperRect) return upperRect->GetSize();
   default:
-    return;
+    return Values::ZeroVec3;
  }
 }

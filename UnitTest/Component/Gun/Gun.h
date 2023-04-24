@@ -7,15 +7,12 @@ class Gun {
   };
 
 public:
-  Gun(GameObject* owner, float rpm, float vertRecoil, float horiRecoil, 
-    float bulletSpeed, , float bulletDamage, float magazine, float magazineMax, float ammo, float ammoMax);
 
   virtual ~Gun();
 
-  static Gun* HeavyMachinegun() { return new Gun(4, 0, 0, 16, 30, 30, 180, 180); }
-
   void Update(Vector3 position, Vector3 axis);
   void Render();
+  void GUI();
 
   bool magazineIsEmpty() { return magazine == 0; }
 
@@ -27,7 +24,12 @@ public:
 
   void SwitchMode();
 
+  static Gun* InitHMG(GameObject* owner);
+
 protected:
+  Gun(GameObject* owner, float rpm, float vertRecoil, float horiRecoil, 
+    float bulletSpeed, float bulletDamage, UINT magazine, UINT magazineMax, UINT ammo, UINT ammoMax);
+
   void Fire(Vector3 position, Vector3 axis);
   void SetBullet(Bullet* bullet) { this->bullet = bullet; }
   void Recoil();
@@ -40,18 +42,18 @@ protected:
   UINT magazine; // 현재 탄창 내 잔여 탄약
   UINT magazineMax; // 장탄
 
-  float ammo; // 현재 보유 중인 탄약 수
-  float ammoMax; // 보유 가능한 최대 탄약 수
+  UINT ammo; // 현재 보유 중인 탄약 수
+  UINT ammoMax; // 보유 가능한 최대 탄약 수
 
   FireMode mode = FireMode::AUTO;
   Bullet* bullet = nullptr; // 탄 종류
 
-  double lastFire = 0.0;
+  double lastFire = -1.0;
 
   bool isTriggered = false;
   bool isTriggeredPrev = false;
 
-  bool isBursting = false;
+  //bool isBursting = false;
 
   UINT burstCount = 0;
 };

@@ -37,3 +37,8 @@ void Agent::Render()
   collision->Render();
   movement->Render();
 }
+
+void Agent::GUI()
+{
+  movement->GUI();
+}

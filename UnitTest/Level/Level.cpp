@@ -46,3 +46,11 @@ void Level::Render() {
     obj->Render();
   }
 }
+
+void Level::GUI()
+{
+  for (auto obj : objects) {
+    obj->GUI();
+  }
+
+}

@@ -20,7 +20,7 @@ public:
   Bullet* NewBullet(Vector3 position, Vector3 axis);
 
 protected:
-  Bullet(Vector3 position, Vector3 axis);
+  Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath, Vector3 position, Vector3 axis);
   GameObject* fired;
 
   Side side;
@@ -31,4 +31,6 @@ protected:
   float speed;
 
   bool bHit = false;
+
+  std::wstring texturePath = L"";
 };

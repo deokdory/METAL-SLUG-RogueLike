@@ -15,3 +15,8 @@ void GameWorld::Update() {
 }
 
 void GameWorld::Render() { level->Render(); }
+
+void GameWorld::GUI()
+{
+  level->GUI();
+}
