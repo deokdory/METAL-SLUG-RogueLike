@@ -1,67 +1,50 @@
 #include "stdafx.h"
 #include "AgentState.h"
 
-void AgentGround::HandleInput()
-{
-  
-}
-
-void AgentGround::Update()
+void AgentOnGroundState::HandleInput(GameObject& object)
 {
 }
 
-void AgentGround::GUI()
+void AgentOnGroundState::Update(GameObject& object)
 {
 }
 
-void AgentGround::Enter()
+void AgentOnGroundState::Enter(GameObject& object)
 {
 }
 
-void AgentSliding::HandleInput()
+void AgentSlidingState::HandleInput(GameObject& object)
 {
 }
 
-void AgentSliding::Update()
+void AgentSlidingState::Update(GameObject& object)
 {
 }
 
-void AgentSliding::GUI()
+void AgentSlidingState::Enter(GameObject& object)
 {
 }
 
-void AgentSliding::Enter()
+void AgentFallingState::HandleInput(GameObject& object)
 {
 }
 
-void AgentFalling::HandleInput()
+void AgentFallingState::Update(GameObject& object)
 {
 }
 
-void AgentFalling::Update()
+void AgentFallingState::Enter(GameObject& object)
 {
 }
 
-void AgentFalling::GUI()
+void AgentCrouchingState::HandleInput(GameObject& object)
 {
 }
 
-void AgentFalling::Enter()
+void AgentCrouchingState::Update(GameObject& object)
 {
 }
 
-void AgentCrouching::HandleInput()
-{
-}
-
-void AgentCrouching::Update()
-{
-}
-
-void AgentCrouching::GUI()
-{
-}
-
-void AgentCrouching::Enter()
+void AgentCrouchingState::Enter(GameObject& object)
 {
 }

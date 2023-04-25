@@ -2,17 +2,18 @@
 #include "Terrain.h"
 
 #include "Component/Collision/Collision.h"
-#include "Component/Graphic/TexturedGraphic.h"
+#include "Component/Graphic/ObjectGraphic.h"
 
 Terrain::Terrain(Vector3 position, Vector3 size, std::wstring path)
     : GameObject(position, size) {
-  InitGraphic(ObjectGraphic::Type::TEXTURE_GRAPHIC);
-  SetGraphicResource(path);
+
+  graphic->InitTexture(path);
 
   collision->InitializeBase();
   collision->InitializeBottom();
   collision->InitializeTop();
 
+  //Update();
 }
 
 Terrain::~Terrain() { 

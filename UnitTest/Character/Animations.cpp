@@ -36,7 +36,7 @@
 Animator* Animations::getEriUpper() {
   Texture2D* srcTex = new Texture2D(TexturePath + L"eri_upper_x2.png");
 
-  AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(919, 125), -1.f, false, false, Vector2(16, -53));
+  AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(919, 125), -1.f, false, false, Vector2(16, -96));
 
   AnimationClip* reload_rifle = new AnimationClip(L"reload_rifle", srcTex, 5, Vector2(0, 126), Vector2(449, 188), 1.0f / 5.0f,  false, false);
   AnimationClip* knife1_rifle = new AnimationClip(L"knife1_rifle", srcTex, 6, Vector2(0, 190), Vector2(599, 269), 1.0f / 12.0f, false, false);
@@ -51,7 +51,7 @@ Animator* Animations::getEriUpper() {
   animator->AddAnimClip(knife2_rifle);
   animator->AddAnimClip(throw_rifle);
 
-  animator->SetCurrentAnimClip(L"aimRifle");
+  animator->SetCurrentAnimClip(L"aim_rifle");
 
   SAFE_DELETE(srcTex);
   return animator;

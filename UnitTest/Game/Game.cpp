@@ -30,7 +30,7 @@ void Game::Render() {
     gameWorld->Render();
     elapsedTotal -= MS_PER_UPDATE;
   }
-  prevTime = Time::Get()->Running();
+  //prevTime = Time::Get()->Running();
 }
 
 void Game::PostRender() {}

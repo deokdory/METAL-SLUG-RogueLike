@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Geometries/TextureRect.h"
-#include "Geometries/AnimationRect.h"
 #include "Utilities/Animator.h"
+#include "Geometries/AnimationRect.h"
 
 class ObjectGraphic {
 public:
   enum class Slot { NORMAL, LOWER, UPPER };
   enum class Type { TEXTURE, ANIMATION };
+
 
   ObjectGraphic(class GameObject* object);
   ~ObjectGraphic();
@@ -27,15 +28,15 @@ public:
   void SetCurrentAnimation(std::wstring name, Slot slot = Slot::NORMAL);
   void SetCurrentFrame(UINT index, Slot slot = Slot::NORMAL);
 
+  void SetAnchorPoint(AnchorPoint anchor, Type type, Slot slot = Slot::NORMAL);
+
   Animator* GetAnimator(Slot slot = Slot::NORMAL);
 
 
 protected:
-  class GameObject* object = nullptr;
+  class GameObject* object;
 
-  std::array<TextureRect*, 3> texRects;
-  std::array<AnimationRect*, 3> animRects;
-  std::array<Animator*, 3> animators;
-
-  const UINT addSizeMax = 4;
+  std::vector<TextureRect*> texRects = {};
+  std::vector<AnimationRect*> animRects = {};
+  std::vector<Animator*> animators = {};
 };

@@ -1,17 +1,15 @@
 #include "stdafx.h"
 #include "GameObject.h"
 
-#include "Component/Graphic/IGraphic.h"
-
-#include "Component/Graphic/TexturedGraphic.h"
-#include "Component/Graphic/AnimatedGraphic.h"
-#include "Component/Graphic/AgentGraphic.h"
-
+#include "Component/Graphic/ObjectGraphic.h"
 #include "Component/Collision/Collision.h"
 
 GameObject::GameObject(Vector3 position, Vector3 size) 
 : position(position), size(size), rotation(0) {
+
+  graphic = new ObjectGraphic(this);
   collision = new Collision(this);
+
 }
 
 GameObject::~GameObject() {
@@ -34,30 +32,23 @@ void GameObject::GUI()
 
 void GameObject::Move(Vector3 position) { this->position += position; }
 
-void GameObject::InitGraphic(ObjectGraphic::Type type) {
-
-  switch (type) {
-  case ObjectGraphic::Type::TEXTURE_GRAPHIC: {
-      graphic = new TexturedGraphic(this);
-      return;
-    }
-    case ObjectGraphic::Type::ANIMATION_GRAPHIC: {
-      graphic = new AnimatedGraphic(this);
-      return;
-    }
-    case ObjectGraphic::Type::AGENT_GRAPHIC: {
-      graphic = new AgentGraphic(this);
-      return;
-    }
-    default:
-      return;
-  }
+ObjectGraphic* GameObject::GetGraphic()
+{
+  return graphic;
 }
 
-void GameObject::SetGraphicResource(Animator* animator, ObjectGraphic::Slot slot) {
-  graphic->SetResource(animator, slot);
+void GameObject::InitGraphic(Animator* animator, ObjectGraphic::Slot slot)
+{
+  graphic->InitAnimation(animator, slot);
 }
 
-void GameObject::SetGraphicResource(std::wstring path) {
-  graphic->SetResource(path);
+void GameObject::InitGraphic(std::wstring path, ObjectGraphic::Slot slot)
+{
+  graphic->InitTexture(path, slot);
+
+}
+
+Collision* GameObject::GetCollision()
+{
+  return collision;
 }

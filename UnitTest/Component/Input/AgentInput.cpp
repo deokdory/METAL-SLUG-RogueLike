@@ -139,10 +139,20 @@ void AgentInput::Update() {
     if (ySpeed > fallingSpeedMax) ySpeed -= gravity;
 
     if (ySpeed < 0)
-      if (agent->GetGraphic()->GetAnimator(ObjectGraphic::Slot::LOWER)->GetCurrentAnimClipName() == L"jumpBegin_run")
-        agent->GetGraphic()->SetCurrentAnimation(L"jumpEnd_run", ObjectGraphic::Slot::LOWER);
-      else if (agent->GetGraphic()->GetAnimator(ObjectGraphic::Slot::LOWER)->GetCurrentAnimClipName() == L"jumpBegin_stand")
-        agent->GetGraphic()->SetCurrentAnimation(L"jumpEnd_stand", ObjectGraphic::Slot::LOWER);
+    {
+      auto lowerAnim = agent->GetGraphic()->GetAnimator(ObjectGraphic::Slot::LOWER);
+      if (lowerAnim != nullptr)
+      {
+        if (lowerAnim->GetCurrentAnimClipName() == L"jumpBegin_run")
+        {
+          agent->GetGraphic()->SetCurrentAnimation(L"jumpEnd_run", ObjectGraphic::Slot::LOWER);
+        }
+        else if (lowerAnim->GetCurrentAnimClipName() == L"jumpBegin_stand")
+        {
+          agent->GetGraphic()->SetCurrentAnimation(L"jumpEnd_stand", ObjectGraphic::Slot::LOWER);
+        }
+      }
+    }
   }
   CollisionCheck();
 

@@ -16,9 +16,6 @@
     <ClInclude Include="Game\Decoration.h" />
     <ClInclude Include="Character\Animations.h" />
     <ClInclude Include="UI\HUD.h" />
-    <ClInclude Include="Component\Graphic\AnimatedGraphic.h" />
-    <ClInclude Include="Component\Graphic\TexturedGraphic.h" />
-    <ClInclude Include="Component\Graphic\AgentGraphic.h" />
     <ClInclude Include="Component\Graphic\ObjectGraphic.h" />
     <ClInclude Include="Game\GameObject.h" />
     <ClInclude Include="Component\Collision\Collision.h" />
@@ -45,9 +42,6 @@
     <ClCompile Include="Character\Agent.cpp" />
     <ClCompile Include="Character\Animations.cpp" />
     <ClCompile Include="UI\HUD.cpp" />
-    <ClCompile Include="Component\Graphic\AgentGraphic.cpp" />
-    <ClCompile Include="Component\Graphic\AnimatedGraphic.cpp" />
-    <ClCompile Include="Component\Graphic\TexturedGraphic.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />
     <ClCompile Include="Component\Collision\Collision.cpp" />
     <ClCompile Include="Component\Graphic\ObjectGraphic.cpp" />

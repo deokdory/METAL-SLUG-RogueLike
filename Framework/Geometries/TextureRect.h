@@ -1,5 +1,11 @@
 #pragma once
 
+enum AnchorPoint {
+  LEFT_TOP, MID_TOP, RIGHT_TOP,
+  LEFT_MID, CENTER, RIGHT_MID,
+  LEFT_BOT, MID_BOT, RIGHT_BOT
+};
+
 class TextureBuffer : public ShaderBuffer {
  public:
   TextureBuffer() : ShaderBuffer(&data, sizeof(data)) { data.bFliped = false; }
@@ -14,6 +20,8 @@ class TextureBuffer : public ShaderBuffer {
 
 class TextureRect {
  public:
+
+
   TextureRect(Vector3 position, Vector3 size, float rotation,
               std::wstring path);
   TextureRect(Vector3 position, Vector3 size, float rotation);
@@ -26,8 +34,7 @@ class TextureRect {
   void SetShader(std::wstring shaderpath);
 
   // 중심점 재설정
-  // 0 : 중앙, 1 : LT, 2 : T, 3 : RT, 4 : L, 5 : R, 6 : LB, 7 : B, 8 : RB
-  void SetAnchorPoint(int point);
+  void SetAnchorPoint(AnchorPoint anchor);
 
   void Update();
   void UpdateWorld();

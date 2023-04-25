@@ -156,9 +156,6 @@
   <ItemGroup>
     <ClCompile Include="Framework.cpp" />
     <ClCompile Include="Game\UI\ProgressBar.cpp" />
-    <ClCompile Include="Geometries\Tile\Tile.cpp" />
-    <ClCompile Include="Geometries\Tile\TileMap.cpp" />
-    <ClCompile Include="Geometries\Tile\TileSet.cpp" />
     <ClCompile Include="Utilities\UI.cpp" />
     <ClCompile Include="Geometries\AnimationRect.cpp" />
     <ClCompile Include="Geometries\Rect.cpp" />
@@ -190,9 +187,6 @@
   <ItemGroup>
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Game\UI\ProgressBar.h" />
-    <ClInclude Include="Geometries\Tile\Tile.h" />
-    <ClInclude Include="Geometries\Tile\TileMap.h" />
-    <ClInclude Include="Geometries\Tile\TileSet.h" />
     <ClInclude Include="Utilities\UI.h" />
     <ClInclude Include="Geometries\AnimationRect.h" />
     <ClInclude Include="Geometries\Rect.h" />

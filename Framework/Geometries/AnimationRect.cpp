@@ -86,8 +86,3 @@ void AnimationRect::Render() {
   //DC->PSSetSamplers(0, 1, &point[0]);
   //DC->OMSetBlendState(bPoint[0], nullptr, (UINT)0xFFFFFFFFFF);
 }
-
-Animator* AnimationRect::GetAnimator()
-{
-  return animator;
-}

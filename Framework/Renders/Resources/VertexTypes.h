@@ -1,6 +1,5 @@
-// 버텍스 정보를 저장하기 위한 구조체
-
 #pragma once
+// 버텍스 정보를 저장하기 위한 구조체
 
 // 색상
 struct VertexColor {
@@ -33,20 +32,20 @@ struct VertexTexture {
 	static const UINT count = 2;				// 원소 개수
 };
 
-struct VertexTile
-{
-	VertexTile()
-		: position(Values::ZeroVec3), uv(Values::ZeroVec2), color(0, 0, 0, 0) {}
-
-	VertexTile(Vector3 position, Vector2 uv, Vector2 uv2, Color color, UINT index)
-		: position(position), uv(uv), uv2(uv2), color(color), index(index) {}
-
-		Vector3 position;
-		Vector2 uv;
-		Vector2 uv2;
-		Color color;
-		UINT index;
-
-		static D3D11_INPUT_ELEMENT_DESC descs[];
-		static const UINT count = 6;
-};
+//struct VertexTile
+//{
+//	VertexTile()
+//		: position(Values::ZeroVec3), uv(Values::ZeroVec2), color(0, 0, 0, 0) {}
+//
+//	VertexTile(Vector3 position, Vector2 uv, Vector2 uv2, Color color, UINT index)
+//		: position(position), uv(uv), uv2(uv2), color(color), index(index) {}
+//
+//		Vector3 position;
+//		Vector2 uv;
+//		Vector2 uv2;
+//		Color color;
+//		UINT index;
+//
+//		static D3D11_INPUT_ELEMENT_DESC descs[];
+//		static const UINT count = 6;
+//};

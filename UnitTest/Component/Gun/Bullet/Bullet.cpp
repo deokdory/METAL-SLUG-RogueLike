@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Bullet.h"
 
-#include "Component/Graphic/TexturedGraphic.h"
 #include "Component/Collision/Collision.h"
 
 Bullet::Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath)
@@ -57,8 +56,7 @@ Bullet::Bullet(GameObject* fired, Side side, float speed, float damage, std::wst
     this->rotation = bulletRotate;
     //std::cout << rotation << std::endl;
 
-    graphic = new TexturedGraphic(this);
-    graphic->SetResource(texturePath);
+    graphic->InitTexture(texturePath);
     collision->InitializeBase();
 
     Move(axis * (speed * 4));
