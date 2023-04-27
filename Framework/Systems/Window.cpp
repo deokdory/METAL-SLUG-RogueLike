@@ -8,6 +8,7 @@
 
 DXDesc Window::desc;
 HINSTANCE instance;
+bool Window::isActive = false;
 
 Window::Window(DXDesc desc)
 {
@@ -64,7 +65,7 @@ Window::Window(DXDesc desc)
 	SetForegroundWindow(desc.handle);
 	SetFocus(desc.handle);
 
-	ShowCursor(false);//
+	//ShowCursor(false);
 	Window::desc = desc;
 
 	::instance = desc.instance;
@@ -138,28 +139,50 @@ LRESULT Window::WndProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam)
 		return 0;
 	}
 
+	if (message == WM_ACTIVATE)
+	{
+		if (LOWORD(wParam) == WA_INACTIVE) isActive = false;
+		else isActive = true;
+	}
+
 	return DefWindowProc(handle, message, wParam, lParam);
 }
 
 void Window::MainRender()
 {
-	if (ImGui::GetIO().WantCaptureMouse == false)
-	{
-	Mouse::Get()->Update();
-	Keyboard::Get()->Update();
-	}
-	Time::Get()->Update();
-	Gui::Get()->Update();
 
-	mainObj->Update();
+  Time::Get()->Update();
+  Gui::Get()->Update();
 
-	Graphics::Get()->Begin();
-	{
-		mainObj->Render();
-		mainObj->PostRender();
+  elapsedTime += Time::Get()->Delta();
+	//std::cout << Time::Get()->Delta() << std::endl;
 
-		mainObj->GUI();
-		Gui::Get()->Render();
-	}
-	Graphics::Get()->End();
+  if (elapsedTime > MS_PER_UPDATE)
+  {
+		//std::cout << elapsedTime << std::endl;
+		//std::cout << Time::Get()->WorldDelta() << std::endl;
+
+		//if (ImGui::GetIO().WantCaptureMouse == false)
+		//{
+    if (Window::isActive)
+    {
+      Mouse::Get()->Update();
+      Keyboard::Get()->Update();
+    }
+    //}
+    mainObj->Update();
+
+    elapsedTime -= MS_PER_UPDATE;
+		Time::Get()->WorldUpdate();
+  }
+
+  Graphics::Get()->Begin();
+  {
+    mainObj->Render();
+    mainObj->PostRender();
+
+    mainObj->GUI();
+    Gui::Get()->Render();
+  }
+  Graphics::Get()->End();
 }

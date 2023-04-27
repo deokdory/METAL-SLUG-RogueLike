@@ -42,6 +42,10 @@ public:
 
   virtual void Jump();
 
+  virtual bool GetIsFalling() { return isFalling; }
+  virtual float GetXSpeed() { return xSpeed; }
+  virtual float GetYSpeed() { return ySpeed; }
+
 protected:
   void collisionCheck();
 
@@ -50,15 +54,15 @@ protected:
 
   float ySpeed = 0; // 수직 속도
   float gravityOffset = 0; // 객체의 중력값 보정 ( 기본 중력값 + )
-  float jumpPower = 2.5f; // 점프 세기
+  float jumpPower = 5.f; // 점프 세기
 
-  float fallingSpeedMax = -10.f; // 수직 낙하 속도 한계값
+  float fallingSpeedMax = -20.f; // 수직 낙하 속도 제한
 
   float xSpeed = 0; // 수평 속도
-  float xSpeedMax = 4; // 수평 속도 한계값
+  float xSpeedMax = 6; // 수평 속도 제한
 
   float accel = 0; // 상황별 가속도 보정 위함 
-  float accelOrigin = 0.2f; // 기본 가속도 값
+  float accelOrigin = 0.3f; // 기본 가속도 값
 
   class GameObject* object; // 움직일 객체
   MovementSpeedBox* speedBox; // 속도 기반 가변충돌체

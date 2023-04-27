@@ -49,9 +49,9 @@ class TextureRect {
 
   void SetIsFliped(bool bFliped = true);
 
-  Vector3 GetPosition() { return position; }
-  Vector3 GetSize() { return size; }
-  float GetRotation() { return rotation; }
+  //Vector3 GetPosition() { return position; }
+  //Vector3 GetSize() { return size; }
+  //float GetRotation() { return rotation; }
 
   Matrix GetWorld() { return worldMatrix; }
 

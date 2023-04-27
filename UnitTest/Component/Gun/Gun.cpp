@@ -18,7 +18,18 @@ Gun::~Gun()
 
 void Gun::Update(Vector3 position, Vector3 axis)
 {
-  auto currTime = Time::Get()->Running();
+  double currTime = Time::Get()->Running();
+
+  if (isReloading)
+    if (reloadProgress < reloadSpeed)
+    {
+      //std::cout << Time::Get()->WorldDelta() << std::endl;
+      reloadProgress += (Time::Get()->WorldDelta());
+    }
+    else 
+    {
+      Reload(); 
+    }
 
   if (burstCount == 0)
   {
@@ -30,7 +41,7 @@ void Gun::Update(Vector3 position, Vector3 axis)
       {
         if (isTriggeredPrev == false)
         {
-          if (currTime - lastFire >= rpm)
+          if (rpmProgress >= rpm)
           {
             if(magazineIsEmpty() == false)
               Fire(position, axis);
@@ -42,7 +53,7 @@ void Gun::Update(Vector3 position, Vector3 axis)
       {
         if (isTriggeredPrev == false)
         {
-          if (currTime - lastFire >= rpm)
+          if (rpmProgress>= rpm)
           {
             if (magazineIsEmpty() == false)
               Fire(position, axis);
@@ -53,7 +64,7 @@ void Gun::Update(Vector3 position, Vector3 axis)
       }
       case Gun::FireMode::AUTO:
       {
-        if (currTime - lastFire >= rpm)
+        if (rpmProgress >= rpm)
         {
           if (magazineIsEmpty() == false)
             Fire(position, axis);
@@ -67,7 +78,7 @@ void Gun::Update(Vector3 position, Vector3 axis)
   }
   else
   {
-    if (currTime - lastFire >= rpm)
+    if (rpmProgress >= rpm)
     {
       if (magazineIsEmpty() == false)
       {
@@ -80,7 +91,9 @@ void Gun::Update(Vector3 position, Vector3 axis)
       }
     }
   }
-    isTriggeredPrev = isTriggered;
+  if (rpmProgress < rpm) rpmProgress += Time::Get()->WorldDelta();
+
+  isTriggeredPrev = isTriggered;
 }
 
 void Gun::Render()
@@ -89,10 +102,12 @@ void Gun::Render()
 
 void Gun::GUI()
 {
-  ImGui::Begin("gun");
+  ImGui::Begin("Combat");
   {
-    std::string magazineStr = std::to_string(magazine) + " / " + std::to_string(magazineMax);
+    std::string magazineStr = "Magazine : " + std::to_string(magazine) + " / " + std::to_string(magazineMax);
     std::string modeStr = "Mode : ";
+    std::string reloadStr = "Reload : " + std::to_string(1.0f - reloadProgress);
+
 
     switch (mode)
     {
@@ -109,8 +124,16 @@ void Gun::GUI()
       break;
     }
 
-    ImGui::Text(magazineStr.c_str());
+    ImVec4 color = ImVec4(0.76f, 0.77f, 0.8f, 1.0f);
+    if (magazine == 0) color = ImVec4(1, 0, 0, 1);
+
+    ImGui::TextColored(color, magazineStr.c_str());
     ImGui::Text(modeStr.c_str());
+
+    if (isReloading) color = ImVec4(1, 1, 0, 1);
+    else color = ImVec4(0.76f, 0.77f, 0.8f, 1.0f);
+    ImGui::TextColored(color, reloadStr.c_str());
+
     ImGui::SliderFloat("rpm", &rpm, 1.f / 1.f, 1.f / 32.f);
   }
   ImGui::End();
@@ -130,15 +153,21 @@ void Gun::Fire(Vector3 position, Vector3 axis)
 {
   magazine--;
   auto level = GameManager::Get()->GetCurrentLevel();
-  level->PushObject(bullet->NewBullet(position, axis));
+  level->PushObject(bullet->NewBullet(position + (axis * 60), axis));
 
-  lastFire = Time::Get()->Running();
+  rpmProgress = 0.0;
+}
 
+void Gun::ReloadBegin()
+{
+  isTriggered = false;
+  isReloading = true;
 }
 
 void Gun::Reload()
 {
-  
+  isReloading = false;
+  reloadProgress = 0.0f;
   magazine = magazineMax;
 }
 

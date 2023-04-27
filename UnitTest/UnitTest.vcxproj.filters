@@ -5,7 +5,6 @@
     <ClInclude Include="Program.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Character\Character.h" />
-    <ClInclude Include="Component\Input\AgentInput.h" />
     <ClInclude Include="Game\GameWorld.h" />
     <ClInclude Include="Level\Level.h" />
     <ClInclude Include="Level\Decoration.h" />
@@ -22,17 +21,17 @@
     <ClInclude Include="Component\Gun\Bullet\Bullet.h" />
     <ClInclude Include="Component\Gun\Gun.h" />
     <ClInclude Include="Game\GameManager.h" />
-    <ClInclude Include="Component\AgentState.h" />
     <ClInclude Include="Component\Movement\Movement.h" />
     <ClInclude Include="Component\Movement\PlayerMovement.h" />
     <ClInclude Include="Component\Input\Input.h" />
-    <ClInclude Include="Component\Combat.h" />
+    <ClInclude Include="Component\Combat\Combat.h" />
+    <ClInclude Include="Component\Combat\PlayerCombat.h" />
+    <ClInclude Include="Component\Combat\Trowable\Throwable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Character\Character.cpp" />
-    <ClCompile Include="Component\Input\AgentInput.cpp" />
     <ClCompile Include="Game\GameWorld.cpp" />
     <ClCompile Include="Level\Level.cpp" />
     <ClCompile Include="Level\Decoration.cpp" />
@@ -48,11 +47,12 @@
     <ClCompile Include="Component\Gun\Bullet\Bullet.cpp" />
     <ClCompile Include="Component\Gun\Gun.cpp" />
     <ClCompile Include="Game\GameManager.cpp" />
-    <ClCompile Include="Component\AgentState.cpp" />
     <ClCompile Include="Component\Movement\Movement.cpp" />
     <ClCompile Include="Component\Movement\PlayerMovement.cpp" />
     <ClCompile Include="Component\Input\Input.cpp" />
-    <ClCompile Include="Component\Combat.cpp" />
+    <ClCompile Include="Component\Combat\Combat.cpp" />
+    <ClCompile Include="Component\Combat\PlayerCombat.cpp" />
+    <ClCompile Include="Component\Combat\Trowable\Throwable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Framework.lib" />

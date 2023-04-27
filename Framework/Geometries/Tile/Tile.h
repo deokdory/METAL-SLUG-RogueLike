@@ -7,7 +7,7 @@ public:
   void SetStartUV(Vector2 startUV) { this->startUV = startUV; }
   void SetEndUV(Vector2 endUV) { this->endUV = endUV; }
   void SetColor(Color color) { this->color = color; }
-  void SetIndex(UINT indesc) { this->index = index; }
+  void SetIndex(UINT index) { this->index = index; }
   void SetSRV(ID3D11ShaderResourceView* srv) { this->srv = srv; }
 
   Vector3 GetPosition() { return position; }

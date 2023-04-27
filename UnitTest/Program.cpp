@@ -4,6 +4,7 @@
 #include "Systems/Window.h"
 
 #include "Game/Game.h"
+#include "Demos/TileMapDemo.h"
 
 void Program::Init()
 {
@@ -16,6 +17,7 @@ void Program::Init()
 		Camera::Create();
   }
   Push(new Game);
+	//Push(new TileMapDemo);
 }
 
 void Program::Destroy()

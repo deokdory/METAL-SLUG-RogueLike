@@ -2,6 +2,9 @@
 #include "Geometries/AnimationRect.h"
 #include "Utilities/Animator.h"
 
+#include "Component/Graphic/ObjectGraphic.h"
+#include "Component/Movement/PlayerMovement.h"
+
 class GameObject {
  public:
   GameObject(Vector3 position, Vector3 size);
@@ -22,13 +25,12 @@ class GameObject {
   void InitGraphic(Animator* animator, ObjectGraphic::Slot slot);
   void InitGraphic(std::wstring path, ObjectGraphic::Slot slot);
   
-  void SetFliped(bool bFliped) { this->bFliped = bFliped; }
-  bool GetFliped() { return bFliped; }
+  void SetFliped(bool isFliped) { this->isFliped = isFliped; }
+  bool GetIsFliped() { return isFliped; }
 
   class Collision* GetCollision();
 
  protected:
-
   class ObjectGraphic* graphic = nullptr;
   class Collision* collision = nullptr;
 
@@ -36,6 +38,6 @@ class GameObject {
   Vector3 size;
   float rotation = 0;
 
-  bool bFliped = false;
+  bool isFliped = false;
 
 };

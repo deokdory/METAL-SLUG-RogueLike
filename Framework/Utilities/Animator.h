@@ -62,6 +62,6 @@ class Animator {
   UINT currentFrameIndex = 0;
   Vector2 currentFrame = Values::ZeroVec2;
 
-  double prevTime = 0.0;
+  double elapsedTime = 0.0;
   bool bFinished = false;
 };

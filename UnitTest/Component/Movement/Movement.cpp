@@ -112,7 +112,7 @@ Movement::~Movement()
 
 void Movement::Update()
 {
-  float globalSpeed = GameManager::Get()->GetGlobalSpeed();
+  float globalSpeed = Time::Get()->GetGlobalSpeed();
   // 가속도 관련
   {
     accel = accelOrigin * globalSpeed;
@@ -121,8 +121,9 @@ void Movement::Update()
   {
     auto globalGravity = GameManager::Get()->GetGlobalGravity();
     if (isFalling)
-      if (ySpeed > fallingSpeedMax) ySpeed -= (globalGravity + gravityOffset);
+      if (ySpeed > fallingSpeedMax) ySpeed -= ((globalGravity + gravityOffset) * globalSpeed);
   }
+
   speedBox->Update(xSpeed, ySpeed);
   collisionCheck();
 
@@ -137,6 +138,15 @@ void Movement::Render()
 
 void Movement::GUI()
 {
+  std::string speedStr = "X SPD " + std::to_string(xSpeed) + ", Y SPD " + std::to_string(ySpeed);
+  std::string accelStr = "Accel " + std::to_string(accel);
+
+  ImGui::Begin("Movement");
+  {
+    ImGui::Text(speedStr.c_str());
+    ImGui::Text(accelStr.c_str());
+  }
+  ImGui::End();
 }
 
 void Movement::MoveLeft()

@@ -1,15 +1,14 @@
 #include "stdafx.h"
-#include "GameObject.h"
-
 #include "Component/Graphic/ObjectGraphic.h"
 #include "Component/Collision/Collision.h"
+#include "GameObject.h"
+
 
 GameObject::GameObject(Vector3 position, Vector3 size) 
 : position(position), size(size), rotation(0) {
 
   graphic = new ObjectGraphic(this);
   collision = new Collision(this);
-
 }
 
 GameObject::~GameObject() {
@@ -30,7 +29,7 @@ void GameObject::GUI()
 {
 }
 
-void GameObject::Move(Vector3 position) { this->position += position; }
+void GameObject::Move(Vector3 position) { this->position += (position * Time::Get()->GetGlobalSpeed()) ; }
 
 ObjectGraphic* GameObject::GetGraphic()
 {

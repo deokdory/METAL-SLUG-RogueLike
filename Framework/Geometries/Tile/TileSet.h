@@ -4,7 +4,7 @@ class TileSet : public SingletonBase<TileSet>
 {
 public:
   friend class SingletonBase<TileSet>;
-  friend class TMap;
+  friend class TileMap;
 
   void GUI();
 

@@ -18,4 +18,6 @@ class Game : public IObject {
 
   double prevTime = 0.0;
   double elapsedTotal = 0.0;
+
+  UINT frameCount = 0;
 };

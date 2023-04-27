@@ -36,12 +36,12 @@
 Animator* Animations::getEriUpper() {
   Texture2D* srcTex = new Texture2D(TexturePath + L"eri_upper_x2.png");
 
-  AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(919, 125), -1.f, false, false, Vector2(16, -96));
+  AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(919, 125), -1.f, false, false, Vector2(16, -50));
 
-  AnimationClip* reload_rifle = new AnimationClip(L"reload_rifle", srcTex, 5, Vector2(0, 126), Vector2(449, 188), 1.0f / 5.0f,  false, false);
+  AnimationClip* reload_rifle = new AnimationClip(L"reload_rifle", srcTex, 5, Vector2(0, 126), Vector2(449, 188), 1.0f / 5.0f,  false, false, Vector2(15, -29));
   AnimationClip* knife1_rifle = new AnimationClip(L"knife1_rifle", srcTex, 6, Vector2(0, 190), Vector2(599, 269), 1.0f / 12.0f, false, false);
   AnimationClip* knife2_rifle = new AnimationClip(L"knife2_rifle", srcTex, 8, Vector2(0, 270), Vector2(831, 341), 1.0f / 12.0f, false, false);
-  AnimationClip* throw_rifle = new AnimationClip(L"throw_rifle", srcTex, 5, Vector2(450, 126), Vector2(919, 189), 1.0f / 12.0f, false, false);
+  AnimationClip* throw_rifle = new AnimationClip(L"throw_rifle", srcTex, 5, Vector2(450, 126), Vector2(922, 189), 1.0f / 20.0f, false, false, Vector2(15, -29));
 
   Animator* animator = new Animator();
 
@@ -70,6 +70,8 @@ Animator* Animations::getEriLower() {
   AnimationClip* jumpBegin_stand = new AnimationClip(L"jumpBegin_stand", srcTex, 6, Vector2(208, 52), Vector2(615, 113), 1.0 / 24.0f, false, false);
   AnimationClip* jumpEnd_stand = new AnimationClip(L"jumpEnd_stand", srcTex, 6, Vector2(208, 52), Vector2(615, 113), 1.0 / 12.0f, true, false);
 
+  AnimationClip* slide = new AnimationClip(L"slide", srcTex, 3, Vector2(0, 155), Vector2(299, 202), 1.0 / 24.0f, false, false);
+
   Animator* animator = new Animator();
 
   animator->AddAnimClip(idle);
@@ -79,6 +81,7 @@ Animator* Animations::getEriLower() {
   animator->AddAnimClip(jumpEnd_run);
   animator->AddAnimClip(jumpBegin_stand);
   animator->AddAnimClip(jumpEnd_stand);
+  animator->AddAnimClip(slide);
 
   animator->SetCurrentAnimClip(L"idle");
 

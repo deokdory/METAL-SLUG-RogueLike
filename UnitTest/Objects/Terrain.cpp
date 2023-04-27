@@ -7,12 +7,11 @@
 Terrain::Terrain(Vector3 position, Vector3 size, std::wstring path)
     : GameObject(position, size) {
 
-  graphic->InitTexture(path);
-
   collision->InitializeBase();
   collision->InitializeBottom();
   collision->InitializeTop();
 
+  graphic->InitTexture(path);
   //Update();
 }
 

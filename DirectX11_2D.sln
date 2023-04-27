@@ -27,6 +27,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{4EECD6BD-1273-
 		_Shaders\UI\TextureUI.hlsl = _Shaders\UI\TextureUI.hlsl
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tile", "Tile", "{85C97E26-0B75-474C-89F0-62CD8029BE95}"
+	ProjectSection(SolutionItems) = preProject
+		_Shaders\Tile\VertexTile.hlsl = _Shaders\Tile\VertexTile.hlsl
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -57,6 +62,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4EECD6BD-1273-4C8D-8598-1752C9B78AED} = {FD8271F3-ABEB-471D-A5A6-F0D790A04E43}
+		{85C97E26-0B75-474C-89F0-62CD8029BE95} = {FD8271F3-ABEB-471D-A5A6-F0D790A04E43}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D6D4ED3D-CEFA-42A1-911B-B5F0E2FF39F4}

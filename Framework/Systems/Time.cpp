@@ -1,12 +1,9 @@
 #include "Framework.h"
 #include "Time.h"
 
-bool Time::isTimerStopped = true;
-float Time::timeElapsed = 0.0f;
-
 Time::Time(void) :
 	ticksPerSecond(0), currentTime(0), lastTime(0), lastFPSUpdate(0), fpsUpdateInterval(0),
-	frameCount(0), runningTime(0), framePerSecond(0)
+	frameCount(0), runningTime(0), framePerSecond(0), isTimerStopped(true), timeElapsed(0)
 {
 	QueryPerformanceFrequency((LARGE_INTEGER *)&ticksPerSecond);
 	fpsUpdateInterval = ticksPerSecond >> 1;
@@ -24,7 +21,6 @@ void Time::Update()
 	QueryPerformanceCounter((LARGE_INTEGER *)&currentTime);
 	timeElapsed = (float)(currentTime - lastTime) / (float)ticksPerSecond;
 	runningTime += timeElapsed;
-
 
 	frameCount++;
 	if (currentTime - lastFPSUpdate >= fpsUpdateInterval)
@@ -70,6 +66,12 @@ void Time::UpdateTimer(std::string name) {
   if (find != timer.end()) find->second = runningTime;
 }
 
+void Time::DeleteTimer(std::string name)
+{
+	if (timer.find(name) != timer.end())
+		timer.erase(name);
+}
+
 double Time::GetTimer(std::string name) {
   if (timer.empty()) return 0;
 
@@ -84,9 +86,22 @@ double Time::GetTimerDelta(std::string name) {
   if (timer.empty()) return 0;
 
   auto find = timer.find(name);
+
   if (find != timer.end())
     return runningTime - find->second;
   else
     return 0;
 
+}
+
+double Time::GetTimerWorldDelta(std::string name)
+{
+	if (timer.empty()) return 0;
+
+	auto find = timer.find(name);
+
+	if (find != timer.end())
+		return (runningTime - find->second) * globalSpeed;
+	else
+		return 0;
 }

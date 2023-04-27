@@ -59,6 +59,6 @@ Bullet::Bullet(GameObject* fired, Side side, float speed, float damage, std::wst
     graphic->InitTexture(texturePath);
     collision->InitializeBase();
 
-    Move(axis * (speed * 4));
+    //Move(axis * (speed * 4));
   
 }

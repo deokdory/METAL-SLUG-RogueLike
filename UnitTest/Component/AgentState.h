@@ -1,38 +1,72 @@
 #pragma once
-#include "Character/Agent.h"
 
-class AgentMovementState 
+class AgentMovementState
 {
 public:
-  virtual void HandleInput() = 0;
-  virtual void Update() = 0;
-  virtual void Enter() = 0;
+  AgentMovementState() = default;
+
+  virtual void HandleInput(class Agent& agent) {}
+  virtual void Update(class Agent& agent) {}
+  virtual void Enter(class Agent& agent) {}
+
 };
 
 class AgentOnGroundState : public AgentMovementState
 {
-  virtual void HandleInput(GameObject& object);
-  virtual void Update(GameObject& object);
-  virtual void Enter(GameObject& object);
-};
+public:
 
-class AgentSlidingState : public AgentOnGroundState
-{
-  virtual void HandleInput(GameObject& object);
-  virtual void Update(GameObject& object);
-  virtual void Enter(GameObject& object);
-};
-
-class AgentFallingState : public AgentMovementState
-{
-  virtual void HandleInput(GameObject& object);
-  virtual void Update(GameObject& object);
-  virtual void Enter(GameObject& object);
+  virtual void HandleInput(class Agent& agent) override;
+  virtual void Update(class Agent& agent) override;
+  virtual void Enter(class Agent& agent) override;
 };
 
 class AgentCrouchingState : public AgentOnGroundState
 {
-  virtual void HandleInput(GameObject& object);
-  virtual void Update(GameObject& object);
-  virtual void Enter(GameObject& object);
+public:
+  virtual void HandleInput(class Agent& agent);
+  virtual void Update(class Agent& agent);
+  virtual void Enter(class Agent& agent);
+};
+
+class AgentSlidingState : public AgentCrouchingState
+{
+public:
+  virtual void HandleInput(class Agent& agent);
+  virtual void Update(class Agent& agent);
+  virtual void Enter(class Agent& agent);
+};
+
+class AgentFallingState : public AgentMovementState
+{
+public:
+  virtual void HandleInput(class Agent& agent);
+  virtual void Update(class Agent& agent);
+  virtual void Enter(class Agent& agent);
+};
+
+class AgentFallingMovingState : public AgentFallingState
+{
+public:
+  virtual void HandleInput(class Agent& agent);
+  virtual void Update(class Agent& agent);
+  virtual void Enter(class Agent& agent);
+};
+
+class AgentMovementStates
+{
+public:
+  AgentMovementStates();
+  ~AgentMovementStates();
+
+  virtual void HandleInput(class Agent& agent);
+  virtual void Update(class Agent& agent);
+  virtual void Enter(class Agent& agent);
+
+  AgentMovementState* movementState;
+
+  AgentOnGroundState ongRoundState;
+  AgentCrouchingState crouchingState;
+  AgentSlidingState slidingState;
+  AgentFallingState fallingState;
+  AgentFallingMovingState fallingMovingState;
 };

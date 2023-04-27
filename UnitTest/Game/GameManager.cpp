@@ -13,16 +13,6 @@ Level* GameManager::GetCurrentLevel()
   return currentLevel;
 }
 
-void GameManager::SetGlobalSpeed(float speed)
-{
-  globalSpeed = speed;
-}
-
-float GameManager::GetGlobalSpeed()
-{
-  return globalSpeed;
-}
-
 float GameManager::GetGlobalGravity()
 {
   return globalGravity;
