@@ -65,7 +65,7 @@ Window::Window(DXDesc desc)
 	SetForegroundWindow(desc.handle);
 	SetFocus(desc.handle);
 
-	//ShowCursor(false);
+	ShowCursor(false);
 	Window::desc = desc;
 
 	::instance = desc.instance;

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Bullet.h"
 
-#include "Component/Collision/Collision.h"
 
 Bullet::Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath)
 : GameObject(fired->GetPosition(), Vector3(60, 6, 0)), fired(fired), side(side), speed(speed), damage(damage), texturePath(texturePath)
@@ -30,7 +29,7 @@ void Bullet::Render()
 
 void Bullet::hit(GameObject* object)
 {
-  bHit = true;
+  isHit = true;
 }
 
 Bullet* Bullet::NewBullet(Vector3 position, Vector3 axis)

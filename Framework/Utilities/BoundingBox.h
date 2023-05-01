@@ -18,13 +18,13 @@ class CollisionBuffer : public ShaderBuffer {
  public:
   CollisionBuffer() : ShaderBuffer(&data, sizeof(data)) { data.isOn = false; }
 
-  void SwitchRender() { data.isOn = !data.isOn; }
+  void SwitchRender(bool isOn) { data.isOn = isOn; }
 
  private:
-  struct Data {
-    bool isOn;
-    Vector3 dummy;
-  } data;
+   struct Data {
+     bool isOn;
+     Vector3 dummy;
+   } data;
 };
 
 class BoundingBox {

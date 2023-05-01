@@ -32,7 +32,8 @@ void ObjectGraphic::Update()
     {
       texRects[i]->SetPosition(object->GetPosition());
       texRects[i]->SetSize(object->GetSize());
-      texRects[i]->SetRotation(object->GetRotation());
+
+      if(object->GetRotation() != 0) texRects[i]->SetRotation(object->GetRotation());
 
       texRects[i]->Update();
     }
@@ -438,6 +439,47 @@ void ObjectGraphic::SetAnchorPoint(AnchorPoint anchor, Type type, Slot slot)
       break;
     case ObjectGraphic::Slot::UPPER:
       if(animRects[2] != nullptr) animRects[2]->SetAnchorPoint(anchor);
+      break;
+    default:
+      break;
+    }
+    break;
+  default:
+    break;
+  }
+}
+
+void ObjectGraphic::AddRotation(float rotation, Type type, Slot slot)
+{
+  switch (type)
+  {
+  case ObjectGraphic::Type::TEXTURE:
+    switch (slot)
+    {
+    case ObjectGraphic::Slot::NORMAL:
+      if(texRects[0] != nullptr) texRects[0]->SetRotation(texRects[0]->GetRotation() + rotation);
+      break;
+    case ObjectGraphic::Slot::LOWER:
+      if(texRects[1] != nullptr) texRects[1]->SetRotation(texRects[1]->GetRotation() + rotation);
+      break;
+    case ObjectGraphic::Slot::UPPER:
+      if(texRects[2] != nullptr) texRects[2]->SetRotation(texRects[2]->GetRotation() + rotation);
+      break;
+    default:
+      break;
+    }
+    break;
+  case ObjectGraphic::Type::ANIMATION:
+    switch (slot)
+    {
+    case ObjectGraphic::Slot::NORMAL:
+      if (animRects[0] != nullptr) animRects[0]->SetRotation(animRects[0]->GetRotation() + rotation);
+      break;
+    case ObjectGraphic::Slot::LOWER:
+      if (animRects[1] != nullptr) animRects[1]->SetRotation(animRects[1]->GetRotation() + rotation);
+      break;
+    case ObjectGraphic::Slot::UPPER:
+      if (animRects[2] != nullptr) animRects[2]->SetRotation(animRects[2]->GetRotation() + rotation);
       break;
     default:
       break;

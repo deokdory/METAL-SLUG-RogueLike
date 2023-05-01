@@ -7,6 +7,7 @@ class Time : public SingletonBase<Time> {
   bool Stopped() { return isTimerStopped; }
   double Delta() { return isTimerStopped ? 0.0f : timeElapsed; }
 
+  double WorldOriginDelta() { return isTimerStopped ? 0.0 : runningTime - lastWorldUpdate; }
   double WorldDelta() { return isTimerStopped ? 0.0f : (runningTime - lastWorldUpdate) * globalSpeed; }
   void WorldUpdate() { this->lastWorldUpdate = runningTime; }
 

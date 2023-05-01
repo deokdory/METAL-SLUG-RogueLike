@@ -4,6 +4,7 @@
 
 #include "Component/Graphic/ObjectGraphic.h"
 #include "Component/Movement/PlayerMovement.h"
+#include "Component/Collision/Collision.h"
 
 class GameObject {
  public:

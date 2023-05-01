@@ -31,7 +31,7 @@ protected:
   float damage; // 대미지
   float speed; // 탄속
 
-  bool bHit = false; // 충돌했는가
+  bool isHit = false; // 충돌했는가
 
   std::wstring texturePath = L""; // 자신의 텍스쳐 파일 경로
 };

@@ -231,6 +231,7 @@ void Agent::GUI()
 
   movement->GUI();
   combat->GUI();
+  input->GUI();
 
   __super::GUI();
 }

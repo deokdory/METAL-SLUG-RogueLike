@@ -32,6 +32,8 @@ public:
   // 지오메트리 중심점 설정
   void SetAnchorPoint(AnchorPoint anchor, Type type, Slot slot = Slot::NORMAL);
 
+  void AddRotation(float rotation, Type type, Slot slot = Slot::NORMAL);
+
   // 애니메이터 
   // Animator* GetAnimator(Slot slot = Slot::NORMAL);
 

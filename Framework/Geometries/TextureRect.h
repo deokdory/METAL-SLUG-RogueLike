@@ -47,6 +47,8 @@ class TextureRect {
   void SetSize(Vector3 size) { this->size = size; }
   void SetRotation(float rotation) { this->rotation = rotation; }
 
+  float GetRotation() { return rotation; }
+
   void SetIsFliped(bool bFliped = true);
 
   //Vector3 GetPosition() { return position; }

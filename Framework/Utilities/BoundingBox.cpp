@@ -1,6 +1,7 @@
 #include "Framework.h"
 #include "BoundingBox.h"
 
+
 BoundingBox::BoundingBox(Vector3 position, Vector3 size, float rotation,
   Color color)
   : position(position), size(size), rotation(rotation), color(color) {
@@ -162,7 +163,11 @@ void BoundingBox::Update(Vector3 position, Vector3 size, float rotation) {
   wb->SetWorld(world);
 
   if (Keyboard::Get()->Down(VK_F1)) {
-    cb->SwitchRender();
+    cb->SwitchRender(true);
+  }
+
+  if (Keyboard::Get()->Down(VK_F2)) {
+    cb->SwitchRender(false);
   }
 
   UpdateCollisionData();
