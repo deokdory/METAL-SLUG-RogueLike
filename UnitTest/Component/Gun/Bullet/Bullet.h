@@ -9,7 +9,6 @@ public:
   };
   
   Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath);
-
   ~Bullet();
 
   virtual void Update();
@@ -32,6 +31,8 @@ protected:
   float speed; // 탄속
 
   bool isHit = false; // 충돌했는가
+
+  double flyingTime = 0.0;
 
   std::wstring texturePath = L""; // 자신의 텍스쳐 파일 경로
 };

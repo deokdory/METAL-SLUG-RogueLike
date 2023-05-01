@@ -34,6 +34,14 @@ void Level::Update() {
   //}
   for (size_t i = 0; i < objects.size(); i++)
   {
+    if (objects[i]->GetIsWaitingDelete())
+    {
+      SAFE_DELETE(objects[i]);
+      objects.erase(objects.begin() + i);
+
+      i--;
+      continue;
+    }
     objects[i]->Update();
   }
 }

@@ -2,7 +2,6 @@
 #include "Agent.h"
 
 #include "Component/Collision/Collision.h"
-
 #include "Component/Graphic/ObjectGraphic.h"
 
 
@@ -13,11 +12,6 @@ Agent::Agent(Vector3 position, Vector3 size)
 
   movement = new PlayerMovement(this);
   combat = new PlayerCombat(*this);
-
-  collision->InitializeBase();
-  collision->InitializeBottom();
-  collision->InitializeTop();
-
 } 
 
 Agent::~Agent() {
@@ -33,6 +27,7 @@ void Agent::HandleInput()
 void Agent::Update()
 {
   input->Update(*this);
+
   float rightAngle = D3DXVec3Dot(&Values::RightVec, &agentLookAtAxis);
 
   if (rightAngle < 0) isFliped = true;
@@ -121,6 +116,7 @@ void Agent::Update()
       break;
     }
   }
+
 
   // CombatState
   {

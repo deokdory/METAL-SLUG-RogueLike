@@ -147,6 +147,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Character\Enemy.h" />
+    <ClInclude Include="Character\SoldierSample.h" />
     <ClInclude Include="Component\Combat\Combat.h" />
     <ClInclude Include="Component\Combat\Throwable\Throwable.h" />
     <ClInclude Include="Component\Gun\Bullet\Bullet.h" />
@@ -175,6 +177,8 @@
     <ClInclude Include="UI\HUD.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Character\Enemy.cpp" />
+    <ClCompile Include="Character\SoldierSample.cpp" />
     <ClCompile Include="Component\Combat\Combat.cpp" />
     <ClCompile Include="Component\Combat\Throwable\Throwable.cpp" />
     <ClCompile Include="Component\Gun\Bullet\Bullet.cpp" />

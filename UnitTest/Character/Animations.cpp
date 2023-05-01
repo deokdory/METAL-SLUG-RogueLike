@@ -33,7 +33,7 @@
 //  return animator;
 //}
 
-Animator* Animations::getEriUpper() {
+Animator* Animations::GetEriUpper() {
   Texture2D* srcTex = new Texture2D(TexturePath + L"eri_upper_x2.png");
 
   AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(919, 125), -1.f, false, false, Vector2(16, -50));
@@ -57,7 +57,7 @@ Animator* Animations::getEriUpper() {
   return animator;
 }
 
-Animator* Animations::getEriLower() {
+Animator* Animations::GetEriLower() {
   Texture2D* srcTex = new Texture2D(TexturePath + L"eri_lower_x2.png");
 
   AnimationClip* idle = new AnimationClip(L"idle", srcTex, 1, Vector2(0, 0), Vector2(39, 51), -1.0f, false, false);
@@ -89,7 +89,22 @@ Animator* Animations::getEriLower() {
   return animator;
 }
 
-//Animator* Animations::getEriUpper() {
+Animator* Animations::GetSoldierSample()
+{
+  Texture2D* srcTex = new Texture2D(TexturePath + L"enemy_soldier_sample.png");
+
+  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 6, { 0, 0 }, { 335, 77 }, 1.0 / 6.0f, false);
+  AnimationClip* die = new AnimationClip(L"die", srcTex, 11, { 0, 78 }, { 725, 153 }, 1.0 / 12.0f, false, false);
+
+  Animator* animator = new Animator();
+
+  animator->AddAnimClip(idle);
+  animator->AddAnimClip(die);
+
+  return animator;
+}
+
+//Animator* Animations::GetEriUpper() {
 //  Texture2D* srcTex = new Texture2D(TexturePath + L"eri_upper.png");
 //
 //  AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(459, 62), false, 1.0f / 12.0f, Vector2(8, 0));
@@ -112,7 +127,7 @@ Animator* Animations::getEriLower() {
 //  return animator;
 //}
 
-//Animator* Animations::getEriLower() {
+//Animator* Animations::GetEriLower() {
 //  Texture2D* srcTex = new Texture2D(TexturePath + L"eri_lower.png");
 //
 //  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 1, Vector2(0, 0), Vector2(19, 25), false, -1.0f);

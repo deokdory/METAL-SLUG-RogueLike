@@ -3,11 +3,13 @@
 #include "Utilities/Animator.h"
 
 #include "Component/Graphic/ObjectGraphic.h"
-#include "Component/Movement/PlayerMovement.h"
+#include "Component/Movement/Movement.h"
 #include "Component/Collision/Collision.h"
 
 class GameObject {
  public:
+  enum class Type { NONE, CHARACTER, VEHICLE, PROP, TERRAIN, BULLET, THROWABLE };
+
   GameObject(Vector3 position, Vector3 size);
   virtual ~GameObject();
 
@@ -25,13 +27,18 @@ class GameObject {
 
   void InitGraphic(Animator* animator, ObjectGraphic::Slot slot);
   void InitGraphic(std::wstring path, ObjectGraphic::Slot slot);
-  
+
   void SetFliped(bool isFliped) { this->isFliped = isFliped; }
   bool GetIsFliped() { return isFliped; }
 
   class Collision* GetCollision();
 
- protected:
+  bool GetIsWaitingDelete() { return isWaitingDelete; }
+  void SetIsWaitingDelete(bool isWaitingDelete) { this->isWaitingDelete = isWaitingDelete; }
+
+protected:
+  Type type = Type::NONE;
+
   class ObjectGraphic* graphic = nullptr;
   class Collision* collision = nullptr;
 
@@ -41,4 +48,5 @@ class GameObject {
 
   bool isFliped = false;
 
+  bool isWaitingDelete = false;
 };

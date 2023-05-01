@@ -152,5 +152,4 @@ void Textures::Load(Texture2D* texture) {
 
     descs.push_back(desc);
   }
- 
 }

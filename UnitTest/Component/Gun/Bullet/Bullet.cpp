@@ -3,9 +3,9 @@
 
 
 Bullet::Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath)
-: GameObject(fired->GetPosition(), Vector3(60, 6, 0)), fired(fired), side(side), speed(speed), damage(damage), texturePath(texturePath)
+: GameObject(fired->GetPosition(), Vector3(62, 14, 0)), fired(fired), side(side), speed(speed), damage(damage), texturePath(texturePath)
 {
-
+  type = Type::BULLET;
 }
 
 Bullet::~Bullet()
@@ -14,10 +14,25 @@ Bullet::~Bullet()
 
 void Bullet::Update()
 {
-  Move(axis * speed);
+  if (isHit)
+  {
+    graphic->SetVisible(false, ObjectGraphic::Type::TEXTURE);
+    isWaitingDelete = true;
+  }
+  else
+  {
+    if (flyingTime >= 5.0)
+      isWaitingDelete = true;
 
-  graphic->Update();
-  collision->Update();
+    flyingTime += Time::Get()->WorldDelta();
+
+    Move(axis * speed);
+
+    graphic->Update();
+    collision->Update();
+  }
+
+
 }
 
 void Bullet::Render()
@@ -38,7 +53,7 @@ Bullet* Bullet::NewBullet(Vector3 position, Vector3 axis)
 }
 
 Bullet::Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath, Vector3 position, Vector3 axis)
-  : GameObject(position, Vector3(60, 6, 0)), fired(fired), side(side), speed(speed), damage(damage), axis(axis), texturePath(texturePath)
+  : GameObject(position, Vector3(62, 14, 0)), fired(fired), side(side), speed(speed), damage(damage), axis(axis), texturePath(texturePath)
 {
   
     auto rotateChecker = D3DXVec3Dot(&axis, &Values::UpVec);

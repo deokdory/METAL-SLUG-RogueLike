@@ -7,6 +7,8 @@
 Terrain::Terrain(Vector3 position, Vector3 size, std::wstring path)
     : GameObject(position, size) {
 
+  type = Type::TERRAIN;
+
   collision->InitializeBase();
   collision->InitializeBottom();
   collision->InitializeTop();

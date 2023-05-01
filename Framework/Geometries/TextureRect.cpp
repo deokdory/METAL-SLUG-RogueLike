@@ -53,6 +53,7 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation,
   {
     shaderResourceView = texture->GetSRV();
   }
+
   SAFE_DELETE(texture);
 }
 

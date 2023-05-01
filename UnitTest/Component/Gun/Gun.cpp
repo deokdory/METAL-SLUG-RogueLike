@@ -8,7 +8,7 @@ Gun::Gun(GameObject* owner, float rpm, float vertRecoil, float horiRecoil, float
          UINT magazine, UINT magazineMax, UINT ammo, UINT ammoMax)
   : rpm(rpm), vertRecoil(vertRecoil), horiRecoil(horiRecoil), bulletSpeed(bulletSpeed), magazine(magazine), magazineMax(magazineMax), ammo(ammo), ammoMax(ammoMax)
 {
-  new Bullet(owner, Bullet::Side::PLAYER, bulletSpeed, bulletDamage, TexturePath + L"basicBullet.png");
+  //bullet = new Bullet(owner, Bullet::Side::PLAYER, bulletSpeed, bulletDamage, TexturePath + L"bullet_hmg.png");
 }
 
 Gun::~Gun()
@@ -153,7 +153,7 @@ void Gun::Fire(Vector3 position, Vector3 axis)
 {
   magazine--;
   auto level = GameManager::Get()->GetCurrentLevel();
-  level->PushObject(bullet->NewBullet(position + (axis * 60), axis));
+  level->PushObject(bullet->NewBullet(position + (axis * 90), axis));
 
   rpmProgress = 0.0;
 }
@@ -195,8 +195,9 @@ void Gun::SwitchMode()
 
 Gun* Gun::InitHMG(GameObject* owner)
 {
-  auto gun = new Gun(owner, 1.f / 8.f, 2, 1, 16, 5, 30, 30, 180, 180);
-  auto bullet = new Bullet(owner, Bullet::Side::PLAYER, 16, 5, TexturePath + L"bulletBasic.png");
+  auto gun = new Gun(owner, 1.f / 12.f, 2, 1, 16, 5, 30, 30, 180, 180);
+
+  auto bullet = new Bullet(owner, Bullet::Side::PLAYER, 16, 5, TexturePath + L"bullet_hmg.png");
   gun->SetBullet(bullet);
 
   return gun;

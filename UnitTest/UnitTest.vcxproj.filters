@@ -27,6 +27,8 @@
     <ClInclude Include="Component\Combat\Combat.h" />
     <ClInclude Include="Component\Combat\PlayerCombat.h" />
     <ClInclude Include="Component\Combat\Throwable\Throwable.h" />
+    <ClInclude Include="Character\Enemy.h" />
+    <ClInclude Include="Character\SoldierSample.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
@@ -53,6 +55,8 @@
     <ClCompile Include="Component\Combat\Combat.cpp" />
     <ClCompile Include="Component\Combat\PlayerCombat.cpp" />
     <ClCompile Include="Component\Combat\Throwable\Throwable.cpp" />
+    <ClCompile Include="Character\Enemy.cpp" />
+    <ClCompile Include="Character\SoldierSample.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Framework.lib" />

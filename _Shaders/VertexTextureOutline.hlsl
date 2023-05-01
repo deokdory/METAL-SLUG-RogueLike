@@ -66,6 +66,7 @@ float4 PS(PixelInput input) : SV_Target {
         else if (input.uv.x >= .5f && input.uv.y < .5f)
         {
             color = _sourceTex.Sample(_samp, float2((input.uv.x - .5f) * 2.f, input.uv.y * 2.f));
+            
             float r, g, b;
             r = dot(color.rgb, float3(.393f, .769f, .189f));
             g = dot(color.rgb, float3(.393f, .686f, .168f));

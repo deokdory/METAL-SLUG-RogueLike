@@ -2,8 +2,9 @@
 #include "Throwable.h"
 
 Throwable::Throwable(GameObject* thrown, Side side, float gravityOffset, float damage, float range, std::wstring texturePath)
-  : GameObject(thrown->GetPosition(), Vector3(26, 32, 0)), thrown(thrown), side(side), gravityOffset(gravityOffset), strength(strength), damage(damage), range(range), texturePath(texturePath)
+  : GameObject(thrown->GetPosition(), Vector3(26, 32, 0)), thrown(thrown), side(side), gravityOffset(gravityOffset), strength(0), damage(damage), range(range), texturePath(texturePath)
 {
+  type = Type::THROWABLE;
 }
 
 Throwable::~Throwable()
@@ -19,7 +20,7 @@ void Throwable::Update()
 
   Move(Vector3(xSpeed, ySpeed, 0));
 
-  graphic->AddRotation(-xSpeed, ObjectGraphic::Type::TEXTURE);
+  graphic->AddRotation(xSpeed, ObjectGraphic::Type::TEXTURE);
 
   graphic->Update();
   collision->Update();

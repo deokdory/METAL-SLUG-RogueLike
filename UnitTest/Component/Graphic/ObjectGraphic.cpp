@@ -21,7 +21,17 @@ ObjectGraphic::ObjectGraphic(GameObject* object)
   }
 }
 
-ObjectGraphic::~ObjectGraphic() {}
+ObjectGraphic::~ObjectGraphic() {
+  for (int i = 0; i < 3; i++)
+  {
+    SAFE_DELETE(animators[i]);
+    SAFE_DELETE(animRects[i]);
+    SAFE_DELETE(texRects[i]);
+  }
+  animators.clear();
+  animRects.clear();
+  texRects.clear();
+}
 
 void ObjectGraphic::Update()
 {

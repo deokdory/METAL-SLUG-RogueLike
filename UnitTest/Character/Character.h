@@ -9,4 +9,5 @@ class Character : public GameObject {
   virtual void Update();
   virtual void Render();
 
+protected:
 };

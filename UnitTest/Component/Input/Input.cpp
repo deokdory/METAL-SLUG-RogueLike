@@ -34,7 +34,7 @@ void Input::Update(Agent& agent)
 
 
 
-  // Test
+  // Global Speed Test
   if (Keyboard::Get()->Down(VK_F4)) Time::Get()->SetGlobalSpeed(0.25f);
   if (Keyboard::Get()->Down(VK_F5)) Time::Get()->SetGlobalSpeed(1.00f);
 
