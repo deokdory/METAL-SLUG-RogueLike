@@ -162,6 +162,7 @@
     <ClInclude Include="Component\Movement\PlayerMovement.h" />
     <ClInclude Include="Component\Movement\Movement.h" />
     <ClInclude Include="Component\Combat\PlayerCombat.h" />
+    <ClInclude Include="Component\Movement\ThrowableMovement.h" />
     <ClInclude Include="Game\Decoration.h" />
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Game\GameManager.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="Component\Movement\PlayerMovement.cpp" />
     <ClCompile Include="Component\Movement\Movement.cpp" />
     <ClCompile Include="Component\Combat\PlayerCombat.cpp" />
+    <ClCompile Include="Component\Movement\ThrowableMovement.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="Game\GameManager.cpp" />
     <ClCompile Include="Game\GameObject.cpp" />

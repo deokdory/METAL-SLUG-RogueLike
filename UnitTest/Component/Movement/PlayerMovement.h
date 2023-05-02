@@ -16,6 +16,7 @@ public:
   void Slide() { isSliding = true; }
   void SlideEnd() { isSliding = false; }
 
+  virtual void UpdateAccel();
 private:
   bool isSliding = false;
 };

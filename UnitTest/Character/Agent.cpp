@@ -41,7 +41,7 @@ void Agent::Update()
     {
       movement->SlowDown();
 
-      if (std::abs(movement->GetXSpeed()) < 0.5f)
+      if (std::abs(movement->GetXSpeedOrigin()) < 0.5f)
       {
         movement->SlideEnd();
         movementState = MovementState::ONGROUND;
@@ -53,7 +53,7 @@ void Agent::Update()
       {
         if (isFliped == true)
         {
-          if (movement->GetXSpeed() < -1.f)
+          if (movement->GetXSpeedOrigin() < -1.f)
           {
             graphic->SetCurrentAnimation(L"jumpBegin_run", ObjectGraphic::Slot::LOWER);
             movementState = MovementState::FALLING_MOVE;
@@ -66,7 +66,7 @@ void Agent::Update()
         }
         if (isFliped == false)
         {
-          if (movement->GetXSpeed() > 1.f)
+          if (movement->GetXSpeedOrigin() > 1.f)
           {
             graphic->SetCurrentAnimation(L"jumpBegin_run", ObjectGraphic::Slot::LOWER);
             movementState = MovementState::FALLING_MOVE;
@@ -84,13 +84,13 @@ void Agent::Update()
     {
       if (movement->GetIsFalling() == false)
       {
-        if (abs(movement->GetXSpeed()) > 2)
+        if (abs(movement->GetXSpeedOrigin()) > 2)
           graphic->SetCurrentAnimation(L"run", ObjectGraphic::Slot::LOWER);
 
         movementState = MovementState::ONGROUND;
       }
 
-      if (movement->GetYSpeed() < 0)
+      if (movement->GetYSpeedOrigin() < 0)
       {
         graphic->SetCurrentAnimation(L"jumpEnd_stand", ObjectGraphic::Slot::LOWER);
       }
@@ -100,13 +100,13 @@ void Agent::Update()
     {
       if (movement->GetIsFalling() == false)
       {
-        if (abs(movement->GetXSpeed()) > 2)
+        if (abs(movement->GetXSpeedOrigin()) > 2)
           graphic->SetCurrentAnimation(L"run", ObjectGraphic::Slot::LOWER);
 
         movementState = MovementState::ONGROUND;
       }
 
-      if (movement->GetYSpeed() < 0)
+      if (movement->GetYSpeedOrigin() < 0)
       {
         graphic->SetCurrentAnimation(L"jumpEnd_run", ObjectGraphic::Slot::LOWER);
       }

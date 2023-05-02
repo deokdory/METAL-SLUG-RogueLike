@@ -29,6 +29,7 @@
     <ClInclude Include="Component\Combat\Throwable\Throwable.h" />
     <ClInclude Include="Character\Enemy.h" />
     <ClInclude Include="Character\SoldierSample.h" />
+    <ClInclude Include="Component\Movement\ThrowableMovement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
@@ -57,6 +58,7 @@
     <ClCompile Include="Component\Combat\Throwable\Throwable.cpp" />
     <ClCompile Include="Character\Enemy.cpp" />
     <ClCompile Include="Character\SoldierSample.cpp" />
+    <ClCompile Include="Component\Movement\ThrowableMovement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Framework.lib" />

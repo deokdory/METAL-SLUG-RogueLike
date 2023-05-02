@@ -14,7 +14,7 @@ public:
   void Update(float xSpeed, float ySpeed);
   void Render();
 
-  const BoundingBox* GetBox(Slot slot);
+  BoundingBox* GetBox(Slot slot);
 
 private:
   // 스피드 확인 및 연산 위한 바운딩박스
@@ -42,23 +42,34 @@ public:
 
   virtual void Jump();
 
-  virtual bool GetIsFalling() { return isFalling; }
-  virtual float GetXSpeed() { return xSpeed; }
-  virtual float GetYSpeed() { return ySpeed; }
+  virtual void UpdateAccel();
+
+  bool GetIsFalling() { return isFalling; }
+
+  float GetXSpeed() { return xSpeed; }
+  float GetYSpeed() { return ySpeed; }
+
+  float GetXSpeedOrigin() { return xSpeedOrigin; }
+  float GetYSpeedOrigin() { return ySpeedOrigin; }
+
+  float GetGravityOffset() { return gravityOffset; }
+  float GetFallingSpeedMax() { return fallingSpeedMax; }
 
 protected:
-  void collisionCheck();
+  virtual void collisionCheck();
 
 protected:
   bool isFalling = false; // 떨어지고 있는가
 
   float ySpeed = 0; // 수직 속도
+  float ySpeedOrigin = 0;
   float gravityOffset = 0; // 객체의 중력값 보정 ( 기본 중력값 + )
   float jumpPower = 5.f; // 점프 세기
 
   float fallingSpeedMax = -20.f; // 수직 낙하 속도 제한
 
   float xSpeed = 0; // 수평 속도
+  float xSpeedOrigin = 0;
   float xSpeedMax = 6; // 수평 속도 제한
 
   float accel = 0; // 상황별 가속도 보정 위함 

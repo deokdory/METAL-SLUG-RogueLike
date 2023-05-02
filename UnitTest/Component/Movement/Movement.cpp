@@ -87,7 +87,7 @@ void MovementSpeedBox::Render()
   speedBoxB->Render();
 }
 
-const BoundingBox* MovementSpeedBox::GetBox(Slot slot)
+BoundingBox* MovementSpeedBox::GetBox(Slot slot)
 {
   switch (slot)
   {
@@ -113,21 +113,24 @@ Movement::~Movement()
 void Movement::Update()
 {
   float globalSpeed = Time::Get()->GetGlobalSpeed();
+
   // 가속도 관련
-  {
-    accel = accelOrigin * globalSpeed;
-  }
+  UpdateAccel();
+
   // 낙하 
   {
     auto globalGravity = GameManager::Get()->GetGlobalGravity();
+
     if (isFalling)
-      if (ySpeed > fallingSpeedMax) ySpeed -= ((globalGravity + gravityOffset) * globalSpeed);
+      if (ySpeed > fallingSpeedMax) ySpeedOrigin -= ((globalGravity + gravityOffset) * globalSpeed);
   }
+  xSpeed = xSpeedOrigin * globalSpeed;
+  ySpeed = ySpeedOrigin * globalSpeed;
 
   speedBox->Update(xSpeed, ySpeed);
   collisionCheck();
 
-  Vector3 move = { xSpeed, ySpeed, 0 };
+  Vector3 move = {xSpeed, ySpeed, 0 };
   object->Move(move);
 }
 
@@ -151,38 +154,43 @@ void Movement::GUI()
 
 void Movement::MoveLeft()
 {
-  if (xSpeed > -xSpeedMax) {
-    if (xSpeed > 0) SlowDown();
-    xSpeed -= accel;
+  if (xSpeedOrigin > -xSpeedMax) {
+    if (xSpeedOrigin > 0) SlowDown();
+    xSpeedOrigin -= accel;
   }
   else
-    xSpeed = -xSpeedMax;
+    xSpeedOrigin = -xSpeedMax;
 }
 
 void Movement::MoveRight()
 {
-  if (xSpeed < xSpeedMax) {
-    if (xSpeed < 0) SlowDown();
-    xSpeed += accel;
+  if (xSpeedOrigin < xSpeedMax) {
+    if (xSpeedOrigin < 0) SlowDown();
+    xSpeedOrigin += accel;
   }
   else
-    xSpeed = xSpeedMax;
+    xSpeedOrigin = xSpeedMax;
 }
 
 void Movement::SlowDown()
 {
-  if (xSpeed > 0.5f) xSpeed -= accel * 2;
-  else if (xSpeed < -0.5f) xSpeed += accel * 2;
-  else xSpeed = 0.f;
+  if (xSpeedOrigin > 0.5f) xSpeedOrigin -= accel * 2;
+  else if (xSpeedOrigin < -0.5f) xSpeedOrigin += accel * 2;
+  else xSpeedOrigin = 0.f;
 }
 
 void Movement::Jump()
 {
   if (isFalling == false)
   {
-    ySpeed = jumpPower;
+    ySpeedOrigin = jumpPower;
     isFalling = true;
   }
+}
+
+void Movement::UpdateAccel()
+{
+  accel = accelOrigin * Time::Get()->GetGlobalSpeed();
 }
 
 void Movement::collisionCheck()
@@ -191,9 +199,11 @@ void Movement::collisionCheck()
 
   auto& terrains = GameManager::Get()->GetCurrentLevel()->GetTerrains();
 
-  auto bottom = object->GetCollision()->GetBottom();
-  auto top = object->GetCollision()->GetTop();
-  auto base = object->GetCollision()->GetBase();
+  auto* bottom = object->GetCollision()->GetBottom();
+  auto* top = object->GetCollision()->GetTop();
+  auto* base = object->GetCollision()->GetBase();
+
+  auto* bottomSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::BOTTOM);
 
   auto objPos = object->GetPosition();
   auto objSize = object->GetSize();
@@ -202,6 +212,9 @@ void Movement::collisionCheck()
   Vector3 terrSize;
 
   BoundingBox* terrTop, * terrBottom, * terrBase;
+
+  BoundingBox* nearestBottom = nullptr;
+
   for (auto terr : terrains) {
     terrTop = terr->GetCollision()->GetTop();
     terrBase = terr->GetCollision()->GetBase();
@@ -210,14 +223,17 @@ void Movement::collisionCheck()
     terrPos = terr->GetPosition();
     terrSize = terr->GetSize();
 
-    if (ySpeed <= 0) {
-      if (BoundingBox::AABB(bottom, terrTop)) {
-        isFalling = false;
-        ySpeed = 0;
+    if (ySpeed <= -0.00001) {
+      if (BoundingBox::AABB(bottomSpeedBox, terrTop))
+      {
+          isFalling = false;
 
-        float depth = (terrPos.y + terrSize.y / 2) - (objPos.y - objSize.y / 2);
-        if (depth > 0) {
-          object->Move({ 0, depth, 0 });
+        if (nearestBottom == nullptr || terrTop->GetRect()->LT.y > nearestBottom->GetRect()->LT.y)
+        {
+          //std::cout << std::fixed << "촥 " << ySpeed << std::endl;
+
+          nearestBottom = terrTop;
+          ySpeed -= (bottomSpeedBox->GetRect()->RB.y - terrTop->GetRect()->LT.y);
         }
       }
     }

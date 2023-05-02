@@ -2,6 +2,8 @@
 #include "Input.h"
 
 #include "Character/Agent.h"
+#include "Component/Combat/Throwable/Throwable.h"
+#include "Component/Movement/ThrowableMovement.h"
 
 Input::Input()
 {
@@ -27,12 +29,10 @@ void Input::Update(Agent& agent)
  
   auto movement = agent.GetMovement();
 
-  float xSpeed = movement->GetXSpeed();
-  float ySpeed = movement->GetYSpeed();
+  float xSpeed = movement->GetXSpeedOrigin();
+  float ySpeed = movement->GetYSpeedOrigin();
 
   auto combat = agent.GetCombat();
-
-
 
   // Global Speed Test
   if (Keyboard::Get()->Down(VK_F4)) Time::Get()->SetGlobalSpeed(0.25f);
@@ -282,7 +282,7 @@ void Input::Update(Agent& agent)
         float strength = strengthMin + throwProgress * 5;
 
         graphic->SetCurrentAnimation(L"throw_rifle");
-        combat->ThrowGrenade(agentPosition + agentLookAtAxis * 60, agentLookAtAxis, strength);
+        combat->ThrowGrenade(agentPosition, agentLookAtAxis, strength);
 
         isPressThrowing = false;
         throwProgress = 0.0;
@@ -346,9 +346,11 @@ void Input::GUI()
 void Input::updateThrowLine(Agent& agent, Vector3 position, Vector3 axis, float strength)
 {
   float gravity = 
-    GameManager::Get()->GetGlobalGravity() + agent.GetCombat()->GetThrowableGravityOffset();
+    GameManager::Get()->GetGlobalGravity() + 
+    agent.GetCombat()->GetThrowable()->GetMovement()->GetGravityOffset();
 
-  float fallingSpeedMax = agent.GetCombat()->GetThrowableFallingSpeedMax();
+  float fallingSpeedMax = 
+    agent.GetCombat()->GetThrowable()->GetMovement()->GetFallingSpeedMax();
 
   UINT MS_PER_UPDATE = 60;
   //double spacing = ((double)MS_PER_UPDATE / 10) * (strength / 7.5f);

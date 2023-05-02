@@ -27,7 +27,7 @@ void GameObject::GUI()
 {
 }
 
-void GameObject::Move(Vector3 position) { this->position += (position * Time::Get()->GetGlobalSpeed()) ; }
+void GameObject::Move(Vector3 position) { this->position += position; /* * Time::Get()->GetGlobalSpeed()) */ }
 
 ObjectGraphic* GameObject::GetGraphic()
 {

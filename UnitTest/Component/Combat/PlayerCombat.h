@@ -18,15 +18,13 @@ public:
   bool IsLeftGrenade() { return grenadeCount != 0; } // 수류탄이 남았는지
 
   Gun* GetRifle() { return rifle; } // 외부에서 총 컴포넌트에 접근하기 위함
-
-  float GetThrowableGravityOffset() { return throwable->GetGravityOffset(); }
-  float GetThrowableFallingSpeedMax() { return throwable->GetFallingSpeedMax(); }
+  Throwable* GetThrowable() { return throwable; }
 
 protected:
   Gun* rifle; // 총 컴포넌트
   Throwable* throwable;
 
-  UINT grenadeCount = 3;
+  UINT grenadeCount = 99;
 
   double throwProgress = 0.0; // 던지기 모션 지속시간 측정용
   double throwSpeed = 0.5; // 던지기 모션 지속시간
