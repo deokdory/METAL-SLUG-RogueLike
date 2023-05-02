@@ -58,6 +58,7 @@ protected:
   FireMode mode = FireMode::AUTO; // 발사 모드
   Bullet* bullet = nullptr; // 탄 종류
 
+  std::vector<Bullet*> bullets;
 
   bool isReloading = false; // 장전 중인지
   float reloadSpeed = 1.0f; // 장전 속도

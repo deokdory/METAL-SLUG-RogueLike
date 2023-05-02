@@ -8,6 +8,8 @@ Gun::Gun(GameObject* owner, float rpm, float vertRecoil, float horiRecoil, float
          UINT magazine, UINT magazineMax, UINT ammo, UINT ammoMax)
   : rpm(rpm), vertRecoil(vertRecoil), horiRecoil(horiRecoil), bulletSpeed(bulletSpeed), magazine(magazine), magazineMax(magazineMax), ammo(ammo), ammoMax(ammoMax)
 {
+  bullets.clear();
+  bullets.assign(30, nullptr);
   //bullet = new Bullet(owner, Bullet::Side::PLAYER, bulletSpeed, bulletDamage, TexturePath + L"bullet_hmg.png");
 }
 
@@ -18,6 +20,8 @@ Gun::~Gun()
 
 void Gun::Update(Vector3 position, Vector3 axis)
 {
+  
+
   double currTime = Time::Get()->Running();
   float originAngle = D3DXVec3Dot(&Values::UpVec, &axis);
   float rotateChecker = D3DXVec3Dot(&Values::RightVec, &axis);

@@ -20,7 +20,6 @@ void Bullet::Update()
   }
   else
   {
-
     if (flyingTime >= 5.0)
       isWaitingDelete = true;
 
