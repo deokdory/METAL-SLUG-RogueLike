@@ -2,7 +2,7 @@
 #include "Gun.h"
 
 #include <Windows.h>
-#include "Level/Level.h"
+//#include "Level/Level.h"
 
 Gun::Gun(GameObject* owner, float rpm, float vertRecoil, float horiRecoil, float bulletSpeed, float bulletDamage,
          UINT magazine, UINT magazineMax, UINT ammo, UINT ammoMax)
@@ -19,6 +19,30 @@ Gun::~Gun()
 void Gun::Update(Vector3 position, Vector3 axis)
 {
   double currTime = Time::Get()->Running();
+  float originAngle = D3DXVec3Dot(&Values::UpVec, &axis);
+  float rotateChecker = D3DXVec3Dot(&Values::RightVec, &axis);
+
+  bool isLeft = false;
+  if (rotateChecker < 0) isLeft = true;
+  //std::cout << "isLeft? " << isLeft << std::endl;
+
+  originAngle = std::acos(originAngle);
+  originAngle = D3DXToDegree(originAngle);
+  //std::cout << originAngle << std::endl;
+  
+  float resultAngle = originAngle;
+  if (isLeft) resultAngle = 360 - resultAngle;
+
+  resultAngle -= spray / 2;
+  resultAngle += ((double)rand() / RAND_MAX) * spray;
+
+  if (resultAngle > 360) resultAngle -= 360;
+
+  resultAngle = D3DXToRadian(resultAngle);
+  //std::cout << resultAngle << std::endl;
+
+  axis = {std::sin(resultAngle), std::cos(resultAngle), 0 };
+  //std::cout << axis.x << ", " << axis.y << std::endl;
 
   if (isReloading)
     if (reloadProgress < reloadSpeed)

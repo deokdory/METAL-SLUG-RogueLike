@@ -45,6 +45,7 @@ protected:
   float vertRecoil; // 수직 반동
   float horiRecoil; // 좌우 반동
   float bulletSpeed; // 탄속
+  float spray = 10.f;
 
   double rpmProgress = 0.0;
 

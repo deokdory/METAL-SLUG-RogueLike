@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "TestLevel.h"
 #include "Character/Agent.h"
+#include "Character/SoldierSample.h"
 
 #include "Character/Animations.h"
 #include "UI/HUD.h"
@@ -16,6 +17,9 @@ void TestLevel::init() {
 
   objects.push_back(player);
 
+  auto enemy = new SoldierSample(Values::CenterOfScreen + Vector3(200, 0, 0), Vector3(44, 80, 0.f));
+
+  objects.push_back(enemy);
   //auto player2 = new Agent(Values::CenterOfScreen, Vector3(44, 80, 0.f));
   //
   //player2->InitGraphic(Animations::GetEriLower(), ObjectGraphic::Slot::LOWER);

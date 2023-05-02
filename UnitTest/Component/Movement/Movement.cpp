@@ -3,7 +3,7 @@
 
 #include "Game/GameObject.h"
 
-#include "Level/Level.h"
+//#include "Level/Level.h"
 #include "Component/Collision/Collision.h"
 
 MovementSpeedBox::MovementSpeedBox(GameObject* object)

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "GameManager.h"
 
-#include "Level/Level.h"
+//#include "Level/Level.h"
 
 void GameManager::SetCurrentLevel(Level* level)
 {

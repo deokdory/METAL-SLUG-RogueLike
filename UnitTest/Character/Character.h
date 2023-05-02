@@ -9,5 +9,10 @@ class Character : public GameObject {
   virtual void Update();
   virtual void Render();
 
+  void Damaged(float damage);
+  void Healed(float damage);
+
 protected:
+  float hp = 10.0f;
+
 };

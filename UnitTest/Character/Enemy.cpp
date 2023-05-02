@@ -19,8 +19,8 @@ void Enemy::Update()
     if (timerAfterDead > 5.0) isWaitingDelete = true;
   }
 
-  if (hp <= 0) Die();
-
+  //if (hp <= 0) Die();
+  movement->Update();
   __super::Update();
 }
 

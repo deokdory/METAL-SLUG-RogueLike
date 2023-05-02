@@ -18,9 +18,12 @@ public:
 
   Bullet* NewBullet(Vector3 position, Vector3 axis); // 자신의 복제본을 생성한 뒤 위치와 방향을 설정하여 반환
 
+
 protected:
   // 복제본 생성 위한 생성자
   Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath, Vector3 position, Vector3 axis); 
+  
+  bool collisionCheck();
 
   GameObject* fired; // 쏜 캐릭터
   Side side;  // 아군 | 적군

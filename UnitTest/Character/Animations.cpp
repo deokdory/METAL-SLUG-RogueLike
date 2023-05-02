@@ -101,6 +101,8 @@ Animator* Animations::GetSoldierSample()
   animator->AddAnimClip(idle);
   animator->AddAnimClip(die);
 
+  animator->SetCurrentAnimClip(L"idle");
+
   return animator;
 }
 

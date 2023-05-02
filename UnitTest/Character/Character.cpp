@@ -13,9 +13,22 @@ Character::Character(Vector3 position, Vector3 size)
 Character::~Character() { }
 
 void Character::Update() { 
+
   __super::Update(); 
 }
 
 void Character::Render() {
   __super::Render(); 
+}
+
+void Character::Damaged(float damage)
+{
+  assert(damage <= 0);
+  this->hp -= damage;
+}
+
+void Character::Healed(float damage)
+{
+  assert(damage >= 0);
+  this->hp += damage;
 }

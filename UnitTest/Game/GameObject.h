@@ -36,6 +36,8 @@ class GameObject {
   bool GetIsWaitingDelete() { return isWaitingDelete; }
   void SetIsWaitingDelete(bool isWaitingDelete) { this->isWaitingDelete = isWaitingDelete; }
 
+  GameObject::Type GetObjectType() { return type; }
+
 protected:
   Type type = Type::NONE;
 

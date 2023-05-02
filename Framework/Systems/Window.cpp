@@ -162,14 +162,14 @@ void Window::MainRender()
 		//std::cout << elapsedTime << std::endl;
 		//std::cout << Time::Get()->WorldDelta() << std::endl;
 
-		//if (ImGui::GetIO().WantCaptureMouse == false)
-		//{
-    if (Window::isActive)
+    if (ImGui::GetIO().WantCaptureMouse == false)
     {
-      Mouse::Get()->Update();
-      Keyboard::Get()->Update();
+      if (Window::isActive)
+      {
+        Mouse::Get()->Update();
+        Keyboard::Get()->Update();
+      }
     }
-    //}
     mainObj->Update();
 
     elapsedTime -= MS_PER_UPDATE;
