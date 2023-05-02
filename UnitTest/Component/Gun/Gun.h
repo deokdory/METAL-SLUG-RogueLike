@@ -37,9 +37,9 @@ protected:
   Gun(GameObject* owner, float rpm, float vertRecoil, float horiRecoil, 
     float bulletSpeed, float bulletDamage, UINT magazine, UINT magazineMax, UINT ammo, UINT ammoMax);
 
-  void Fire(Vector3 position, Vector3 axis); // 총 발사
-  void SetBullet(Bullet* bullet) { this->bullet = bullet; } // 총알 설정
-  void Recoil(); // 반동 ( 아직 구현하지 않음 )
+  void fire(Vector3 position, Vector3 axis); // 총 발사
+  void setBullet(Bullet* bullet); // 총알 설정
+  void recoil(); // 반동 ( 아직 구현하지 않음 )
 
   float rpm; // 연사 속도
   float vertRecoil; // 수직 반동
@@ -57,6 +57,7 @@ protected:
 
   FireMode mode = FireMode::AUTO; // 발사 모드
   Bullet* bullet = nullptr; // 탄 종류
+  Bullet* prevBullet = nullptr;
 
   std::vector<Bullet*> bullets;
 

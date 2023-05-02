@@ -1,7 +1,6 @@
 #pragma once
 #include "Character.h"
 
-#include "Component/AgentState.h"
 #include "Component/Movement/PlayerMovement.h"
 #include "Component/Input/Input.h"
 

@@ -8,7 +8,6 @@ Gun::Gun(GameObject* owner, float rpm, float vertRecoil, float horiRecoil, float
          UINT magazine, UINT magazineMax, UINT ammo, UINT ammoMax)
   : rpm(rpm), vertRecoil(vertRecoil), horiRecoil(horiRecoil), bulletSpeed(bulletSpeed), magazine(magazine), magazineMax(magazineMax), ammo(ammo), ammoMax(ammoMax)
 {
-  bullets.clear();
   bullets.assign(30, nullptr);
   //bullet = new Bullet(owner, Bullet::Side::PLAYER, bulletSpeed, bulletDamage, TexturePath + L"bullet_hmg.png");
 }
@@ -72,7 +71,7 @@ void Gun::Update(Vector3 position, Vector3 axis)
           if (rpmProgress >= rpm)
           {
             if(magazineIsEmpty() == false)
-              Fire(position, axis);
+              fire(position, axis);
           }
         }
         break;
@@ -84,7 +83,7 @@ void Gun::Update(Vector3 position, Vector3 axis)
           if (rpmProgress>= rpm)
           {
             if (magazineIsEmpty() == false)
-              Fire(position, axis);
+              fire(position, axis);
               burstCount = 2;
           }
         }
@@ -95,7 +94,7 @@ void Gun::Update(Vector3 position, Vector3 axis)
         if (rpmProgress >= rpm)
         {
           if (magazineIsEmpty() == false)
-            Fire(position, axis);
+            fire(position, axis);
         }
         break;
       }
@@ -110,7 +109,7 @@ void Gun::Update(Vector3 position, Vector3 axis)
     {
       if (magazineIsEmpty() == false)
       {
-        Fire(position, axis);
+        fire(position, axis);
         burstCount--;
       }
       else
@@ -177,13 +176,20 @@ void Gun::ReleaseTrigger()
   isTriggered = false;
 }
 
-void Gun::Fire(Vector3 position, Vector3 axis)
+void Gun::fire(Vector3 position, Vector3 axis)
 {
   magazine--;
   auto level = GameManager::Get()->GetCurrentLevel();
   level->PushObject(bullet->NewBullet(position + (axis * 90), axis));
 
   rpmProgress = 0.0;
+}
+
+void Gun::setBullet(Bullet* bullet)
+{
+  prevBullet = this->bullet;
+  this->bullet = bullet;
+  
 }
 
 void Gun::ReloadBegin()
@@ -226,12 +232,12 @@ Gun* Gun::InitHMG(GameObject* owner)
   auto gun = new Gun(owner, 1.f / 12.f, 2, 1, 16, 5, 30, 30, 180, 180);
 
   auto bullet = new Bullet(owner, Bullet::Side::PLAYER, 16, 5, TexturePath + L"bullet_hmg.png");
-  gun->SetBullet(bullet);
+  gun->setBullet(bullet);
 
   return gun;
 }
 
-void Gun::Recoil()
+void Gun::recoil()
 {
   
 }

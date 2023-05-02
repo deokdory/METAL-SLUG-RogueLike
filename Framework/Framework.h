@@ -18,6 +18,7 @@
 #include <map>
 #include <array>
 #include <assert.h>
+#include <fstream>
 
 using namespace std;
 
@@ -100,6 +101,7 @@ typedef UINT		uint;
 #define WinMaxHeight 720
 
 const wstring ShaderPath = L"../_Shaders/";
-const wstring TexturePath = L"../_Textures/";
+const wstring TexturePath = L"../_Resources/_Textures/";
+const wstring TilePath = L"../_Resources/_TileData/";
 
 extern HWND handle;

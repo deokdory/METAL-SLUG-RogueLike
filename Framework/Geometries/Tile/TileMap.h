@@ -43,6 +43,9 @@ public:
   void MapVertexBuffer();
   void UnmapVertexBuffer();
 
+  void Save(wstring path);
+  void Load(wstring path);
+
   class Tile* GetTile(Vector3 position);
 
 private:

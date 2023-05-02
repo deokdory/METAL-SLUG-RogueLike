@@ -45,8 +45,6 @@ void Bullet::Render()
 
 void Bullet::hit(GameObject* object)
 {
-  isHit = true;
-
   switch (object->GetObjectType())
   {
   case GameObject::Type::CHARACTER:
@@ -82,12 +80,12 @@ bool Bullet::collisionCheck()
   for (GameObject* obj : objects)
   {
     if (obj == fired || obj == this) continue;
+
     objectBase = obj->GetCollision()->GetBase();
 
     if (BoundingBox::OBB(bulletBox, objectBase))
     {
       hit(obj);
-      return true;
     }
   }
 
@@ -100,7 +98,7 @@ bool Bullet::collisionCheck()
       isHit = true;
     }
   }
-  return false;
+  return isHit;
 }
 
 Bullet::Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath, Vector3 position, Vector3 axis)

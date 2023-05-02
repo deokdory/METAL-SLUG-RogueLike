@@ -125,9 +125,9 @@ void Textures::Load(Texture2D* texture) {
     }
   }
 
-  if (bExist == true) {
-    texture->srv = exist.srv;
-  } else {
+  //if (bExist == true) {
+  //  texture->srv = exist.srv;
+  //} else {
     DirectX::ScratchImage image;
 
     if (ext == L"tga") {
@@ -151,5 +151,5 @@ void Textures::Load(Texture2D* texture) {
     texture->metaData = metaData;
 
     descs.push_back(desc);
-  }
+  //}
 }

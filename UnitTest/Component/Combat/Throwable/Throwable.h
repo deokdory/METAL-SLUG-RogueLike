@@ -12,7 +12,7 @@ public:
   virtual void Update();
   virtual void Render();
 
-  virtual void hit(GameObject* object); // 충돌했을 때 충돌한 오브젝트를 인자로 받음
+  virtual bool hit(GameObject* object); // 충돌했을 때 충돌한 오브젝트를 인자로 받음
 
   virtual Throwable* NewThrowable(Vector3 position, Vector3 axis, float strength); // 자신의 복제본을 생성한 뒤 위치와 방향, 던지는 세기를 설정하여 반환
 
@@ -25,6 +25,9 @@ protected:
   // 복제본 생성 위한 생성자
   Throwable(GameObject* thrown, Side side, float gravityOffset, float strength, float damage, float range, std::wstring texturePath, Vector3 position, Vector3 axis);
 
+  bool collisionCheck();
+  void bomb();
+
   GameObject* thrown; // 던진 객체
   Side side; // 아군 | 적군
 
@@ -34,6 +37,8 @@ protected:
   float ySpeed = 0.0f;
 
   float fallingSpeedMax = -20.f; // 낙하 속도 제한
+
+  double sinceThrown = 0.0;
 
   float gravityOffset; // 중력 보정값
 
