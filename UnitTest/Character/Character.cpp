@@ -5,12 +5,14 @@ Character::Character(Vector3 position, Vector3 size)
 : GameObject(position, size) {
   type = Type::CHARACTER;
 
+  hp = hpMax;
+
   collision->InitializeBase();
   collision->InitializeBottom();
   collision->InitializeTop();
 }
 
-Character::~Character() { }
+Character::~Character() {  }
 
 void Character::Update() { 
 
@@ -23,12 +25,12 @@ void Character::Render() {
 
 void Character::Damaged(float damage)
 {
-  assert(damage <= 0);
+  if (damage < 0) std::cout << "damage가 0보다 작음" << std::endl;
   this->hp -= damage;
 }
 
-void Character::Healed(float damage)
+void Character::Healed(float heal)
 {
-  assert(damage >= 0);
-  this->hp += damage;
+  if (heal > 0) std::cout << "heal가 0보다 작음" << std::endl;
+  this->hp += heal;
 }

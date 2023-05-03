@@ -4,7 +4,7 @@
 #include "Component/Movement/ThrowableMovement.h"
 
 Throwable::Throwable(GameObject* thrown, Side side, float damage, float range, std::wstring texturePath)
-  : GameObject(thrown->GetPosition(), Vector3(26, 32, 0)), 
+  : GameObject(thrown->GetPosition(), Vector3(24, 30, 0)), 
   thrown(thrown), side(side), strength(0), 
   damage(damage), range(range), texturePath(texturePath)
 {

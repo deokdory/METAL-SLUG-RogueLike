@@ -196,7 +196,7 @@ void Input::Update(Agent& agent)
 
     if (combat->GetIsThrowing()) break;
     
-    graphic->SetCurrentAnimation(L"aim_rifle");
+    graphic->SetCurrentAnimation(L"aim_rifle", ObjectGraphic::Slot::UPPER);
     
     if (Mouse::Get()->Press(0) || Mouse::Get()->Down(0)) rifle->PullTrigger();
     else rifle->ReleaseTrigger();
@@ -207,7 +207,7 @@ void Input::Update(Agent& agent)
       if (rifle->magazineIsFull() == false)
       {
         rifle->ReloadBegin();
-        graphic->SetCurrentAnimation(L"reload_rifle");
+        graphic->SetCurrentAnimation(L"reload_rifle", ObjectGraphic::Slot::UPPER);
         agent.SetCombatState(Agent::CombatState::RELOADING);
       }
     }
@@ -223,7 +223,7 @@ void Input::Update(Agent& agent)
   case Agent::CombatState::RELOADING:
     if (rifle->GetIsReloading() == false)
     {
-      graphic->SetCurrentAnimation(L"aim_rifle");
+      graphic->SetCurrentAnimation(L"aim_rifle", ObjectGraphic::Slot::UPPER);
       agent.SetCombatState(Agent::CombatState::AIMING_RIFLE);
     }
     break;
@@ -281,7 +281,7 @@ void Input::Update(Agent& agent)
       {
         float strength = strengthMin + throwProgress * 5;
 
-        graphic->SetCurrentAnimation(L"throw_rifle");
+        graphic->SetCurrentAnimation(L"throw_rifle", ObjectGraphic::Slot::UPPER);
         combat->ThrowGrenade(agentPosition, agentLookAtAxis, strength);
 
         isPressThrowing = false;

@@ -20,6 +20,8 @@ public:
 
   class ThrowableMovement* GetMovement() { return movement; }
 
+  GameObject* GetThrown() { return this->thrown; }
+
 protected:
   // 汗力夯 积己 困茄 积己磊
   Throwable(GameObject* thrown, Side side, float strength, float damage, float range, std::wstring texturePath, Vector3 position, Vector3 axis);

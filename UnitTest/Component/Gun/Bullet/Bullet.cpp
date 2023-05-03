@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Bullet.h"
 
+#include "Character/Character.h"
+
 Bullet::Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath)
 : GameObject(fired->GetPosition(), Vector3(62, 14, 0)), fired(fired), side(side), speed(speed), damage(damage), texturePath(texturePath)
 {
@@ -29,8 +31,9 @@ void Bullet::Update()
 
     graphic->Update();
     collision->Update();
+
+    collisionCheck();
   }
-  if (collisionCheck()) return;
 }
 
 void Bullet::Render()
@@ -45,21 +48,26 @@ void Bullet::Render()
 
 void Bullet::hit(GameObject* object)
 {
-  switch (object->GetObjectType())
+  auto type = object->GetObjectType();
+  switch (type)
   {
-  case GameObject::Type::CHARACTER:
   case GameObject::Type::VEHICLE:
   case GameObject::Type::PROP:
   case GameObject::Type::TERRAIN:
     isHit = true;
-    break;
-  case GameObject::Type::BULLET:
-  case GameObject::Type::THROWABLE:
-  case GameObject::Type::NONE:
-    break;
-  default:
-    break;
+    return;
   }
+
+  if (type == GameObject::Type::CHARACTER)
+  {
+    Character* character = dynamic_cast<Character*>(object);
+    if (character->GetIsDead() == false)
+    {
+      character->Damaged(this->damage);
+      isHit = true;
+    }
+  }
+
 }
 
 Bullet* Bullet::NewBullet(Vector3 position, Vector3 axis)
@@ -77,6 +85,8 @@ bool Bullet::collisionCheck()
   BoundingBox* objectBase = nullptr;
   BoundingBox* bulletBox = collision->GetBase();
 
+  GameObject* nearest;
+
   for (GameObject* obj : objects)
   {
     if (obj == fired || obj == this) continue;
@@ -87,6 +97,9 @@ bool Bullet::collisionCheck()
     {
       hit(obj);
     }
+
+
+
   }
 
   BoundingBox* terrainBase = nullptr;

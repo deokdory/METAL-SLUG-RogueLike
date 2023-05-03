@@ -9,6 +9,7 @@ Agent::Agent(Vector3 position, Vector3 size)
   : Character(position, size) 
 {
   input = new Input();
+  type = Type::PLAYER;
 
   movement = new PlayerMovement(this);
   combat = new PlayerCombat(*this);

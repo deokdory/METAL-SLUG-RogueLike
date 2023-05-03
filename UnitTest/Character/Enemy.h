@@ -1,5 +1,7 @@
 #pragma once
 #include "Character/Character.h"
+#include "Game/UI/ProgressBar.h"
+
 class Enemy : public Character
 {
 public:
@@ -9,10 +11,19 @@ public:
   virtual void Update();
   virtual void Render();
 
+  virtual void Damaged(float damage) override;
+  virtual void Healed(float heal) override;
+
   virtual void Die();
 protected:
-  Movement* movement;
-  bool isDead = false;
 
+  ProgressBar* hpBar = nullptr;
+
+  Movement* movement;
   double timerAfterDead = 0.0;
+
+  double hitAnimTimer = 0.0;
+  bool isHit = false;
+
+  
 };

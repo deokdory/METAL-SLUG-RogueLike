@@ -8,7 +8,7 @@
 
 class GameObject {
  public:
-  enum class Type { NONE, CHARACTER, VEHICLE, PROP, TERRAIN, BULLET, THROWABLE };
+  enum class Type { NONE, CHARACTER, PLAYER, VEHICLE, PROP, TERRAIN, BULLET, THROWABLE };
 
   GameObject(Vector3 position, Vector3 size);
   virtual ~GameObject();

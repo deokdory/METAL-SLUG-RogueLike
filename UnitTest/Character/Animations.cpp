@@ -67,10 +67,10 @@ Animator* Animations::GetEriLower() {
   AnimationClip* jumpBegin_run = new AnimationClip(L"jumpBegin_run", srcTex, 3, Vector2(0, 53), Vector2(207, 103), 1.0f / 12.0f, false, false, Vector2(10, 0));
   AnimationClip* jumpEnd_run = new AnimationClip(L"jumpEnd_run", srcTex, 3, Vector2(0, 104), Vector2(207, 154), 1.0f / 6.0f, false, false, Vector2(10, 0));
 
-  AnimationClip* jumpBegin_stand = new AnimationClip(L"jumpBegin_stand", srcTex, 6, Vector2(208, 52), Vector2(615, 113), 1.0 / 24.0f, false, false);
-  AnimationClip* jumpEnd_stand = new AnimationClip(L"jumpEnd_stand", srcTex, 6, Vector2(208, 52), Vector2(615, 113), 1.0 / 12.0f, true, false);
+  AnimationClip* jumpBegin_stand = new AnimationClip(L"jumpBegin_stand", srcTex, 6, Vector2(208, 52), Vector2(615, 113), 1.0f / 24.0f, false, false);
+  AnimationClip* jumpEnd_stand = new AnimationClip(L"jumpEnd_stand", srcTex, 6, Vector2(208, 52), Vector2(615, 113), 1.0f / 12.0f, true, false);
 
-  AnimationClip* slide = new AnimationClip(L"slide", srcTex, 3, Vector2(0, 155), Vector2(299, 202), 1.0 / 24.0f, false, false);
+  AnimationClip* slide = new AnimationClip(L"slide", srcTex, 3, Vector2(0, 155), Vector2(299, 202), 1.0f / 24.0f, false, false);
 
   Animator* animator = new Animator();
 
@@ -93,16 +93,19 @@ Animator* Animations::GetSoldierSample()
 {
   Texture2D* srcTex = new Texture2D(TexturePath + L"enemy_soldier_sample.png");
 
-  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 6, { 0, 0 }, { 335, 77 }, 1.0 / 6.0f, false);
-  AnimationClip* die = new AnimationClip(L"die", srcTex, 11, { 0, 78 }, { 725, 153 }, 1.0 / 12.0f, false, false);
+  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 6, { 0, 0 }, { 336, 77 }, 1.0f / 6.0f, false);
+  AnimationClip* hit = new AnimationClip(L"hit", srcTex, 4, { 337, 0 }, { 600, 77 }, 1.0 / 24.0f, false);
+  AnimationClip* die = new AnimationClip(L"die", srcTex, 11, { 0, 78 }, { 725, 153 }, 1.0f / 18.0f, false, false);
 
   Animator* animator = new Animator();
 
   animator->AddAnimClip(idle);
+  animator->AddAnimClip(hit);
   animator->AddAnimClip(die);
 
   animator->SetCurrentAnimClip(L"idle");
 
+  SAFE_DELETE(srcTex);
   return animator;
 }
 

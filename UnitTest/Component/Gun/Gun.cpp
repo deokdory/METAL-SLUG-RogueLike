@@ -19,8 +19,6 @@ Gun::~Gun()
 
 void Gun::Update(Vector3 position, Vector3 axis)
 {
-  
-
   double currTime = Time::Get()->Running();
   float originAngle = D3DXVec3Dot(&Values::UpVec, &axis);
   float rotateChecker = D3DXVec3Dot(&Values::RightVec, &axis);
