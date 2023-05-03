@@ -26,9 +26,6 @@ void Level::init() {
   }
 }
 void Level::Update() {
-  for (size_t i = 0; i < terrains.size(); i++) {
-    terrains[i]->Update();
-  }
   //for (auto obj : objects) {
   //  obj->Update();
   //}
@@ -44,14 +41,17 @@ void Level::Update() {
     }
     objects[i]->Update();
   }
+  for (size_t i = 0; i < terrains.size(); i++) {
+    terrains[i]->Update();
+  }
 }
 
 void Level::Render() {
-  for (auto terr : terrains) {
-    terr->Render();
-  }
   for (auto obj : objects) {
     obj->Render();
+  }
+  for (auto terr : terrains) {
+    terr->Render();
   }
 }
 

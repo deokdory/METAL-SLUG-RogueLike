@@ -11,6 +11,8 @@ class TestLevel : public Level {
   virtual void init();
   virtual void Update();
   virtual void Render();
+
+  void InitTestEnemies();
  private:
 
   class HUD* playerHud = nullptr;
