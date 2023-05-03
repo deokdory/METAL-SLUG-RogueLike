@@ -14,7 +14,7 @@ public:
 
   void Update();
   void Render();
-  
+
   // 활성화 여부 변경
   void SetVisible(bool visible, Type type, Slot slot = Slot::NORMAL);
 
@@ -32,7 +32,11 @@ public:
   // 지오메트리 중심점 설정
   void SetAnchorPoint(AnchorPoint anchor, Type type, Slot slot = Slot::NORMAL);
 
+  // 회전
   void AddRotation(float rotation, Type type, Slot slot = Slot::NORMAL);
+
+  // 투명도 설정
+  void FadeOut(float duration, Type type, Slot slot = Slot::NORMAL);
 
   // 애니메이터 
   // Animator* GetAnimator(Slot slot = Slot::NORMAL);
@@ -41,9 +45,16 @@ protected:
   class GameObject* object; // 그래픽 컴포넌트의 주체
 
   bool texVisible[3]; // 텍스쳐 지오메트리 활성 여부
-  std::vector<TextureRect*> texRects = {};
+  bool texFading[3] = {}; // 텍스쳐 지오메트리 투명도 페이드 중인지
+  float texFadeSpeed[3] = {};
+
+  std::vector<TextureRect*> texRects;
 
   bool animVisible[3]; // 애니메이션 지오메트리 활성 여부
-  std::vector<AnimationRect*> animRects = {}; // 애니메이션 렉트
-  std::vector<Animator*> animators = {}; // 애니메이터
+  bool animFading[3] = {}; // 애니메이션 지오메트리 투명도 페이드 중인지
+  float animFadeSpeed[3] = {};
+
+  std::vector<AnimationRect*> animRects; // 애니메이션 렉트
+  std::vector<Animator*> animators; // 애니메이터
+
 };
