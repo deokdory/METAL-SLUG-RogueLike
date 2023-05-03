@@ -36,9 +36,9 @@
 Animator* Animations::GetEriUpper() {
   Texture2D* srcTex = new Texture2D(TexturePath + L"eri_upper_x2.png");
 
-  AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(919, 125), -1.f, false, false, Vector2(16, -50));
+  AnimationClip* aim_rifle = new AnimationClip(L"aim_rifle", srcTex, 10, Vector2(0, 0), Vector2(919, 125), -1.f, false, false, Vector2(16, -52));
 
-  AnimationClip* reload_rifle = new AnimationClip(L"reload_rifle", srcTex, 5, Vector2(0, 126), Vector2(449, 188), 1.0f / 5.0f,  false, false, Vector2(15, -29));
+  AnimationClip* reload_rifle = new AnimationClip(L"reload_rifle", srcTex, 5, Vector2(0, 128), Vector2(449, 183), 1.0f / 5.0f,  false, false, Vector2(15, -29));
   AnimationClip* knife1_rifle = new AnimationClip(L"knife1_rifle", srcTex, 6, Vector2(0, 190), Vector2(599, 269), 1.0f / 12.0f, false, false);
   AnimationClip* knife2_rifle = new AnimationClip(L"knife2_rifle", srcTex, 8, Vector2(0, 270), Vector2(831, 341), 1.0f / 12.0f, false, false);
   AnimationClip* throw_rifle = new AnimationClip(L"throw_rifle", srcTex, 5, Vector2(450, 126), Vector2(922, 189), 1.0f / 20.0f, false, false, Vector2(15, -29));
@@ -95,7 +95,7 @@ Animator* Animations::GetSoldierSample()
 
   AnimationClip* idle = new AnimationClip(L"idle", srcTex, 6, { 0, 0 }, { 336, 77 }, 1.0f / 6.0f, false);
   AnimationClip* hit = new AnimationClip(L"hit", srcTex, 4, { 337, 0 }, { 600, 77 }, 1.0 / 24.0f, false);
-  AnimationClip* die = new AnimationClip(L"die", srcTex, 11, { 0, 78 }, { 725, 153 }, 1.0f / 18.0f, false, false);
+  AnimationClip* die = new AnimationClip(L"die", srcTex, 11, { 0, 80 }, { 725, 153 }, 1.0f / 18.0f, false, false);
 
   Animator* animator = new Animator();
 

@@ -32,10 +32,10 @@ MovementSpeedBox::MovementSpeedBox(GameObject* object)
 
 MovementSpeedBox::~MovementSpeedBox()
 {
-  SAFE_DELETE(speedBoxL);
-  SAFE_DELETE(speedBoxR);
-  SAFE_DELETE(speedBoxT);
   SAFE_DELETE(speedBoxB);
+  SAFE_DELETE(speedBoxT);
+  SAFE_DELETE(speedBoxR);
+  SAFE_DELETE(speedBoxL);
 }
 
 void MovementSpeedBox::Update(float xSpeed, float ySpeed)

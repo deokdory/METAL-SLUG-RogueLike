@@ -14,6 +14,7 @@ BoundingBox::BoundingBox(Vector3 position, Vector3 size, float rotation,
 BoundingBox::~BoundingBox() {
   SAFE_DELETE(data);
   SAFE_DELETE(edge);
+  SAFE_DELETE(cb);
   SAFE_DELETE(wb);
   SAFE_DELETE(il);
   SAFE_DELETE(ps);

@@ -13,10 +13,10 @@ class Character : public GameObject {
   virtual void Healed(float heal);
 
   bool GetIsDead() { return isDead; }
+
 protected:
   float hp;
   float hpMax = 20.0f;
 
   bool isDead = false;
-
 };

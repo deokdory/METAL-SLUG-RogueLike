@@ -2,20 +2,12 @@
 #include "Level.h"
 
 Level::~Level() {
-  //for (auto bg : backgrounds) {
-  //  SAFE_DELETE(bg);
-  //}
-  //for (auto deco : decos) {
-  //  SAFE_DELETE(deco);
-  //}
   for (auto terr : terrains) {
     SAFE_DELETE(terr);
   }
   for (auto obj : objects) {
     SAFE_DELETE(obj);
   }
-  //backgrounds.clear();
-  //decos.clear();
   terrains.clear();
   objects.clear();
 }
@@ -41,6 +33,7 @@ void Level::Update() {
     }
     objects[i]->Update();
   }
+
   for (size_t i = 0; i < terrains.size(); i++) {
     terrains[i]->Update();
   }
@@ -60,5 +53,4 @@ void Level::GUI()
   for (auto obj : objects) {
     obj->GUI();
   }
-
 }

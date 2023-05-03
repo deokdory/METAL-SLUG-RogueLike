@@ -42,7 +42,6 @@ void ThrowableMovement::Falling()
   if (isFalling) {
     if (ySpeed > fallingSpeedMax) ySpeedOrigin -= ((globalGravity + gravityOffset) * globalSpeed);
   }
-
   bounce = 0.0f;
 }
 

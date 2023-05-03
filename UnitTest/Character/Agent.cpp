@@ -164,11 +164,17 @@ void Agent::Update()
   movement->Update();
   combat->Update(*this);
 
+  auto mousePos = Mouse::Get()->GetPosition();
+
+  mousePos.x -= (float)WinMaxWidth / 2;
+  mousePos.y -= (float)WinMaxHeight / 2;
+  mousePos.z = 0.0f;
+
+  Camera::Get()->SetPosition(position + mousePos / 4);
 }
 
 void Agent::Render() 
 {
-  Camera::Get()->SetPosition(position);
   
     __super::Render();
   movement->Render();

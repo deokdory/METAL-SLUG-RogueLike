@@ -13,6 +13,8 @@ public:
   virtual void Render(class Agent& agent);
   virtual void GUI();
 
+  Vector3 GetMouseWorldPosition() { return mouseWorldPos; }
+
 protected:
   void updateThrowLine(class Agent& agent, Vector3 position, Vector3 axis, float strength);
 

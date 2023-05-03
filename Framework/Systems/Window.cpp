@@ -150,7 +150,6 @@ LRESULT Window::WndProc(HWND handle, UINT message, WPARAM wParam, LPARAM lParam)
 
 void Window::MainRender()
 {
-
   Time::Get()->Update();
   Gui::Get()->Update();
 

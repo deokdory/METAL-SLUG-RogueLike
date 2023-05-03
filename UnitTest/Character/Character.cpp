@@ -12,7 +12,7 @@ Character::Character(Vector3 position, Vector3 size)
   collision->InitializeTop();
 }
 
-Character::~Character() {  }
+Character::~Character() {}
 
 void Character::Update() { 
 

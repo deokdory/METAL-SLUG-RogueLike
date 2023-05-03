@@ -155,6 +155,7 @@ TextureRect::~TextureRect() {
   SAFE_DELETE(inputLayout);
   SAFE_DELETE(pixelShader);
   SAFE_DELETE(vertexShader);
+  SAFE_DELETE(textureBuffer);
   SAFE_DELETE(indexBuffer);
   SAFE_DELETE(vertexBuffer);
 }

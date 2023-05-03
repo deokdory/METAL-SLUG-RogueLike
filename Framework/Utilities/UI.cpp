@@ -271,16 +271,16 @@ void UI::SetPosition(Vector3 position)
   case UI::NONE:
     break;
   case UI::LEFT_TO_RIGHT:
-    position.x -= size.x / 2;
+    position.x -= originSize.x / 2;
     break;
   case UI::RIGHT_TO_LEFT:
-    position.x += size.x / 2;
+    position.x += originSize.x / 2;
     break;
   case UI::UP_TO_DOWN:
-    position.y += size.y / 2;
+    position.y += originSize.y / 2;
     break;
   case UI::DOWN_TO_UP:
-    position.y -= size.y / 2;
+    position.y -= originSize.y / 2;
     break;
   default:
     break;
