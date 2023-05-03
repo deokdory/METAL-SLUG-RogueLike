@@ -19,6 +19,8 @@ Throwable::~Throwable()
 
 void Throwable::Update()
 {
+  auto globalSpeed = Time::Get()->GetGlobalSpeed();
+
   if (sinceThrown > 3.0)
   {
     bomb();
@@ -33,11 +35,17 @@ void Throwable::Update()
   //
   //Move(Vector3(xSpeed, ySpeed, 0));
 
-  //graphic->AddRotation(rotateSpeed, ObjectGraphic::Type::TEXTURE);
-
+  if (isFirstHit) graphic->AddRotation(movement->GetXSpeed() * -2, ObjectGraphic::Type::TEXTURE);
+  else
+  {
+    if (movement->GetXSpeedOrigin() > 0) graphic->AddRotation(-strength * globalSpeed , ObjectGraphic::Type::TEXTURE);
+    else graphic->AddRotation(strength * globalSpeed, ObjectGraphic::Type::TEXTURE);
+  }
   graphic->Update();
   collision->Update();
   movement->Update();
+
+  if (movement->GetIsFalling() == false) isFirstHit = true;
 
   sinceThrown += Time::Get()->WorldDelta();
 }

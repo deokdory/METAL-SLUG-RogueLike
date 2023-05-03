@@ -25,7 +25,7 @@ void Bullet::Update()
 
     flyingTime += Time::Get()->WorldDelta();
 
-    Move(axis * speed);
+    Move(axis * (speed * Time::Get()->GetGlobalSpeed()));
 
     graphic->Update();
     collision->Update();

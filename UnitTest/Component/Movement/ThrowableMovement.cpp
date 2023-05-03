@@ -4,7 +4,7 @@
 ThrowableMovement::ThrowableMovement(GameObject* object , float xSpeed, float ySpeed)
   : Movement(object)
 {
-  this->accelOrigin = 0.1f;
+  this->accelOrigin = 0.05f;
 
   this->xSpeedOrigin = xSpeed;
   this->ySpeedOrigin = ySpeed;

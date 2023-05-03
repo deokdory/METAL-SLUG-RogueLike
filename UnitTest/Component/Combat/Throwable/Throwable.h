@@ -37,9 +37,8 @@ protected:
   float strength = 0; // 던지는 세기
   float range; // 폭발 범위 (차후 구현 예정)
 
-  //float rotateSpeed = 0.0f;
-
   bool isBombed = false; // 터졌는가
+  bool isFirstHit = false;
 
   std::wstring texturePath = L""; // 자신의 텍스쳐 파일 경로
 
