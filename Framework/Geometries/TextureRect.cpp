@@ -54,6 +54,30 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation,
     shaderResourceView = texture->GetSRV();
   }
 
+  // Sampler
+  {
+    // 선형 보간
+    D3D11_SAMPLER_DESC desc;
+    States::GetSamplerDesc(&desc);
+    States::CreateSamplerState(&desc, &point[0]);
+
+    // Point Sampling
+    desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+    States::CreateSamplerState(&desc, &point[1]);
+  }
+
+  // Blende
+  {
+    // 블렌드 비활성화
+    D3D11_BLEND_DESC desc;
+    States::GetBlendDesc(&desc);
+    States::CreateBlendState(&desc, &bPoint[0]);
+
+    // 활성화
+    desc.RenderTarget[0].BlendEnable = true;
+    States::CreateBlendState(&desc, &bPoint[1]);
+  }
+
   SAFE_DELETE(texture);
 }
 
@@ -98,6 +122,31 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation)
 
   // world Buffer
   worldBuffer = new WorldBuffer();
+
+  // Sampler
+  {
+    // 선형 보간
+    D3D11_SAMPLER_DESC desc;
+    States::GetSamplerDesc(&desc);
+    States::CreateSamplerState(&desc, &point[0]);
+
+    // Point Sampling
+    desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+    States::CreateSamplerState(&desc, &point[1]);
+  }
+
+  // Blende
+  {
+    // 블렌드 비활성화
+    D3D11_BLEND_DESC desc;
+    States::GetBlendDesc(&desc);
+    States::CreateBlendState(&desc, &bPoint[0]);
+
+    // 활성화
+    desc.RenderTarget[0].BlendEnable = true;
+    States::CreateBlendState(&desc, &bPoint[1]);
+  }
+
 }
 
 TextureRect::~TextureRect() {
@@ -282,6 +331,10 @@ void TextureRect::UpdateWorld() {
 }
 
 void TextureRect::Render() {
+
+  DC->PSSetSamplers(0, 1, &point[1]);
+  DC->OMSetBlendState(bPoint[1], nullptr, (UINT)0xFFFFFFFFFF);
+
   vertexBuffer->SetIA();
   indexBuffer->SetIA();
   inputLayout->SetIA();
@@ -299,7 +352,14 @@ void TextureRect::Render() {
 
 void TextureRect::GUI() {}
 
-void TextureRect::SetIsFliped(bool bFliped) {
+void TextureRect::SetIsFliped(bool bFliped) 
+{
   textureBuffer->Flip(bFliped);
   this->bFliped = bFliped;
+}
+
+void TextureRect::SetOpacity(float opacity)
+{
+  textureBuffer->SetOpacity(opacity);
+  this->opacity = opacity;
 }

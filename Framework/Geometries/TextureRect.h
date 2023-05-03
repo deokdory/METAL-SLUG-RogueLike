@@ -8,20 +8,25 @@ enum AnchorPoint {
 
 class TextureBuffer : public ShaderBuffer {
  public:
-  TextureBuffer() : ShaderBuffer(&data, sizeof(data)) { data.bFliped = false; }
+  TextureBuffer() : ShaderBuffer(&data, sizeof(data)) 
+  { 
+    data.bFliped = false;
+    data.opacity = 1.0f;
+  }
 
   void Flip(bool flip) { this->data.bFliped = flip; }
+  void SetOpacity(float opacity) { this->data.opacity = opacity; }
+
  private:
   struct Data {
     int bFliped;
-    Vector3 dummy;
+    float opacity;
+    Vector2 dummy;
   } data;
 };
 
 class TextureRect {
  public:
-
-
   TextureRect(Vector3 position, Vector3 size, float rotation,
               std::wstring path);
   TextureRect(Vector3 position, Vector3 size, float rotation);
@@ -59,6 +64,9 @@ class TextureRect {
 
   Vector3* GetVerticesLocalPosition() { return verticesLocalPosition; }
 
+  void SetOpacity(float opacity);
+  float GetOpacity() { return this->opacity; }
+
  protected:
   std::vector<VertexTexture> vertices;
   VertexBuffer* vertexBuffer = nullptr;
@@ -84,10 +92,15 @@ class TextureRect {
 
   Vector3 verticesLocalPosition[4];
 
+  ID3D11SamplerState* point[2];
+  ID3D11BlendState* bPoint[2];
+
   protected:
   bool bFliped = false;
 
   Vector3 position;
   Vector3 size;
   float rotation;
+
+  float opacity = 1.0f;
 };

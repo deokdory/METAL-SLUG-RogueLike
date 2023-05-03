@@ -16,7 +16,4 @@ class AnimationRect : public TextureRect {
 
  private:
   class Animator* animator = nullptr;
-
-  ID3D11SamplerState* point[2];
-  ID3D11BlendState* bPoint[2];
 };
