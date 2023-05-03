@@ -28,13 +28,13 @@ class UI {
   void SetShader(std::wstring shaderpath);
 
   const Vector3 GetPosition() { return position; }
+  void SetPosition(Vector3 position);
 
  private:
+
   template<typename T>
   void SetVertices(std::vector<T>& vertices, FillType type);
-
   void UpdateWorld();
-  void UpdatePosition();
 
   protected:
   std::vector<VertexColor> colorVertices;
@@ -52,9 +52,7 @@ class UI {
   WorldBuffer* wb = nullptr;
   Matrix world;
 
-  Vector3 originPosition;
   Vector3 originSize;
-  float originRotation;
 
   Vector3 size;
   Vector3 position;
@@ -67,6 +65,4 @@ class UI {
   D3D11_MAPPED_SUBRESOURCE subResource = D3D11_MAPPED_SUBRESOURCE();
 
   FillType type;
-
-
 };

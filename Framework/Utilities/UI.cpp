@@ -12,7 +12,6 @@ UI::~UI() {
 }
 
 void UI::Update() {
-  UpdatePosition();
   UpdateWorld();
 }
 
@@ -23,28 +22,23 @@ void UI::Render() {
   DC->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
   // VS
-  
-    vs->SetShader();
-    wb->SetVSBuffer(0);
-  
+  vs->SetShader();
+  wb->SetVSBuffer(0);
 
   // PS
-   ps->SetShader(); 
+  ps->SetShader();
 
-   if (srv) DC->PSGetShaderResources(0, 1, &srv);
+  if (srv) DC->PSGetShaderResources(0, 1, &srv);
 
-   DC->DrawIndexed(ib->GetCount(), 0, 0);
-
-  // Draw
   DC->DrawIndexed(ib->GetCount(), 0, 0);
-
 }
 
 void UI::Init(Vector3 position, Vector3 size, float rotation, Color color,
               FillType type) {
-  this->originPosition = this->position = position;
+
+  this->position = position;
   this->size = this->originSize = size;
-  this->rotation = this->originRotation = rotation;
+  this->rotation = rotation;
   this->type = type;
 
   colorVertices.assign(4, VertexColor());
@@ -90,9 +84,9 @@ void UI::Init(Vector3 position, Vector3 size, float rotation, Color color,
 
 void UI::Init(Vector3 position, Vector3 size, float rotation, std::wstring path,
               FillType type) {
-  this->originPosition = this->position = position;
+  this->position = position;
   this->size = this->originSize = size;
-  this->rotation = this->originRotation = rotation;
+  this->rotation = rotation;
   this->type = type;
 
   textureVertices.assign(4, VertexTexture());
@@ -136,15 +130,16 @@ void UI::Init(Vector3 position, Vector3 size, float rotation, std::wstring path,
 
   // World
   { wb = new WorldBuffer(); }
+
   Texture2D* srcTex = new Texture2D(path);
   srv = srcTex->GetSRV();
   SAFE_DELETE(srcTex);
 }
 
 void UI::Init(Vector3 position, Vector3 size, float rotation, FillType type) {
-  this->originPosition = this->position = position;
+  this->position = position;
   this->size = this->originSize = size;
-  this->rotation = this->originRotation = rotation;
+  this->rotation = rotation;
   this->type;
 
   textureVertices.assign(4, VertexTexture());
@@ -269,18 +264,33 @@ void UI::SetShader(std::wstring shaderpath) {
   ps->Create(shaderpath, "PS");
 }
 
+void UI::SetPosition(Vector3 position)
+{
+  switch (type)
+  {
+  case UI::NONE:
+    break;
+  case UI::LEFT_TO_RIGHT:
+    position.x -= size.x / 2;
+    break;
+  case UI::RIGHT_TO_LEFT:
+    position.x += size.x / 2;
+    break;
+  case UI::UP_TO_DOWN:
+    position.y += size.y / 2;
+    break;
+  case UI::DOWN_TO_UP:
+    position.y -= size.y / 2;
+    break;
+  default:
+    break;
+  }
+  this->position = position;
+}
 
 void UI::UpdateWorld() {
   world = DXMath::Scaling(size) * DXMath::RotationInDegree(rotation) *
           DXMath::Translation(position);
 
   wb->SetWorld(world);
-}
-
-
-
-void UI::UpdatePosition() {
-  Vector3 centerPos = Camera::Get()->GetPosition() +
-                      Vector3(WinMaxWidth / 2, WinMaxHeight / 2, 0.0f);
-  position = centerPos + originPosition;
 }

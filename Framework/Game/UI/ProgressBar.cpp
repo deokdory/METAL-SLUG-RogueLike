@@ -3,37 +3,40 @@
 
 ProgressBar::ProgressBar(Vector3 position, Vector3 size, float rotation,
                          Color color, FillType type) {
+
   Init(position, size, rotation, color, type);
 }
 
 ProgressBar::ProgressBar(Vector3 position, Vector3 size, float rotation,
                          std::wstring path, FillType type) {
+
   Init(position, size, rotation, path, type);
+
   pb = new ProgressBuffer(type);
 }
 
 ProgressBar::ProgressBar(Vector3 position, Vector3 size, float rotation,
                          FillType type) {
+
   Init(position, size, rotation, type);
 }
 
 ProgressBar::~ProgressBar() { SAFE_DELETE(pb); }
 
 void ProgressBar::Update() {
-  if (pb) pb->UpdateProgressPercent(percent);
-
   UI::Update();
 }
 
 void ProgressBar::Render() {
-  if (pb) pb->SetPSBuffer(2);
 
+  if (pb) pb->SetPSBuffer(2);
   UI::Render();
+
 }
 
 void ProgressBar::UpdateProgressBar(float percent) {
-  this->percent = percent;
 
+  this->percent = percent;
   
   if (!pb) {
     Vector3 changeSize = originSize;
@@ -57,5 +60,9 @@ void ProgressBar::UpdateProgressBar(float percent) {
         break;
     }
     size = changeSize;
+  }
+  else
+  {
+    pb->UpdateProgressPercent(percent);
   }
 }
