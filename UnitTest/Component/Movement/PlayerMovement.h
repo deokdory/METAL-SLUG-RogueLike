@@ -17,6 +17,7 @@ public:
   void SlideEnd() { isSliding = false; }
 
   virtual void UpdateAccel();
+
 private:
   bool isSliding = false;
 };

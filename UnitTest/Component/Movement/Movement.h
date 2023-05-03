@@ -36,6 +36,8 @@ public:
   virtual void Render();
   virtual void GUI();
 
+  virtual void Falling();
+
   virtual void MoveLeft();
   virtual void MoveRight();
   virtual void SlowDown();
@@ -69,7 +71,7 @@ protected:
   float fallingSpeedMax = -20.f; // 수직 낙하 속도 제한
 
   float xSpeed = 0; // 수평 속도
-  float xSpeedOrigin = 0;
+  float xSpeedOrigin = 0; // 원래 수평 속도
   float xSpeedMax = 6; // 수평 속도 제한
 
   float accel = 0; // 상황별 가속도 보정 위함 

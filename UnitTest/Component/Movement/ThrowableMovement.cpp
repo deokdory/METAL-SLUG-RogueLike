@@ -4,6 +4,8 @@
 ThrowableMovement::ThrowableMovement(GameObject* object , float xSpeed, float ySpeed)
   : Movement(object)
 {
+  isFalling = true;
+
   this->accelOrigin = 0.05f;
 
   this->xSpeedOrigin = xSpeed;
@@ -16,10 +18,6 @@ ThrowableMovement::~ThrowableMovement()
 
 void ThrowableMovement::Update()
 {
-  if (bounce > 1.f)
-    ySpeedOrigin = bounce;
-
-  bounce = 0.0f;
   __super::Update();
 }
 
@@ -33,11 +31,27 @@ void ThrowableMovement::GUI()
 
 }
 
+void ThrowableMovement::Falling()
+{
+  auto globalSpeed = Time::Get()->GetGlobalSpeed();
+  auto globalGravity = GameManager::Get()->GetGlobalGravity();
+
+  if (bounce > 1.0f)
+    ySpeedOrigin = bounce;
+
+  if (isFalling) {
+    if (ySpeed > fallingSpeedMax) ySpeedOrigin -= ((globalGravity + gravityOffset) * globalSpeed);
+  }
+
+  bounce = 0.0f;
+}
+
 void ThrowableMovement::collisionCheck()
 {
   isFalling = true;
 
   auto& terrains = GameManager::Get()->GetCurrentLevel()->GetTerrains();
+  auto& objects = GameManager::Get()->GetCurrentLevel()->GetObjects();
 
   auto* bottom = object->GetCollision()->GetBottom();
   auto* top = object->GetCollision()->GetTop();
@@ -97,6 +111,7 @@ void ThrowableMovement::collisionCheck()
 
         if (xSpeed > 0) xSpeed = 0;
       }
+
       else if (objPos.x > terrPos.x) {
         float depth = (terrPos.x + terrSize.x / 2) - (objPos.x - objSize.x / 2);
         object->Move({ depth, 0, 0 });

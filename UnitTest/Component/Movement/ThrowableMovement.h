@@ -11,6 +11,8 @@ public:
   virtual void Render() override;
   virtual void GUI() override;
 
+  virtual void Falling() override;
+
 protected:
   virtual void collisionCheck() override;
   float bounce = 0.0f;

@@ -55,22 +55,30 @@ void MovementSpeedBox::Update(float xSpeed, float ySpeed)
   leftSize.y = rightSize.y = objectSize.y;
   topSize.x = bottomSize.x = objectSize.x;
 
-  if (ySpeed > 0) {
+  if (ySpeed > 0.1f) {
     topSize.y = ySpeed;
     bottomSize.y = 0;
   }
-  else {
+  else if (ySpeed < -0.1f) {
     topSize.y = 0;
     bottomSize.y = -ySpeed;
   }
-
-  if (xSpeed > 0) {
+  else
+  {
+    topSize.y = bottomSize.y = 0;
+  }
+  
+  if (xSpeed > 0.1f) {
     leftSize.x = 0;
     rightSize.x = xSpeed;
   }
-  else {
+  else if ( xSpeed < -0.1f) {
     leftSize.x = -xSpeed;
     rightSize.x = 0;
+  }
+  else
+  {
+    leftSize.x = rightSize.x = 0;
   }
 
   speedBoxT->Update(topPos, topSize, 0);
@@ -95,6 +103,7 @@ BoundingBox* MovementSpeedBox::GetBox(Slot slot)
   case MovementSpeedBox::Slot::RIGHT: return speedBoxR;
   case MovementSpeedBox::Slot::TOP: return speedBoxT;
   case MovementSpeedBox::Slot::BOTTOM: return speedBoxB;
+
   default: return nullptr;
   }
 }
@@ -118,12 +127,8 @@ void Movement::Update()
   UpdateAccel();
 
   // ³«ÇÏ 
-  {
-    auto globalGravity = GameManager::Get()->GetGlobalGravity();
+  Falling();
 
-    if (isFalling)
-      if (ySpeed > fallingSpeedMax) ySpeedOrigin -= ((globalGravity + gravityOffset) * globalSpeed);
-  }
   xSpeed = xSpeedOrigin * globalSpeed;
   ySpeed = ySpeedOrigin * globalSpeed;
 
@@ -150,6 +155,19 @@ void Movement::GUI()
     ImGui::Text(accelStr.c_str());
   }
   ImGui::End();
+}
+void Movement::Falling()
+{
+  auto globalSpeed = Time::Get()->GetGlobalSpeed();
+  auto globalGravity = GameManager::Get()->GetGlobalGravity();
+
+  if (isFalling) {
+    if (ySpeed > fallingSpeedMax) ySpeedOrigin -= ((globalGravity + gravityOffset) * globalSpeed);
+  }
+  else
+  {
+    ySpeedOrigin = -0.1f;
+  }
 }
 
 void Movement::MoveLeft()
@@ -223,38 +241,37 @@ void Movement::collisionCheck()
     terrPos = terr->GetPosition();
     terrSize = terr->GetSize();
 
-    if (ySpeed <= -0.00001) {
+    if (ySpeed < 0)
+    {
       if (BoundingBox::AABB(bottomSpeedBox, terrTop))
       {
-          isFalling = false;
-
+        isFalling = false;
         if (nearestBottom == nullptr || terrTop->GetRect()->LT.y > nearestBottom->GetRect()->LT.y)
         {
           //std::cout << std::fixed << "¬d " << ySpeed << std::endl;
-
           nearestBottom = terrTop;
           ySpeed -= (bottomSpeedBox->GetRect()->RB.y - terrTop->GetRect()->LT.y);
         }
       }
     }
-
     if (ySpeed >= 0) {
       if (BoundingBox::AABB(top, terrBottom)) {
         ySpeed = 0;
       }
     }
 
-    if (BoundingBox::AABB(base, terrBase) == true) {
-      if (objPos.x < terrPos.x) {
-        float depth = (objPos.x + objSize.x / 2) - (terrPos.x - terrSize.x / 2);
-        object->Move({ -depth, 0, 0 });
-        if (xSpeed > 0) xSpeed = 0;
-      }
-      else if (objPos.x > terrPos.x) {
-        float depth = (terrPos.x + terrSize.x / 2) - (objPos.x - objSize.x / 2);
-        object->Move({ depth, 0, 0 });
-        if (xSpeed < 0) xSpeed = 0;
-      }
-    }
+    //if (BoundingBox::AABB(base, terrBase) == true) {
+    //
+    //  if (objPos.x < terrPos.x) {
+    //    float depth = (objPos.x + objSize.x / 2) - (terrPos.x - terrSize.x / 2);
+    //    object->Move({ -depth, 0, 0 });
+    //    if (xSpeed > 0) xSpeed = 0;
+    //  }
+    //  else if (objPos.x > terrPos.x) {
+    //    float depth = (terrPos.x + terrSize.x / 2) - (objPos.x - objSize.x / 2);
+    //    object->Move({ depth, 0, 0 });
+    //    if (xSpeed < 0) xSpeed = 0;
+    //  }
+    //}
   }
 }
