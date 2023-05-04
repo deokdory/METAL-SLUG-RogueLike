@@ -48,6 +48,8 @@ public:
 
   bool GetIsFalling() { return isFalling; }
 
+  void SetAccel(float accel) { this->accelOrigin = accel; }
+
   float GetXSpeed() { return xSpeed; }
   float GetYSpeed() { return ySpeed; }
 

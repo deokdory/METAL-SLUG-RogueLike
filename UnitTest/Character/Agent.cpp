@@ -175,8 +175,7 @@ void Agent::Update()
 
 void Agent::Render() 
 {
-  
-    __super::Render();
+  __super::Render();
   movement->Render();
   combat->Render();
 

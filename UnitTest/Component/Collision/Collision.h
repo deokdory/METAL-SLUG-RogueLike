@@ -26,5 +26,5 @@ class Collision {
   BoundingBox* bottom = nullptr;
   BoundingBox* top = nullptr;
 
-  const float collisionThickness = 16;
+  const float collisionThickness = 4;
 };

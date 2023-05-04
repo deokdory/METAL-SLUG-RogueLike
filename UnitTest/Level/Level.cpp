@@ -18,9 +18,6 @@ void Level::init() {
   }
 }
 void Level::Update() {
-  //for (auto obj : objects) {
-  //  obj->Update();
-  //}
   for (size_t i = 0; i < objects.size(); i++)
   {
     if (objects[i]->GetIsWaitingDelete())

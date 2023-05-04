@@ -1,11 +1,5 @@
 #pragma once
 
-enum AnchorPoint {
-  LEFT_TOP, MID_TOP, RIGHT_TOP,
-  LEFT_MID, CENTER, RIGHT_MID,
-  LEFT_BOT, MID_BOT, RIGHT_BOT
-};
-
 class TextureBuffer : public ShaderBuffer {
  public:
   TextureBuffer() : ShaderBuffer(&data, sizeof(data)) 

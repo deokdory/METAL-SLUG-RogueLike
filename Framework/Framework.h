@@ -47,6 +47,13 @@ using namespace std;
 
 //////////////////////////////////////////
 
+enum class AnchorPoint
+{
+	LEFT_TOP, MID_TOP, RIGHT_TOP,
+	LEFT_MID, CENTER, RIGHT_MID,
+	LEFT_BOT, MID_BOT, RIGHT_BOT
+};
+
 #include "Interfaces/IObject.h"
 
 #include "Utilities/SingletonBase.h"

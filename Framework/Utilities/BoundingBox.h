@@ -35,7 +35,7 @@ class BoundingBox {
 
   void Init();
 
-  void SetAnchorPoint(UINT point);
+  void SetAnchorPoint(AnchorPoint point);
 
   void Update(Vector3 position, Vector3 size, float rotation);
 

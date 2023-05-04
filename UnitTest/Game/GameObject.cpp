@@ -27,7 +27,7 @@ void GameObject::GUI()
 {
 }
 
-void GameObject::Move(Vector3 position) { this->position += position; /* * Time::Get()->GetGlobalSpeed()) */ }
+void GameObject::Move(Vector3 position) { this->position += position; }
 
 ObjectGraphic* GameObject::GetGraphic()
 {
@@ -42,7 +42,6 @@ void GameObject::InitGraphic(Animator* animator, ObjectGraphic::Slot slot)
 void GameObject::InitGraphic(std::wstring path, ObjectGraphic::Slot slot)
 {
   graphic->InitTexture(path, slot);
-
 }
 
 Collision* GameObject::GetCollision()

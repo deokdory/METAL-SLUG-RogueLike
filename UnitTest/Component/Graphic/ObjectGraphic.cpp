@@ -6,11 +6,6 @@
 ObjectGraphic::ObjectGraphic(GameObject* object)
   : object(object)
 {
-
-//  for (int i = 0; i < 3; i++) texRects[i] = nullptr;
-//  for (int i = 0; i < 3; i++) animators[i] = nullptr;
-//  for (int i = 0; i < 3; i++) animRects[i] = nullptr;
-
   texRects.assign(3, nullptr);
   animators.assign(3, nullptr);
   animRects.assign(3, nullptr);
@@ -277,7 +272,7 @@ bool ObjectGraphic::InitAnimation(Animator* animator, Slot slot)
     {
       animators[0] = animator;
       animRects[0] = new AnimationRect(object->GetPosition(), object->GetSize());
-      animRects[0]->SetAnchorPoint(MID_BOT);
+      animRects[0]->SetAnchorPoint(AnchorPoint::MID_BOT);
       animRects[0]->SetAnimator(animator);
 
       return true;
@@ -287,7 +282,7 @@ bool ObjectGraphic::InitAnimation(Animator* animator, Slot slot)
     {
       animators[1] = animator;
       animRects[1] = new AnimationRect(object->GetPosition(), object->GetSize());
-      animRects[1]->SetAnchorPoint(MID_BOT);
+      animRects[1]->SetAnchorPoint(AnchorPoint::MID_BOT);
       animRects[1]->SetAnimator(animator);
 
       return true;
@@ -297,7 +292,7 @@ bool ObjectGraphic::InitAnimation(Animator* animator, Slot slot)
     {
       animators[2] = animator;
       animRects[2] = new AnimationRect(object->GetPosition(), object->GetSize());
-      animRects[2]->SetAnchorPoint(MID_BOT);
+      animRects[2]->SetAnchorPoint(AnchorPoint::MID_BOT);
       animRects[2]->SetAnimator(animator);
 
       return true;

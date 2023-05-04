@@ -41,7 +41,7 @@ void Enemy::Update()
     }
     else
     {
-      //movement->MoveLeft();
+      movement->MoveLeft();
     }
   }
 

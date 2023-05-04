@@ -1,7 +1,6 @@
 #include "Framework.h"
 #include "BoundingBox.h"
 
-
 BoundingBox::BoundingBox(Vector3 position, Vector3 size, float rotation,
   Color color)
   : position(position), size(size), rotation(rotation), color(color) {
@@ -60,97 +59,94 @@ void BoundingBox::Init() {
   desc.RenderTarget[0].BlendEnable = true;
   States::CreateBlendState(&desc, &bs);
 }
-void BoundingBox::SetAnchorPoint(UINT point) {
+void BoundingBox::SetAnchorPoint(AnchorPoint point) {
 
-  if (point < 0 || point > 8) return;
-  {
-    switch (point) {
-    case 0: {
-      MapVertexBuffer();
-      vertices[0].position = Vector3(-0.5f, -0.5f, 0.0f);
-      vertices[1].position = Vector3(0.5f, 0.5f, 0.0f);
-      vertices[2].position = Vector3(0.5f, -0.5f, 0.0f);
-      vertices[3].position = Vector3(-0.5f, 0.5f, 0.0f);
-      UnmapVertexBuffer();
-      return;
-    }
-    case 1: {
-      MapVertexBuffer();
-      vertices[0].position = Vector3(0.0f, -1.0f, 0.0f);
-      vertices[1].position = Vector3(1.0f, 0.0f, 0.0f);
-      vertices[2].position = Vector3(1.0f, -1.0f, 0.0f);
-      vertices[3].position = Vector3(0.0f, 0.0f, 0.0f);
-      UnmapVertexBuffer();
-      return;
-    }
-    case 2: {
-      MapVertexBuffer();
-      vertices[0].position = Vector3(-0.5f, -1.0f, 0.0f);
-      vertices[1].position = Vector3(0.5f, 0.0f, 0.0f);
-      vertices[2].position = Vector3(0.5f, -1.0f, 0.0f);
-      vertices[3].position = Vector3(-0.5f, 0.0f, 0.0f);
-      UnmapVertexBuffer();
-      return;
-    }
-    case 3: {
-      MapVertexBuffer();
-      vertices[0].position = Vector3(-1.0f, -1.0f, 0.0f);
-      vertices[1].position = Vector3(0.0f, 0.0f, 0.0f);
-      vertices[2].position = Vector3(0.0f, -1.0f, 0.0f);
-      vertices[3].position = Vector3(-1.0f, 0.0f, 0.0f);
-      UnmapVertexBuffer();
-      return;
-    }
-    case 4: {
-      MapVertexBuffer();
-      vertices[0].position = Vector3(0.0f, -0.5f, 0.0f);
-      vertices[1].position = Vector3(1.0f, 0.5f, 0.0f);
-      vertices[2].position = Vector3(1.0f, -0.5f, 0.0f);
-      vertices[3].position = Vector3(0.0f, 0.5f, 0.0f);
-      UnmapVertexBuffer();
-      return;
-    }
-    case 5: {
-      MapVertexBuffer();
-      vertices[0].position = Vector3(-1.0f, -0.5f, 0.0f);
-      vertices[1].position = Vector3(0.0f, 0.5f, 0.0f);
-      vertices[2].position = Vector3(0.0f, -0.5f, 0.0f);
-      vertices[3].position = Vector3(-1.0f, 0.5f, 0.0f);
-      UnmapVertexBuffer();
-      return;
-    }
-    case 6: {
-      MapVertexBuffer();
-      vertices[0].position = Vector3(0.0f, 0.0f, 0.0f);
-      vertices[1].position = Vector3(1.0f, 1.0f, 0.0f);
-      vertices[2].position = Vector3(1.0f, 0.0f, 0.0f);
-      vertices[3].position = Vector3(0.0f, 1.0f, 0.0f);
-      UnmapVertexBuffer();
-      return;
-    }
-    case 7: {
-      MapVertexBuffer();
-      vertices[0].position = Vector3(-0.5f, 0.0f, 0.0f);
-      vertices[1].position = Vector3(0.5f, 1.0f, 0.0f);
-      vertices[2].position = Vector3(0.5f, 0.0f, 0.0f);
-      vertices[3].position = Vector3(-0.5f, 1.0f, 0.0f);
-      UnmapVertexBuffer();
-      return;
-    }
-    case 8: {
-      MapVertexBuffer();
-      vertices[0].position = Vector3(-1.0f, 0.0f, 0.0f);
-      vertices[1].position = Vector3(0.0f, 1.0f, 0.0f);
-      vertices[2].position = Vector3(0.0f, 0.0f, 0.0f);
-      vertices[3].position = Vector3(-1.0f, 1.0f, 0.0f);
-      UnmapVertexBuffer();
-      return;
-    }
-    default: {
-      return;
-    }
-    }
-  }
+	switch (point) {
+	case AnchorPoint::CENTER: {
+		MapVertexBuffer();
+		vertices[0].position = Vector3(-0.5f, -0.5f, 0.0f);
+		vertices[1].position = Vector3(0.5f, 0.5f, 0.0f);
+		vertices[2].position = Vector3(0.5f, -0.5f, 0.0f);
+		vertices[3].position = Vector3(-0.5f, 0.5f, 0.0f);
+		UnmapVertexBuffer();
+		return;
+	}
+	case AnchorPoint::LEFT_TOP: {
+		MapVertexBuffer();
+		vertices[0].position = Vector3(0.0f, -1.0f, 0.0f);
+		vertices[1].position = Vector3(1.0f, 0.0f, 0.0f);
+		vertices[2].position = Vector3(1.0f, -1.0f, 0.0f);
+		vertices[3].position = Vector3(0.0f, 0.0f, 0.0f);
+		UnmapVertexBuffer();
+		return;
+	}
+	case AnchorPoint::MID_TOP: {
+		MapVertexBuffer();
+		vertices[0].position = Vector3(-0.5f, -1.0f, 0.0f);
+		vertices[1].position = Vector3(0.5f, 0.0f, 0.0f);
+		vertices[2].position = Vector3(0.5f, -1.0f, 0.0f);
+		vertices[3].position = Vector3(-0.5f, 0.0f, 0.0f);
+		UnmapVertexBuffer();
+		return;
+	}
+	case AnchorPoint::RIGHT_TOP: {
+		MapVertexBuffer();
+		vertices[0].position = Vector3(-1.0f, -1.0f, 0.0f);
+		vertices[1].position = Vector3(0.0f, 0.0f, 0.0f);
+		vertices[2].position = Vector3(0.0f, -1.0f, 0.0f);
+		vertices[3].position = Vector3(-1.0f, 0.0f, 0.0f);
+		UnmapVertexBuffer();
+		return;
+	}
+	case AnchorPoint::LEFT_MID: {
+		MapVertexBuffer();
+		vertices[0].position = Vector3(0.0f, -0.5f, 0.0f);
+		vertices[1].position = Vector3(1.0f, 0.5f, 0.0f);
+		vertices[2].position = Vector3(1.0f, -0.5f, 0.0f);
+		vertices[3].position = Vector3(0.0f, 0.5f, 0.0f);
+		UnmapVertexBuffer();
+		return;
+	}
+	case AnchorPoint::RIGHT_MID: {
+		MapVertexBuffer();
+		vertices[0].position = Vector3(-1.0f, -0.5f, 0.0f);
+		vertices[1].position = Vector3(0.0f, 0.5f, 0.0f);
+		vertices[2].position = Vector3(0.0f, -0.5f, 0.0f);
+		vertices[3].position = Vector3(-1.0f, 0.5f, 0.0f);
+		UnmapVertexBuffer();
+		return;
+	}
+	case AnchorPoint::LEFT_BOT: {
+		MapVertexBuffer();
+		vertices[0].position = Vector3(0.0f, 0.0f, 0.0f);
+		vertices[1].position = Vector3(1.0f, 1.0f, 0.0f);
+		vertices[2].position = Vector3(1.0f, 0.0f, 0.0f);
+		vertices[3].position = Vector3(0.0f, 1.0f, 0.0f);
+		UnmapVertexBuffer();
+		return;
+	}
+	case AnchorPoint::MID_BOT: {
+		MapVertexBuffer();
+		vertices[0].position = Vector3(-0.5f, 0.0f, 0.0f);
+		vertices[1].position = Vector3(0.5f, 1.0f, 0.0f);
+		vertices[2].position = Vector3(0.5f, 0.0f, 0.0f);
+		vertices[3].position = Vector3(-0.5f, 1.0f, 0.0f);
+		UnmapVertexBuffer();
+		return;
+	}
+	case AnchorPoint::RIGHT_BOT: {
+		MapVertexBuffer();
+		vertices[0].position = Vector3(-1.0f, 0.0f, 0.0f);
+		vertices[1].position = Vector3(0.0f, 1.0f, 0.0f);
+		vertices[2].position = Vector3(0.0f, 0.0f, 0.0f);
+		vertices[3].position = Vector3(-1.0f, 1.0f, 0.0f);
+		UnmapVertexBuffer();
+		return;
+	}
+	default: {
+		return;
+	}
+	}
 }
 
 void BoundingBox::Update(Vector3 position, Vector3 size, float rotation) {
