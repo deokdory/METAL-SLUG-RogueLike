@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "GameObject.h"
 
-// TEST
-
 GameObject::GameObject(Vector3 position, Vector3 size) 
 : position(position), size(size), rotation(0) {
 
