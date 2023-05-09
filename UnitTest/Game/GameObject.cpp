@@ -47,3 +47,12 @@ Collision* GameObject::GetCollision()
 {
   return collision;
 }
+
+void GameObject::SetAnchorPoint(AnchorPoint anchorPoint)
+{
+  this->anchorPoint = anchorPoint;
+
+  graphic->SetAnchorPoint(anchorPoint);
+  collision->SetAnchorPoint(anchorPoint);
+
+}

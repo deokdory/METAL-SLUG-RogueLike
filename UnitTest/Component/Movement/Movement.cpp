@@ -9,6 +9,8 @@
 MovementSpeedBox::MovementSpeedBox(GameObject* object)
   : object(object)
 {
+  anchorPoint = object->GetAnchorPoint();
+
   auto objectSize = object->GetSize();
 
   Vector3 left, right, top, bottom;
@@ -16,18 +18,38 @@ MovementSpeedBox::MovementSpeedBox(GameObject* object)
 
   left.x -= objectSize.x / 2;
   right.x += objectSize.x / 2;
-  top.y += objectSize.y / 2;
-  bottom.y -= objectSize.y / 2;
+
+  if (anchorPoint == AnchorPoint::CENTER)
+  {
+    top.y += objectSize.y / 2;
+    bottom.y -= objectSize.y / 2;
+  }
+
+  if (anchorPoint == AnchorPoint::MID_BOT)
+  {
+    top.y += objectSize.y;
+  }
 
   speedBoxL = new BoundingBox(left, Values::ZeroVec3, 0, Color(0, 1, 0, 0.25f));
   speedBoxR = new BoundingBox(right, Values::ZeroVec3, 0, Color(0, 1, 0, 0.25f));
   speedBoxT = new BoundingBox(top, Values::ZeroVec3, 0, Color(0, 1, 0, 0.25f));
   speedBoxB = new BoundingBox(bottom, Values::ZeroVec3, 0, Color(0, 1, 0, 0.25f));
 
-  speedBoxL->SetAnchorPoint(5);
-  speedBoxR->SetAnchorPoint(4);
-  speedBoxT->SetAnchorPoint(7);
-  speedBoxB->SetAnchorPoint(2);
+  if (anchorPoint == AnchorPoint::MID_BOT)
+  {
+    speedBoxL->SetAnchorPoint(AnchorPoint::RIGHT_BOT);
+    speedBoxR->SetAnchorPoint(AnchorPoint::LEFT_BOT);
+  }
+  else
+  {
+    speedBoxL->SetAnchorPoint(AnchorPoint::RIGHT_MID);
+    speedBoxR->SetAnchorPoint(AnchorPoint::LEFT_MID);
+  }
+  speedBoxT->SetAnchorPoint(AnchorPoint::MID_BOT);
+  speedBoxB->SetAnchorPoint(AnchorPoint::MID_TOP);
+
+
+
 }
 
 MovementSpeedBox::~MovementSpeedBox()
@@ -45,15 +67,25 @@ void MovementSpeedBox::Update(float xSpeed, float ySpeed)
   Vector3 leftPos, rightPos, topPos, bottomPos;
   leftPos = rightPos = topPos = bottomPos = object->GetPosition();
 
-  topPos.y += objectSize.y / 2;
   leftPos.x -= objectSize.x / 2;
   rightPos.x += objectSize.x / 2;
-  bottomPos.y -= objectSize.y / 2;
+
+  if (anchorPoint == AnchorPoint::CENTER)
+  {
+    topPos.y += objectSize.y / 2;
+    bottomPos.y -= objectSize.y / 2;
+  }
+
+  if (anchorPoint == AnchorPoint::MID_BOT)
+  {
+    topPos.y += objectSize.y;
+  }
 
   Vector3 leftSize, rightSize, topSize, bottomSize;
   leftSize = rightSize = topSize = bottomSize = objectSize;
-  leftSize.y = rightSize.y = objectSize.y;
-  topSize.x = bottomSize.x = objectSize.x;
+
+  leftSize.y = rightSize.y = objectSize.y - 1;
+  topSize.x = bottomSize.x = objectSize.x - 1;
 
   if (ySpeed > 0.1f) {
     topSize.y = ySpeed;
@@ -222,6 +254,9 @@ void Movement::collisionCheck()
   auto* base = object->GetCollision()->GetBase();
 
   auto* bottomSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::BOTTOM);
+  auto* topSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::TOP);
+  auto* leftSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::LEFT);
+  auto* rightSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::RIGHT);
 
   auto objPos = object->GetPosition();
   auto objSize = object->GetSize();
@@ -231,7 +266,8 @@ void Movement::collisionCheck()
 
   BoundingBox* terrTop, * terrBottom, * terrBase;
 
-  BoundingBox* nearestBottom = nullptr;
+  BoundingBox* nearestY = nullptr;
+  BoundingBox* nearestX = nullptr;
 
   for (auto terr : terrains) {
     terrTop = terr->GetCollision()->GetTop();
@@ -246,19 +282,60 @@ void Movement::collisionCheck()
       if (BoundingBox::AABB(bottomSpeedBox, terrTop))
       {
         isFalling = false;
-        if (nearestBottom == nullptr || terrTop->GetRect()->LT.y > nearestBottom->GetRect()->LT.y)
+        if (nearestY == nullptr || terrTop->GetRect()->LT.y > nearestY->GetRect()->LT.y)
         {
           //std::cout << std::fixed << "¬d " << ySpeed << std::endl;
-          nearestBottom = terrTop;
-          ySpeed -= (bottomSpeedBox->GetRect()->RB.y - terrTop->GetRect()->LT.y);
+          nearestY = terrTop;
+
+          float depth = std::abs(bottomSpeedBox->GetRect()->RB.y - nearestY->GetRect()->LT.y);
+          ySpeed += depth;
         }
       }
     }
-    if (ySpeed >= 0) {
-      if (BoundingBox::AABB(top, terrBottom)) {
-        ySpeed = 0;
+    if (ySpeed > 0) {
+      if (BoundingBox::AABB(topSpeedBox, terrBottom))
+      {
+        
+        if (nearestY == nullptr || terrBottom->GetRect()->LB.y < nearestY->GetRect()->LB.y)
+        {
+          nearestY = terrBottom;
+
+          float depth = std::abs(topSpeedBox->GetRect()->LT.y - nearestY->GetRect()->LB.y);
+          ySpeed -= depth;
+        }
       }
     }
+
+    if (xSpeed > 0)
+    {
+      if (BoundingBox::AABB(rightSpeedBox, terrBase) == true)
+      {
+        if (nearestX == nullptr || terrBase->GetRect()->LB.x < nearestX->GetRect()->LB.x)
+        {
+          nearestX = terrBase;
+          float depth = rightSpeedBox->GetRect()->RB.x - terrBase->GetRect()->LB.x;
+
+          xSpeed -= depth;
+          xSpeedOrigin = 0;
+        }
+      }
+    }
+
+    if (xSpeed < 0)
+    {
+      if (BoundingBox::AABB(leftSpeedBox, terrBase) == true)
+      {
+        if (nearestX == nullptr || terrBase->GetRect()->RB.x > nearestX->GetRect()->RB.x)
+        {
+          nearestX = terrBase;
+          float depth = terrBase->GetRect()->RB.x - leftSpeedBox->GetRect()->LB.x;
+
+          xSpeed += depth;
+          xSpeedOrigin = 0;
+        }
+      }
+    }
+
 
     //if (BoundingBox::AABB(base, terrBase) == true) {
     //

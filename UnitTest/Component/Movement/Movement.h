@@ -24,6 +24,7 @@ private:
   BoundingBox* speedBoxB = nullptr;
 
   class GameObject* object;
+  AnchorPoint anchorPoint = AnchorPoint::MID_BOT;
 };
 
 class Movement
@@ -63,6 +64,8 @@ protected:
   virtual void collisionCheck();
 
 protected:
+  AnchorPoint anchorPoint = AnchorPoint::MID_BOT;
+
   bool isFalling = false; // 떨어지고 있는가
 
   float ySpeed = 0; // 수직 속도

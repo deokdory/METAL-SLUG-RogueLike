@@ -15,5 +15,5 @@ public:
 
 protected:
   virtual void collisionCheck() override;
-  float bounce = 0.0f;
+  Vector3 bounce = Values::ZeroVec3;
 };

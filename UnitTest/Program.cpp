@@ -73,7 +73,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR param, int 
 	srand((UINT)time(NULL));
 
 	DXDesc desc;
-	desc.AppName = L"D2DGame";
+	desc.AppName = L"NEW METAL SLUG";
 	desc.instance = instance;
 	desc.handle = NULL;
 	desc.width = WinMaxWidth;

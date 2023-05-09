@@ -25,7 +25,7 @@ void PlayerCombat::Update(Agent& agent)
     else throwProgress += Time::Get()->WorldDelta();
   }
 
-  rifle->Update(agent.GetPosition(), agent.GetAgentLookAtAxis());
+  rifle->Update(agent.GetPosition() + agent.GetSize() / 2, agent.GetAgentLookAtAxis());
 }
 
 void PlayerCombat::Render()

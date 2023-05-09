@@ -16,11 +16,15 @@ class Collision {
   BoundingBox* GetBottom() { return bottom; }
   BoundingBox* GetTop() { return top; }
 
+  void SetAnchorPoint(AnchorPoint anchorPoint) { this->anchorPoint = anchorPoint; }
+
  protected:
   class GameObject* object = nullptr;
 
   Vector3 objPos, objSize;
   float objRotation;
+
+  AnchorPoint anchorPoint = AnchorPoint::MID_BOT;
 
   BoundingBox* base = nullptr;
   BoundingBox* bottom = nullptr;

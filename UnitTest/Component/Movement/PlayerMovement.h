@@ -18,6 +18,11 @@ public:
 
   virtual void UpdateAccel();
 
+  void SetIsJumping(bool isJumping) { this->isJumping = isJumping; }
+  bool GetIsJumping() { return isJumping; }
+
 private:
+  virtual void collisionCheck();
+  bool isJumping = false;
   bool isSliding = false;
 };

@@ -8,6 +8,8 @@ Throwable::Throwable(GameObject* thrown, Side side, float damage, float range, s
   thrown(thrown), side(side), strength(0), 
   damage(damage), range(range), texturePath(texturePath)
 {
+  SetAnchorPoint(AnchorPoint::CENTER);
+
   movement = new ThrowableMovement(this, 0, 0);
   type = Type::THROWABLE;
 }
@@ -92,6 +94,8 @@ Throwable::Throwable(GameObject* thrown, Side side, float strength, float damage
   thrown(thrown), side(side), strength(strength), 
   damage(damage), range(range), texturePath(texturePath), axis(axis)
 {
+  SetAnchorPoint(AnchorPoint::CENTER);
+
   Vector3 speed = axis * strength;
 
   //rotateSpeed = strength;
@@ -100,9 +104,9 @@ Throwable::Throwable(GameObject* thrown, Side side, float strength, float damage
   movement = new ThrowableMovement(this, speed.x, speed.y);
   graphic->InitTexture(texturePath);
 
-  collision->InitializeTop();
+  //collision->InitializeTop();
   collision->InitializeBase();
-  collision->InitializeBottom();
+  //collision->InitializeBottom();
 
   sinceThrown = 0.0;
 }

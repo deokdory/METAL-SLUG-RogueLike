@@ -41,7 +41,7 @@ void Enemy::Update()
     }
     else
     {
-      movement->MoveLeft();
+      //movement->MoveLeft();
     }
   }
 
@@ -51,7 +51,7 @@ void Enemy::Update()
 
   // 체력 상태 바의 위치를 설정
   Vector3 hpBarPosition = position;
-  hpBarPosition.y += size.y / 2;
+  hpBarPosition.y += size.y;
   hpBar->SetPosition(hpBarPosition);
 }
 

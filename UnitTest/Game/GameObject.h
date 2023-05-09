@@ -38,11 +38,17 @@ class GameObject {
 
   GameObject::Type GetObjectType() { return type; }
 
+  AnchorPoint GetAnchorPoint() { return anchorPoint; }
+  void SetAnchorPoint(AnchorPoint anchorPoint);
+
 protected:
+
   Type type = Type::NONE;
 
   class ObjectGraphic* graphic = nullptr;
   class Collision* collision = nullptr;
+
+  AnchorPoint anchorPoint = AnchorPoint::MID_BOT;
 
   Vector3 position;
   Vector3 size;

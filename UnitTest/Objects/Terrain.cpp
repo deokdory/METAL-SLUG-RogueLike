@@ -7,6 +7,8 @@
 Terrain::Terrain(Vector3 position, Vector3 size, std::wstring path)
     : GameObject(position, size) {
 
+  SetAnchorPoint(AnchorPoint::CENTER);
+
   type = Type::TERRAIN;
 
   collision->InitializeBase();
@@ -14,6 +16,7 @@ Terrain::Terrain(Vector3 position, Vector3 size, std::wstring path)
   collision->InitializeTop();
 
   graphic->InitTexture(path);
+
   //Update();
 }
 

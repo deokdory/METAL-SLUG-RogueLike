@@ -26,7 +26,6 @@ void Input::Update(Agent& agent)
 {
   double globalSpeed = Time::Get()->GetGlobalSpeed();
   auto graphic = agent.GetGraphic();
- 
   auto movement = agent.GetMovement();
 
   float xSpeed = movement->GetXSpeedOrigin();
@@ -39,8 +38,7 @@ void Input::Update(Agent& agent)
   if (Keyboard::Get()->Down(VK_F5)) Time::Get()->SetGlobalSpeed(1.00f);
 
   // Mouse And SetAxis
-
-  Vector3 agentPosition = agent.GetPosition();
+  Vector3 agentPosition = agent.GetPosition() + agent.GetSize() / 2;
   Vector3 mousePos = Mouse::Get()->GetPosition();
 
   mouseWorldPos = mousePos + Camera::Get()->GetPosition();
@@ -101,6 +99,8 @@ void Input::Update(Agent& agent)
       {
         isPressSliding = false;
         isPressJumping = true;
+
+        movement->SetIsJumping(true);
         movement->Jump();
         jumpProgress = 0.0;
       }
@@ -139,10 +139,7 @@ void Input::Update(Agent& agent)
       {
         if (Keyboard::Get()->Press(VK_SPACE))
         {
-          if (jumpProgress < 0.2)
-          {
-            movement->Jumping();
-          }
+          if (jumpProgress < 0.2 && movement->GetIsJumping()) movement->Jumping();
           jumpProgress += Time::Get()->WorldDelta();
         }
         else

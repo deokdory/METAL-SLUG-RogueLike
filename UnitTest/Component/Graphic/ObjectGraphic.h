@@ -6,7 +6,7 @@
 
 class ObjectGraphic {
 public:
-  enum class Slot { NORMAL, LOWER, UPPER }; // 슬롯 구분 (기본, 상체, 하체)
+  enum Slot { NORMAL = 0, LOWER, UPPER }; // 슬롯 구분 (기본, 상체, 하체)
   enum class Type { TEXTURE, ANIMATION }; // 타입 구분 (텍스쳐, 애니메이션)
 
   ObjectGraphic(class GameObject* object);
@@ -30,7 +30,7 @@ public:
   void SetCurrentFrame(UINT index, Slot slot = Slot::NORMAL);
 
   // 지오메트리 중심점 설정
-  void SetAnchorPoint(AnchorPoint anchor, Type type, Slot slot = Slot::NORMAL);
+  void SetAnchorPoint(AnchorPoint anchorPoint) { this->anchorPoint = anchorPoint; }
 
   // 회전
   void AddRotation(float rotation, Type type, Slot slot = Slot::NORMAL);
@@ -43,6 +43,7 @@ public:
 
 protected:
   class GameObject* object; // 그래픽 컴포넌트의 주체
+  AnchorPoint anchorPoint = AnchorPoint::MID_BOT;
 
   bool texVisible[3]; // 텍스쳐 지오메트리 활성 여부
   bool texFading[3] = {}; // 텍스쳐 지오메트리 투명도 페이드 중인지

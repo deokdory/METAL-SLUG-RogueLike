@@ -6,7 +6,7 @@ ThrowableMovement::ThrowableMovement(GameObject* object , float xSpeed, float yS
 {
   isFalling = true;
 
-  this->accelOrigin = 0.05f;
+  this->accelOrigin = 0.1f;
 
   this->xSpeedOrigin = xSpeed;
   this->ySpeedOrigin = ySpeed;
@@ -36,13 +36,16 @@ void ThrowableMovement::Falling()
   auto globalSpeed = Time::Get()->GetGlobalSpeed();
   auto globalGravity = GameManager::Get()->GetGlobalGravity();
 
-  if (bounce > 1.0f)
-    ySpeedOrigin = bounce;
+  if (bounce.y != 0.0f)
+    ySpeedOrigin = bounce.y;
+
+  if (bounce.x != 0.0f)
+    xSpeedOrigin = bounce.x;
 
   if (isFalling) {
     if (ySpeed > fallingSpeedMax) ySpeedOrigin -= ((globalGravity + gravityOffset) * globalSpeed);
   }
-  bounce = 0.0f;
+  bounce = Values::ZeroVec3;
 }
 
 void ThrowableMovement::collisionCheck()
@@ -57,6 +60,9 @@ void ThrowableMovement::collisionCheck()
   auto* base = object->GetCollision()->GetBase();
 
   auto* bottomSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::BOTTOM);
+  auto* rightSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::RIGHT);
+  auto* leftSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::LEFT);
+  auto* topSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::TOP);
 
   auto objPos = object->GetPosition();
   auto objSize = object->GetSize();
@@ -66,7 +72,8 @@ void ThrowableMovement::collisionCheck()
 
   BoundingBox* terrTop, * terrBottom, * terrBase;
 
-  BoundingBox* nearestBottom = nullptr;
+  BoundingBox* nearestY = nullptr;
+  BoundingBox* nearestX = nullptr;
 
   for (auto terr : terrains) {
 
@@ -81,21 +88,36 @@ void ThrowableMovement::collisionCheck()
       if (BoundingBox::AABB(bottomSpeedBox, terrTop))
       {
         isFalling = false;
-        bounce = (std::abs(ySpeed) / Time::Get()->GetGlobalSpeed()) * 0.5f;
+        bounce.y = (std::abs(ySpeed) / Time::Get()->GetGlobalSpeed()) * 0.5f;
 
-        if (nearestBottom == nullptr || terrTop->GetRect()->LT.y > nearestBottom->GetRect()->LT.y)
+        if (nearestY == nullptr || terrTop->GetRect()->LT.y > nearestY->GetRect()->LT.y)
         {
-          nearestBottom = terrTop;
+          nearestY = terrTop;
+          float depth = std::abs(bottomSpeedBox->GetRect()->RB.y - terrTop->GetRect()->LT.y);
 
-          float depth = bottomSpeedBox->GetRect()->RB.y - terrTop->GetRect()->LT.y;
-
-          ySpeed -= depth;
-
+          ySpeed += depth;
           SlowDown();
-          
         }
       }
     }
+
+    if (ySpeed > 0)
+    {
+      if (BoundingBox::AABB(topSpeedBox, terrBottom))
+      {
+        bounce.y = ( -ySpeed / Time::Get()->GetGlobalSpeed()) * 0.5f;
+
+        if (nearestY == nullptr || terrBottom->GetRect()->LB.y < nearestY->GetRect()->LB.y)
+        {
+          nearestY = terrBottom;
+          float depth = std::abs(topSpeedBox->GetRect()->LT.y - terrBottom->GetRect()->LB.y);
+
+          ySpeed -= depth;
+          SlowDown();
+        }
+      }
+    }
+
 
     if (ySpeed >= 0) {
       if (BoundingBox::AABB(top, terrBottom)) {
@@ -103,19 +125,36 @@ void ThrowableMovement::collisionCheck()
       }
     }
 
-    if (BoundingBox::AABB(base, terrBase) == true) {
-      if (objPos.x < terrPos.x) {
-        float depth = (objPos.x + objSize.x / 2) - (terrPos.x - terrSize.x / 2);
-        object->Move({ -depth, 0, 0 });
 
-        if (xSpeed > 0) xSpeed = 0;
+    if (xSpeed > 0)
+    {
+      if (BoundingBox::AABB(rightSpeedBox, terrBase) == true) 
+      {
+        bounce.x = ( -xSpeed / Time::Get()->GetGlobalSpeed()) * 0.5;
+
+        if (nearestX == nullptr || terrBase->GetRect()->LB.x < nearestX->GetRect()->LB.x)
+        {
+          nearestX = terrBase;
+          float depth = rightSpeedBox->GetRect()->RB.x - terrBase->GetRect()->LB.x;
+
+          xSpeed -= depth;
+        }
       }
+    }
 
-      else if (objPos.x > terrPos.x) {
-        float depth = (terrPos.x + terrSize.x / 2) - (objPos.x - objSize.x / 2);
-        object->Move({ depth, 0, 0 });
+    if (xSpeed < 0)
+    {
+      if (BoundingBox::AABB(leftSpeedBox, terrBase) == true)
+      {
+        bounce.x = ( -xSpeed / Time::Get()->GetGlobalSpeed()) * 0.5;
 
-        if (xSpeed < 0) xSpeed = 0;
+        if (nearestX == nullptr || terrBase->GetRect()->RB.x > nearestX->GetRect()->RB.x)
+        {
+          nearestX = terrBase;
+          float depth = terrBase->GetRect()->RB.x - leftSpeedBox->GetRect()->LB.x;
+
+          xSpeed += depth;
+        }
       }
     }
   }

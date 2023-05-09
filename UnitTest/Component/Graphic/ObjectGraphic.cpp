@@ -30,7 +30,6 @@ ObjectGraphic::~ObjectGraphic() {
 
 void ObjectGraphic::Update()
 {
-
   float globalSpeed = Time::Get()->GetGlobalSpeed();
 
   // Textures
@@ -41,7 +40,8 @@ void ObjectGraphic::Update()
       texRects[i]->SetPosition(object->GetPosition());
       texRects[i]->SetSize(object->GetSize());
 
-      if (object->GetRotation() != 0) texRects[i]->SetRotation(object->GetRotation());
+      if (object->GetRotation() != 0) 
+        texRects[i]->SetRotation(object->GetRotation());
 
       texRects[i]->Update();
     }
@@ -55,7 +55,7 @@ void ObjectGraphic::Update()
   lowerSize = lowerRepos = Values::ZeroVec2;
 
   Vector3 lowerPos = objPos;
-  lowerPos.y -= objSize.y / 2;
+  //lowerPos.y -= objSize.y / 2;
 
   // NORMAL
   if (animRects[0] != nullptr && animators[0] != nullptr && animVisible[0])
@@ -73,7 +73,7 @@ void ObjectGraphic::Update()
     else animRects[0]->SetIsFliped(false);
 
     Vector3 normalPos = objPos;
-    normalPos.y -= objSize.y / 2;
+    //normalPos.y -= objSize.y / 2;
 
     normalPos += Vector3(normalRepos.x, normalRepos.y, 0);
 
@@ -111,7 +111,6 @@ void ObjectGraphic::Update()
   upperSize = upperRepos = Values::ZeroVec2;
 
   Vector3 upperPos = objPos;
-  upperPos.y -= objSize.y / 2;
 
   // UPPER
   if (animRects[2] != nullptr && animators[2] != nullptr && animVisible[2])
@@ -197,36 +196,10 @@ void ObjectGraphic::SetVisible(bool visible, Type type, Slot slot)
   switch (type)
   {
   case ObjectGraphic::Type::TEXTURE:
-    switch (slot)
-    {
-    case ObjectGraphic::Slot::NORMAL:
-      texVisible[0] = visible;
-      break;
-    case ObjectGraphic::Slot::LOWER:
-      texVisible[1] = visible;
-      break;
-    case ObjectGraphic::Slot::UPPER:
-      texVisible[2] = visible;
-      break;
-    default:
-      break;
-    }
+    texVisible[slot] = visible;
     break;
   case ObjectGraphic::Type::ANIMATION:
-    switch (slot)
-    {
-    case ObjectGraphic::Slot::NORMAL:
-      animVisible[0] = visible;
-      break;
-    case ObjectGraphic::Slot::LOWER:
-      animVisible[1] = visible;
-      break;
-    case ObjectGraphic::Slot::UPPER:
-      animVisible[2] = visible;
-      break;
-    default:
-      break;
-    }
+    animVisible[slot] = visible;
     break;
   default:
     break;
@@ -235,71 +208,28 @@ void ObjectGraphic::SetVisible(bool visible, Type type, Slot slot)
 
 bool ObjectGraphic::InitTexture(std::wstring path, Slot slot )
 {
-  switch (slot)
+  if (texRects[slot] == nullptr)
   {
-  case ObjectGraphic::Slot::NORMAL:
-    if (texRects[0] == nullptr)
-    {
-      texRects[0] = new TextureRect(object->GetPosition(), object->GetSize(), 0, path);
-      return true;
-    }
-    return false;
-  case ObjectGraphic::Slot::LOWER:
-    if (texRects[1] == nullptr)
-    {
-      texRects[1] = new TextureRect(object->GetPosition(), object->GetSize(), 0, path);
-      return true;
-    }
-    return false;
-  case ObjectGraphic::Slot::UPPER:
-    if (texRects[2] == nullptr)
-    {
-      texRects[2] = new TextureRect(object->GetPosition(), object->GetSize(), 0, path);
-      return true;
-    }
-    return false;
-  default:
-    return false;
+    texRects[slot] = new TextureRect(object->GetPosition(), object->GetSize(), object->GetRotation(), path);
+    texRects[slot]->SetAnchorPoint(anchorPoint);
+
+    return true;
   }
+  return false;
 }
 
 bool ObjectGraphic::InitAnimation(Animator* animator, Slot slot)
 {
-  switch (slot)
+  if (animRects[slot] == nullptr && animators[slot] == nullptr)
   {
-  case ObjectGraphic::Slot::NORMAL:
-    if (animRects[0] == nullptr && animators[0] == nullptr)
-    {
-      animators[0] = animator;
-      animRects[0] = new AnimationRect(object->GetPosition(), object->GetSize());
-      animRects[0]->SetAnchorPoint(AnchorPoint::MID_BOT);
-      animRects[0]->SetAnimator(animator);
+    animators[slot] = animator;
+    animRects[slot] = new AnimationRect(object->GetPosition(), object->GetSize());
+    animRects[slot]->SetAnchorPoint(anchorPoint);
+    animRects[slot]->SetAnimator(animator);
 
-      return true;
-    }
-  case ObjectGraphic::Slot::LOWER:
-    if (animRects[1] == nullptr && animators[1] == nullptr)
-    {
-      animators[1] = animator;
-      animRects[1] = new AnimationRect(object->GetPosition(), object->GetSize());
-      animRects[1]->SetAnchorPoint(AnchorPoint::MID_BOT);
-      animRects[1]->SetAnimator(animator);
-
-      return true;
-    }
-  case ObjectGraphic::Slot::UPPER:
-    if (animRects[2] == nullptr && animators[2] == nullptr)
-    {
-      animators[2] = animator;
-      animRects[2] = new AnimationRect(object->GetPosition(), object->GetSize());
-      animRects[2]->SetAnchorPoint(AnchorPoint::MID_BOT);
-      animRects[2]->SetAnimator(animator);
-
-      return true;
-    }
-  default:
-    return false;
+    return true;
   }
+  return false;
 }
 
 void ObjectGraphic::DeleteGraphic(Type type, Slot slot)
@@ -307,153 +237,75 @@ void ObjectGraphic::DeleteGraphic(Type type, Slot slot)
   switch (type)
   {
   case ObjectGraphic::Type::TEXTURE:
-    switch (slot)
-    {
-    case ObjectGraphic::Slot::NORMAL:
-      SAFE_DELETE(texRects[0]);
-      break;
-    case ObjectGraphic::Slot::LOWER:
-      SAFE_DELETE(texRects[1]);
-      break;
-    case ObjectGraphic::Slot::UPPER:
-      SAFE_DELETE(texRects[2]);
-      break;
-    default:
-      break;
-    }
+    SAFE_DELETE(texRects[slot]);
+    break;
   case ObjectGraphic::Type::ANIMATION:
-    switch (slot)
-    {
-    case ObjectGraphic::Slot::NORMAL:
-      SAFE_DELETE(animRects[0]);
-      break;
-    case ObjectGraphic::Slot::LOWER:
-      SAFE_DELETE(animRects[1]);
-      break;
-    case ObjectGraphic::Slot::UPPER:
-      SAFE_DELETE(animRects[2]);
-      break;
-    default:
-      break;
-    }
-  default:
+    SAFE_DELETE(animRects[slot]);
     break;
   }
 }
 
 void ObjectGraphic::SetCurrentAnimation(std::wstring name, Slot slot)
 {
-  switch (slot)
-  {
-  case ObjectGraphic::Slot::NORMAL:
-    if (animators[0] != nullptr) animators[0]->SetCurrentAnimClip(name);
-    break;
-  case ObjectGraphic::Slot::LOWER:
-    if (animators[1] != nullptr) animators[1]->SetCurrentAnimClip(name);
-    break;
-  case ObjectGraphic::Slot::UPPER:
-    if (animators[2] != nullptr) animators[2]->SetCurrentAnimClip(name);
-    break;
-  default:
-    break;
-  }
+    if (animators[slot] != nullptr) animators[slot]->SetCurrentAnimClip(name);
 }
 
 void ObjectGraphic::SetCurrentFrame(UINT index, Slot slot)
 {
-  switch (slot)
-  {
-  case ObjectGraphic::Slot::NORMAL:
-    if (animators[0] != nullptr) animators[0]->SetCurrentFrame(index);
-    break;
-  case ObjectGraphic::Slot::LOWER:
-    if (animators[1] != nullptr) animators[1]->SetCurrentFrame(index);
-    break;
-  case ObjectGraphic::Slot::UPPER:
-    if (animators[2] != nullptr) animators[2]->SetCurrentFrame(index);
-    break;
-  default:
-    break;
-  }
+    if (animators[slot] != nullptr) animators[slot]->SetCurrentFrame(index);
 }
 
-void ObjectGraphic::SetAnchorPoint(AnchorPoint anchor, Type type, Slot slot)
-{
-  switch (type)
-  {
-  case ObjectGraphic::Type::TEXTURE:
-    switch (slot)
-    {
-    case ObjectGraphic::Slot::NORMAL:
-      if (texRects[0] != nullptr) texRects[0]->SetAnchorPoint(anchor);
-      break;
-    case ObjectGraphic::Slot::LOWER:
-      if(texRects[1] != nullptr) texRects[1]->SetAnchorPoint(anchor);
-      break;
-    case ObjectGraphic::Slot::UPPER:
-      if(texRects[2] != nullptr) texRects[2]->SetAnchorPoint(anchor);
-      break;
-    default:
-      break;
-    }
-    break;
-  case ObjectGraphic::Type::ANIMATION:
-    switch (slot)
-    {
-    case ObjectGraphic::Slot::NORMAL:
-      if(animRects[0] != nullptr) animRects[0]->SetAnchorPoint(anchor);
-      break;
-    case ObjectGraphic::Slot::LOWER:
-      if(animRects[1] != nullptr) animRects[1]->SetAnchorPoint(anchor);
-      break;
-    case ObjectGraphic::Slot::UPPER:
-      if(animRects[2] != nullptr) animRects[2]->SetAnchorPoint(anchor);
-      break;
-    default:
-      break;
-    }
-    break;
-  default:
-    break;
-  }
-}
+//void ObjectGraphic::SetAnchorPoint(AnchorPoint anchor, Type type, Slot slot)
+//{
+//  switch (type)
+//  {
+//  case ObjectGraphic::Type::TEXTURE:
+//    switch (slot)
+//    {
+//    case ObjectGraphic::Slot::NORMAL:
+//      if (texRects[0] != nullptr) texRects[0]->SetAnchorPoint(anchor);
+//      break;
+//    case ObjectGraphic::Slot::LOWER:
+//      if(texRects[1] != nullptr) texRects[1]->SetAnchorPoint(anchor);
+//      break;
+//    case ObjectGraphic::Slot::UPPER:
+//      if(texRects[2] != nullptr) texRects[2]->SetAnchorPoint(anchor);
+//      break;
+//    default:
+//      break;
+//    }
+//    break;
+//  case ObjectGraphic::Type::ANIMATION:
+//    switch (slot)
+//    {
+//    case ObjectGraphic::Slot::NORMAL:
+//      if(animRects[0] != nullptr) animRects[0]->SetAnchorPoint(anchor);
+//      break;
+//    case ObjectGraphic::Slot::LOWER:
+//      if(animRects[1] != nullptr) animRects[1]->SetAnchorPoint(anchor);
+//      break;
+//    case ObjectGraphic::Slot::UPPER:
+//      if(animRects[2] != nullptr) animRects[2]->SetAnchorPoint(anchor);
+//      break;
+//    default:
+//      break;
+//    }
+//    break;
+//  default:
+//    break;
+//  }
+//}
 
 void ObjectGraphic::AddRotation(float rotation, Type type, Slot slot)
 {
   switch (type)
   {
   case ObjectGraphic::Type::TEXTURE:
-    switch (slot)
-    {
-    case ObjectGraphic::Slot::NORMAL:
-      if(texRects[0] != nullptr) texRects[0]->SetRotation(texRects[0]->GetRotation() + rotation);
+      if (texRects[slot] != nullptr) texRects[slot]->SetRotation(texRects[slot]->GetRotation() + rotation);
       break;
-    case ObjectGraphic::Slot::LOWER:
-      if(texRects[1] != nullptr) texRects[1]->SetRotation(texRects[1]->GetRotation() + rotation);
-      break;
-    case ObjectGraphic::Slot::UPPER:
-      if(texRects[2] != nullptr) texRects[2]->SetRotation(texRects[2]->GetRotation() + rotation);
-      break;
-    default:
-      break;
-    }
-    break;
   case ObjectGraphic::Type::ANIMATION:
-    switch (slot)
-    {
-    case ObjectGraphic::Slot::NORMAL:
-      if (animRects[0] != nullptr) animRects[0]->SetRotation(animRects[0]->GetRotation() + rotation);
+      if (animRects[slot] != nullptr) animRects[slot]->SetRotation(animRects[slot]->GetRotation() + rotation);
       break;
-    case ObjectGraphic::Slot::LOWER:
-      if (animRects[1] != nullptr) animRects[1]->SetRotation(animRects[1]->GetRotation() + rotation);
-      break;
-    case ObjectGraphic::Slot::UPPER:
-      if (animRects[2] != nullptr) animRects[2]->SetRotation(animRects[2]->GetRotation() + rotation);
-      break;
-    default:
-      break;
-    }
-    break;
   default:
     break;
   }
@@ -464,50 +316,31 @@ void ObjectGraphic::FadeOut(float duration, Type type, Slot slot)
   assert(duration > 0);
 
   float opacity = 0.0f;
-  int slotNum = -1;
 
-  switch (slot)
+  switch (type)
   {
-  case ObjectGraphic::Slot::NORMAL:
-    slotNum = 0;
-    break;
-  case ObjectGraphic::Slot::LOWER:
-    slotNum = 1;
-    break;
-  case ObjectGraphic::Slot::UPPER:
-    slotNum = 2;
-    break;
-  default:
-    break;
-  }
-
-  if (slotNum >= 0)
-  {
-
-    if (type == ObjectGraphic::Type::TEXTURE)
+  case ObjectGraphic::Type::TEXTURE:
+    if (texRects[slot] != nullptr)
     {
-      if (texRects[slotNum] != nullptr)
+      opacity = texRects[slot]->TextureRect::GetOpacity();
+      if (texFading[slot] == false && opacity > 0.0f)
       {
-        opacity = texRects[slotNum]->TextureRect::GetOpacity();
-        if (texFading[slotNum] == false && opacity > 0.0f)
-        {
-          texFading[slotNum] = true;
-          texFadeSpeed[slotNum] = opacity / duration;
-        }
+        texFading[slot] = true;
+        texFadeSpeed[slot] = opacity / duration;
       }
     }
-    else if (type == ObjectGraphic::Type::ANIMATION)
+    break;
+  case ObjectGraphic::Type::ANIMATION:
+    if (animRects[slot] != nullptr)
     {
-      if (animRects[slotNum] != nullptr)
+      opacity = animRects[slot]->TextureRect::GetOpacity();
+      if (animFading[slot] == false && opacity > 0.0f)
       {
-        opacity = animRects[slotNum]->TextureRect::GetOpacity();
-        if (animFading[slotNum] == false && opacity > 0.0f)
-        {
-          animFading[slotNum] = true;
-          animFadeSpeed[slotNum] = opacity / duration;
-        }
+        animFading[slot] = true;
+        animFadeSpeed[slot] = opacity / duration;
       }
     }
+    break;
   }
 }
 

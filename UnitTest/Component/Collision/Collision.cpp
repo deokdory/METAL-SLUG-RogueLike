@@ -23,38 +23,31 @@ void Collision::Update() {
   objRotation = object->GetRotation();
 
   if (base) {
-    if (bottom == nullptr && top == nullptr) {
-      base->Update(object->GetPosition(), object->GetSize(), object->GetRotation());
-    }
-    else if (bottom && top) {
-      Vector3 baseSize = { objSize.x, objSize.y - collisionThickness,
-                          objSize.z };
-      base->Update(objPos, baseSize, objRotation);
-    }
-    else if (bottom) {
-      Vector3 basePos = { objPos.x, objPos.y + collisionThickness / 4, objPos.z };
-      Vector3 baseSize = { objSize.x, objSize.y - collisionThickness / 2, objSize.z };
-      base->Update(basePos, baseSize, objRotation);
-    }
-    else {
-      Vector3 basePos = { objPos.x, objPos.y - collisionThickness / 4, objPos.z };
-      Vector3 baseSize = { objSize.x, objSize.y - collisionThickness / 2 , objSize.z };
-      base->Update(basePos, baseSize, objRotation);
-    }
+    Vector3 size = objSize - Vector3(1, 1, 0);
+    base->Update(objPos, size, objRotation);
   }
-  if (bottom) {
-    Vector3 bottomPos = { objPos.x, objPos.y - objSize.y / 2 + collisionThickness / 2,
-                         objPos.z };
-    Vector3 bottomSize = { objSize.x - 2, collisionThickness, objSize.z };
 
-    bottom->Update(bottomPos, bottomSize, objRotation);
+  if (bottom) {
+    Vector3 position = objPos;
+    Vector3 size = objSize;
+
+    if (anchorPoint == AnchorPoint::CENTER) position.y -= objSize.y / 2;
+
+    size.x -= 1;
+    size.y = collisionThickness;
+
+    bottom->Update(position, size, objRotation);
   }
   if (top) {
-    Vector3 topPos = { objPos.x, objPos.y + objSize.y / 2 - collisionThickness / 2,
-                         objPos.z };
-    Vector3 topSize = { objSize.x - 2, collisionThickness, objSize.z };
+    Vector3 position = objPos;
+    Vector3 size = objSize;
 
-    top->Update(topPos, topSize, objRotation);
+    if (anchorPoint == AnchorPoint::CENTER) position.y += objSize.y / 2;
+
+    size.x -= 1;
+    size.y = collisionThickness;
+
+    top->Update(position, size, objRotation);
   }
 }
 
@@ -66,19 +59,32 @@ void Collision::Render() {
 
 void Collision::InitializeBase() {
   base = new BoundingBox(objPos, objSize, objRotation, Color(0, 0, 1, 0.25f));
+  if (anchorPoint == AnchorPoint::MID_BOT) base->SetAnchorPoint(AnchorPoint::MID_BOT);
 }
 
 void Collision::InitializeBottom() {
-  Vector3 bottomPos = { objPos.x, objPos.y - objSize.y / 2 + collisionThickness / 2, objPos.z };
-  Vector3 bottomSize = { objSize.x - 2, collisionThickness, objSize.z };
+  Vector3 position = objPos;
+  Vector3 size = objSize;
 
-  bottom = new BoundingBox(bottomPos, bottomSize, objRotation, Color(1, 0, 1, 0.5f));
+  if (anchorPoint == AnchorPoint::CENTER) position.y -= objSize.y / 2;
+
+  size.x -= 1;
+  size.y = collisionThickness;
+
+  bottom = new BoundingBox(position, size, objRotation, Color(1, 0, 1, 0.5f));
+  bottom->SetAnchorPoint(AnchorPoint::MID_BOT);
 }
 
 void Collision::InitializeTop() {
-  Vector3 topPos = { objPos.x, objPos.y + objSize.y / 2 - collisionThickness / 2, objPos.z };
-  Vector3 topSize = { objSize.x - 2, collisionThickness, objSize.z };
+  Vector3 position = objPos;
+  Vector3 size = objSize;
 
-  top = new BoundingBox(topPos, topSize, objRotation, Color(1, 0, 1, 0.5f));
+  if (anchorPoint == AnchorPoint::CENTER) position.y += objSize.y / 2;
+
+  size.x -= 1;
+  size.y = collisionThickness;
+
+  top = new BoundingBox(position, size, objRotation, Color(1, 0, 1, 0.5f));
+  top->SetAnchorPoint(AnchorPoint::MID_TOP);
 }
 

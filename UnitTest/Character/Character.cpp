@@ -3,13 +3,16 @@
 
 Character::Character(Vector3 position, Vector3 size) 
 : GameObject(position, size) {
+
+  SetAnchorPoint(AnchorPoint::MID_BOT);
+
   type = Type::CHARACTER;
 
   hp = hpMax;
 
   collision->InitializeBase();
-  collision->InitializeBottom();
-  collision->InitializeTop();
+  //collision->InitializeBottom();
+  //collision->InitializeTop();
 }
 
 Character::~Character() {}
