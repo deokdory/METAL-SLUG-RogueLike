@@ -105,8 +105,7 @@ void ThrowableMovement::collisionCheck()
     {
       if (BoundingBox::AABB(topSpeedBox, terrBottom))
       {
-        bounce.y = ( -ySpeed / Time::Get()->GetGlobalSpeed()) * 0.5f;
-
+        ySpeedOrigin = 0;
         if (nearestY == nullptr || terrBottom->GetRect()->LB.y < nearestY->GetRect()->LB.y)
         {
           nearestY = terrBottom;
@@ -118,12 +117,11 @@ void ThrowableMovement::collisionCheck()
       }
     }
 
-
-    if (ySpeed >= 0) {
-      if (BoundingBox::AABB(top, terrBottom)) {
-        ySpeed = 0;
-      }
-    }
+    //if (ySpeed >= 0) {
+    //  if (BoundingBox::AABB(top, terrBottom)) {
+    //    ySpeed = 0;
+    //  }
+    //}
 
 
     if (xSpeed > 0)

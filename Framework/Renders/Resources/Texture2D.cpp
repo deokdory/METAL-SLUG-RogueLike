@@ -89,20 +89,22 @@ void Textures::Delete() {
   }
 }
 
-void Textures::Load(Texture2D* texture) {
-
+void Textures::Load(Texture2D* texture)
+{
   HRESULT hr;
   TexMetadata metaData;
 
   std::wstring ext = Path::GetExtension(texture->filePath);
   if (ext == L"tga") {
     hr = GetMetadataFromTGAFile(texture->filePath.c_str(), metaData);
-  } else if (ext == L"dds") {
+  }
+  else if (ext == L"dds") {
     hr = GetMetadataFromDDSFile(texture->filePath.c_str(), DDS_FLAGS_NONE,
-                                metaData);
-  } else {
+      metaData);
+  }
+  else {
     hr = GetMetadataFromWICFile(texture->filePath.c_str(), WIC_FLAGS_NONE,
-                                metaData);
+      metaData);
   }
   CHECK(hr);
 
@@ -117,39 +119,46 @@ void Textures::Load(Texture2D* texture) {
   TextureDesc exist;
   bool bExist = false;
 
-  for (TextureDesc temp : descs) {
-    if (desc == temp) {
+  for (TextureDesc temp : descs)
+  {
+    if (desc == temp)
+    {
       bExist = true;
       exist = temp;
       break;
     }
   }
 
-  //if (bExist == true) {
+  //if (bExist == true) 
+  //{
   //  texture->srv = exist.srv;
-  //} else {
+  //  texture->metaData = metaData;
+  //}
+  //else 
+  {
     DirectX::ScratchImage image;
 
     if (ext == L"tga") {
       hr = LoadFromTGAFile(texture->filePath.c_str(), &metaData, image);
-    } else if (ext == L"dds") {
+    }
+    else if (ext == L"dds") {
       hr = LoadFromDDSFile(texture->filePath.c_str(), DDS_FLAGS_NONE,
-                                  &metaData, image);
-    } else {
+        &metaData, image);
+    }
+    else {
       hr = LoadFromWICFile(texture->filePath.c_str(), WIC_FLAGS_NONE,
-                                  &metaData, image);
+        &metaData, image);
     }
     CHECK(hr);
 
-    ID3D11ShaderResourceView* srv= nullptr;
+    ID3D11ShaderResourceView* srv = nullptr;
     hr = CreateShaderResourceView(DEVICE, image.GetImages(),
-                                  image.GetImageCount(), metaData, &srv);
+      image.GetImageCount(), metaData, &srv);
     CHECK(hr);
 
-    desc.srv = srv;
-    texture->srv = srv;
+    desc.srv = texture->srv = srv;
     texture->metaData = metaData;
 
     descs.push_back(desc);
-  //}
+  }
 }
