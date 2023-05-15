@@ -150,7 +150,7 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation)
 }
 
 TextureRect::~TextureRect() {
-  SAFE_RELEASE(shaderResourceView);
+  //SAFE_RELEASE(shaderResourceView); // Texture2D -> Textures 에서 지움
   SAFE_DELETE(worldBuffer);
   SAFE_DELETE(inputLayout);
   SAFE_DELETE(pixelShader);

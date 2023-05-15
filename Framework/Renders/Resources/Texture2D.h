@@ -18,7 +18,7 @@ struct TextureDesc {
 };
 
 class Texture2D {
- public:
+public:
   Texture2D(std::wstring filePath);
 
   void ReadPixel(std::vector<Color>* pixels);
@@ -26,16 +26,17 @@ class Texture2D {
 
   ID3D11ShaderResourceView* GetSRV() { return srv; }
 
-  float GetWidth() { return (float)metaData.width; }
-  float GetHeight() { return (float)metaData.height; }
+  float GetWidth() { return (float)width; }
+  float GetHeight() { return (float)height; }
   std::wstring GetFilePath() { return filePath; }
 
- private:
+private:
   friend class Textures;
 
   std::wstring filePath = L"";
   ID3D11ShaderResourceView* srv = nullptr;
-  DirectX::TexMetadata metaData;
+  UINT width = 0;
+  UINT height = 0;
 };
 
 class Textures {
@@ -45,8 +46,9 @@ class Textures {
   private:
   friend class Texture2D;
   static void Load(Texture2D* texture);
+  static TextureDesc* Find(std::wstring filePath);
 
-  static std::vector<TextureDesc> descs;
+  static std::map<std::wstring, TextureDesc> descs;
 };
 
 /*

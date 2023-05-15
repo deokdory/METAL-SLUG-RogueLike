@@ -2,7 +2,7 @@
 #include "UI.h"
 
 UI::~UI() {
-  SAFE_RELEASE(srv);
+  //SAFE_RELEASE(srv); // Texture2D -> Textures 에서 지움
   SAFE_DELETE(wb);
   SAFE_DELETE(il);
   SAFE_DELETE(ps);

@@ -115,6 +115,7 @@ WPARAM Window::Run(IObject* mainObj)
 	}
 	this->mainObj->Destroy();
 
+	Textures::Delete();
 	Gui::Delete();
 	Time::Delete();
 	Mouse::Delete();
