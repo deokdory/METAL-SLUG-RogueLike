@@ -3,7 +3,7 @@
 
 #include "Systems/Window.h"
 
-#include "Game/Game.h"
+#include "Utilities/Game.h"
 #include "Demos/TileMapDemo.h"
 
 void Program::Init()

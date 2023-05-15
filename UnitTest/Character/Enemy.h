@@ -1,5 +1,6 @@
 #pragma once
 #include "Character/Character.h"
+
 #include "Game/UI/ProgressBar.h"
 
 class Enemy : public Character

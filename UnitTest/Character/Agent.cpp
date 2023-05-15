@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #include "Agent.h"
 
-#include "Component/Collision/Collision.h"
-#include "Component/Graphic/ObjectGraphic.h"
-
-
 Agent::Agent(Vector3 position, Vector3 size)
   : Character(position, size) 
 {

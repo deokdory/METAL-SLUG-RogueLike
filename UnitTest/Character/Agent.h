@@ -1,8 +1,8 @@
 #pragma once
 #include "Character.h"
 
-#include "Component/Movement/PlayerMovement.h"
-#include "Component/Input/Input.h"
+#include "Utilities/Movements/PlayerMovement.h"
+#include "Utilities/Input/Input.h"
 
 class Agent : public Character {
 public:

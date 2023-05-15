@@ -1,5 +1,5 @@
 #pragma once
-#include "Game/GameObject.h"
+#include "Utilities/Movements/Movement.h"
 
 class Character : public GameObject {
  public:

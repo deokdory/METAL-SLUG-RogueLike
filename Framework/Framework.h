@@ -102,6 +102,12 @@ typedef UINT		uint;
 #include "Utilities/String.h"
 #include "Utilities/Path.h"
 
+#include "Utilities/Collision/Collision.h"
+#include "Utilities/ObjectGraphic/ObjectGraphic.h"
+#include "Objects/GameObject.h"
+#include "Game/Level/Level.h"
+
+#include "Game/GameManager.h"
 #include "Systems/Camera.h"
 
 #define WinMaxWidth 1280

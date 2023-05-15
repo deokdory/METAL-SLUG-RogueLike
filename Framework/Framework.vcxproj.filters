@@ -30,6 +30,12 @@
     <ClCompile Include="Systems\Camera.cpp" />
     <ClCompile Include="Utilities\UI.cpp" />
     <ClCompile Include="Game\UI\ProgressBar.cpp" />
+    <ClCompile Include="Utilities\Collision\Collision.cpp" />
+    <ClCompile Include="Objects\GameObject.cpp" />
+    <ClCompile Include="Game\Level\Level.cpp" />
+    <ClCompile Include="Game\GameManager.cpp" />
+    <ClCompile Include="Utilities\ObjectGraphic\ObjectGraphic.cpp" />
+    <ClCompile Include="Objects\Terrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\Graphics.h" />
@@ -65,5 +71,12 @@
     <ClInclude Include="Systems\Camera.h" />
     <ClInclude Include="Utilities\UI.h" />
     <ClInclude Include="Game\UI\ProgressBar.h" />
+    <ClInclude Include="Utilities\Collision\Collision.h" />
+    <ClInclude Include="Objects\GameObject.h" />
+    <ClInclude Include="Game\Level\Level.h" />
+    <ClInclude Include="Game\GameManager.h" />
+    <ClInclude Include="Utilities\ObjectGraphic\ObjectGraphic.h" />
+    <ClInclude Include="Game\Gun\Gun.h" />
+    <ClInclude Include="Objects\Terrain.h" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TestLevel.h"
+
 #include "Character/Agent.h"
 #include "Character/SoldierSample.h"
 

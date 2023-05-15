@@ -221,8 +221,8 @@ void BoundingBox::UpdateCollisionData() {
     {
       Vector3 unitAxes[2] = { data->axisDir[x], data->axisDir[y] };
       Vector3 verticesPos[4] = { edge->LT, edge->LB, edge->RT, edge->RB };
-      float minValues[2] = { INT_MAX, INT_MAX };
-      float maxValues[2] = { INT_MIN, INT_MIN };
+      float minValues[2] = { (float)INT_MAX, (float)INT_MAX };
+      float maxValues[2] = { (float)INT_MIN, (float)INT_MIN };
 
       for (int i = 0; i < 4; i++) {
         Vector3 point = verticesPos[i];
