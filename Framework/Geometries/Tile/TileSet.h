@@ -1,18 +1,19 @@
 #pragma once
 
-class TileSet : public SingletonBase<TileSet>
+class TileSet
 {
 public:
-  friend class SingletonBase<TileSet>;
   friend class TileMap;
 
-  void GUI();
+  bool GUI();
 
   ID3D11ShaderResourceView* GetSRV() { return tileSRV; }
 
 private:
-  TileSet();
+  TileSet(std::wstring filePath, UINT tileXCount, UINT tileYCount);
   ~TileSet();
+
+  std::string themeName = "NONE";
 
   ID3D11ShaderResourceView* tileSRV = nullptr;
 
@@ -20,5 +21,7 @@ private:
   UINT tileYCount = 0;
 
   Vector2 selectedStartUV = Values::ZeroVec2;
-  Vector2 texelTileSize = Values::ZeroVec2;
+  Vector2 tileUV = Values::ZeroVec2;
+
+  Vector2 singlePixelUV = {};
 };

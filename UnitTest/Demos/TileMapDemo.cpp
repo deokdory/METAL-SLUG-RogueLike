@@ -5,7 +5,8 @@
 
 void TileMapDemo::Init()
 {
-  UINT spacing = 40;
+  UINT spacing = 32;
+
   UINT width = WinMaxWidth / spacing;
   UINT height = WinMaxHeight / spacing;
 

@@ -39,11 +39,20 @@ using namespace std;
 
 //////////////////////////////////////////
 //ImGui
+
 #include "ImGui/imgui.h"
+#include "ImGui/imgui_stdlib.h"
 #include "ImGui/imgui_internal.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui/imgui_impl_win32.h"
+
 #pragma comment(lib, "ImGui/ImGui.lib")
+
+//////////////////////////////////////////
+// NFD
+
+#include "NFD/include/nfd.h"
+#pragma comment(lib, "NFD/nfd_d.lib")
 
 //////////////////////////////////////////
 
@@ -53,6 +62,8 @@ enum class AnchorPoint
 	LEFT_MID, CENTER, RIGHT_MID,
 	LEFT_BOT, MID_BOT, RIGHT_BOT
 };
+
+enum Direction { UP, DOWN, LEFT, RIGHT };
 
 #include "Interfaces/IObject.h"
 

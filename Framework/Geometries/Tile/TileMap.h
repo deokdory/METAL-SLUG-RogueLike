@@ -1,4 +1,7 @@
 #pragma once
+#include "TileSet.h"
+#include "Tile.h"
+
 enum class EDrawingMode
 {
   Normal
@@ -43,10 +46,10 @@ public:
   void MapVertexBuffer();
   void UnmapVertexBuffer();
 
-  void Save(wstring path);
-  void Load(wstring path);
+  void Save();
+  void Load();
 
-  class Tile* GetTile(Vector3 position);
+  Tile* GetTile(Vector3 position);
 
 private:
   UINT width = 0;
@@ -78,4 +81,8 @@ private:
   EDrawingMode mode = EDrawingMode::Normal;
   ColorChoice choice = ColorChoice::Default;
 
+  ID3D11SamplerState* sampler;
+  ID3D11BlendState* blend;
+
+  TileSet* tileSet = nullptr;
 };

@@ -2,7 +2,6 @@
 #include "Window.h"
 #include "Graphics.h"
 
-
 //상대경로 : ./ 현재폴더, ../ 상위폴더
 //절대경로 : 
 
@@ -65,7 +64,7 @@ Window::Window(DXDesc desc)
 	SetForegroundWindow(desc.handle);
 	SetFocus(desc.handle);
 
-	ShowCursor(false);
+	ShowCursor(true);
 	Window::desc = desc;
 
 	::instance = desc.instance;

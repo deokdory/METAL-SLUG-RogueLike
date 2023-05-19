@@ -103,6 +103,7 @@ void Textures::Load(Texture2D* texture)
   DirectX::TexMetadata metaData;
 
   std::wstring ext = Path::GetExtension(texture->filePath);
+
   if (ext == L"tga") {
     hr = DirectX::GetMetadataFromTGAFile(texture->filePath.c_str(), metaData);
   }
@@ -114,18 +115,20 @@ void Textures::Load(Texture2D* texture)
     hr = DirectX::GetMetadataFromWICFile(texture->filePath.c_str(), DirectX::WIC_FLAGS_NONE,
       metaData);
   }
+  
   CHECK(hr);
 
   UINT width = metaData.width;
   UINT height = metaData.height;
 
   TextureDesc desc;
+
   desc.filePath = texture->filePath;
   desc.width = width;
   desc.height = height;
 
-  TextureDesc exist;
-  bool bExist = false;
+  //TextureDesc exist;
+  //bool bExist = false;
 
   //for (TextureDesc temp : descs)
   //{
@@ -143,12 +146,14 @@ void Textures::Load(Texture2D* texture)
   //  texture->metaData = metaData;
   //}
   //else 
+
   {
     DirectX::ScratchImage image;
 
     if (ext == L"tga") {
       hr = DirectX::LoadFromTGAFile(texture->filePath.c_str(), &metaData, image);
     }
+
     else if (ext == L"dds") {
       hr = DirectX::LoadFromDDSFile(texture->filePath.c_str(), DirectX::DDS_FLAGS_NONE,
         &metaData, image);

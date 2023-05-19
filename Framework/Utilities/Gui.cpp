@@ -42,7 +42,6 @@ Gui::Gui()
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-
 	ImGui_ImplWin32_Init(handle);
 	ImGui_ImplDX11_Init(DEVICE, DC);
 
@@ -83,15 +82,15 @@ void Gui::ApplyStyle()
 
 	// Spatial
 	style.WindowBorderSize = 1.0f;
-	style.FrameBorderSize = 1.0f;
-	style.FramePadding = ImVec2(5, 5);
-	style.ItemSpacing = ImVec2(6, 5);
+	style.FrameBorderSize = 2.0f;
+	style.FramePadding = ImVec2(2, 2);
+	style.ItemSpacing = ImVec2(2, 2);
 	style.Alpha = 1.0f;
 	style.WindowRounding = roundness;
 	style.FrameRounding = roundness;
 	style.PopupRounding = roundness;
 	style.GrabRounding = roundness;
-	style.ScrollbarSize = 20.0f;
+	style.ScrollbarSize = 10.0f;
 	style.ScrollbarRounding = roundness;
 
 	// Colors

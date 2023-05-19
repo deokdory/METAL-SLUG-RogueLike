@@ -77,7 +77,6 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation,
     desc.RenderTarget[0].BlendEnable = true;
     States::CreateBlendState(&desc, &bPoint[1]);
   }
-
   SAFE_DELETE(texture);
 }
 
@@ -125,7 +124,7 @@ TextureRect::TextureRect(Vector3 position, Vector3 size, float rotation)
 
   // Sampler
   {
-    // 선형 보간
+    // Linear Sampling
     D3D11_SAMPLER_DESC desc;
     States::GetSamplerDesc(&desc);
     States::CreateSamplerState(&desc, &point[0]);

@@ -1,13 +1,10 @@
 #include "Framework.h"
-#include "TileSet.h"
-#include "Tile.h"
 #include "TileMap.h"
 
 TileMap::TileMap(UINT width, UINT height, UINT spacing)
   : width(width), height(height), spacing(spacing)
 {
-  TileSet::Create();
-
+  tileSet = new TileSet(TexturePath + L"Tiles.png", 6, 9);
   GenerateTileMap();
   
   vertices.assign(4, VertexTile());
@@ -38,6 +35,24 @@ TileMap::TileMap(UINT width, UINT height, UINT spacing)
 
   inb = new IndexNumBuffer();
   inb->SetIndex(0);
+
+  // Point sampling
+  {
+    D3D11_SAMPLER_DESC desc;
+    States::GetSamplerDesc(&desc);
+  
+    desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+    States::CreateSamplerState(&desc, &sampler);
+  }
+
+  // Blend
+  {
+    D3D11_BLEND_DESC desc;
+    States::GetBlendDesc(&desc);
+
+    desc.RenderTarget[0].BlendEnable = true;
+    States::CreateBlendState(&desc, &blend);
+  }
 }
 
 TileMap::~TileMap()
@@ -53,7 +68,7 @@ TileMap::~TileMap()
   for (UINT y = 0; y < height; y++) SAFE_DELETE_ARRAY(tiles[y]);
   SAFE_DELETE_ARRAY(tiles);
 
-  TileSet::Delete();
+  SAFE_DELETE(tileSet);
 }
 
 void TileMap::Update()
@@ -67,23 +82,37 @@ void TileMap::Update()
   {
     if (tile)
     {
-      tile->SetColor(Values::Red);
-      
-      Vector2 startUV = TileSet::Get()->selectedStartUV;
-      Vector2 endUV = startUV + TileSet::Get()->texelTileSize;
-      
-      tile->SetStartUV(TileSet::Get()->selectedStartUV);
-      tile->SetEndUV(endUV);
+        tile->SetColor(Values::Red);
+
+        Vector2 startUV = tileSet->selectedStartUV;
+        Vector2 endUV = startUV + tileSet->tileUV;
+
+        tile->SetStartUV(tileSet->selectedStartUV);
+        tile->SetEndUV(endUV);
     }
   }
 
-  if (Keyboard::Get()->Down(VK_F7)) Save(TilePath + L"TileData.txt");
-  if (Keyboard::Get()->Down(VK_F8)) Load(TilePath + L"TileData.txt");
+  else if (Mouse::Get()->Press(1))
+  {
+    if (tile)
+    {
+      tile->SetColor({});
+      tile->SetTheme("");
+      tile->SetStartUV(Vector2(-1, -1));
+      tile->SetEndUV(Vector2(-1, -1));
+    }
+  }
+
+  if (Keyboard::Get()->Down(VK_F7)) Save();
+  if (Keyboard::Get()->Down(VK_F8)) Load();
 
 }
 
 void TileMap::Render()
 {
+  DC->PSSetSamplers(0, 1, &sampler);
+  DC->OMSetBlendState(blend, nullptr, (UINT)0xFFFFFFFFFF);
+
   vb->SetIA();
   ib->SetIA();
   il->SetIA();
@@ -92,7 +121,8 @@ void TileMap::Render()
   vs->SetShader();
   ps->SetShader();
 
-  DC->PSSetShaderResources(0, 1, &TileSet::Get()->tileSRV);
+  ID3D11ShaderResourceView* srv = tileSet->tileSRV;
+  DC->PSSetShaderResources(0, 1, &srv);
 
   for (UINT y = 0; y < height; y++)
   {
@@ -116,9 +146,9 @@ void TileMap::Render()
         vertices[1].uv2 = Vector2(0.f, 0.f);
         vertices[2].uv2 = Vector2(1.f, 1.f);
         vertices[3].uv2 = Vector2(1.f, 0.f);
+
       }
       UnmapVertexBuffer();
-
       world = DXMath::Translation(tile.GetPosition());
 
       wb->SetWorld(world);
@@ -132,23 +162,27 @@ void TileMap::Render()
 
 void TileMap::GUI()
 {
-  TileSet::Get()->GUI();
-
   Vector3 mousePos = Mouse::Get()->GetPosition();
+  tileSet->GUI();
 
-  ImGui::Begin("TileMap");
-  ImGui::RadioButton("Normal", (int*)&mode, 0);
-  ImGui::End();
+  //ImGui::Begin("TileMap");
+  //ImGui::RadioButton("Normal", (int*)&mode, 0);
+  //ImGui::End();
+  //
+  //ImGui::Begin("Color Choice");
+  //ImGui::RadioButton("Default", (int*)&choice, 0);
+  //ImGui::End();
+  //
+  ImGui::Begin("TilePosition");
+  std::string tilePosStr = "";
 
-  ImGui::Begin("Color Choice");
-  ImGui::RadioButton("Default", (int*)&choice, 0);
-  ImGui::End();
+  Tile* tile = GetTile(mousePos);
+  if (tile != nullptr) {
+    Vector2 tilePosition = tile->GetTilePosition();
+    tilePosStr += std::to_string((int)tilePosition.x) + " x " + std::to_string((int)tilePosition.y);
+  }
 
-  ImGui::Begin("Index");
-
-  std::string index = "";
-  if (GetTile(mousePos)) index += std::to_string(GetTile(mousePos)->GetIndex());
-  ImGui::Text(index.c_str());
+  ImGui::Text(tilePosStr.c_str());
   ImGui::End();
 }
 
@@ -168,6 +202,7 @@ void TileMap::GenerateTileMap()
     {
       tiles[y][x].SetPosition(Vector3((float)(x * spacing), (float)(y * spacing), 0));
       tiles[y][x].SetIndex(index++);
+      tiles[y][x].SetTilePosition(Vector2(x, y));
     }
   }
 }
@@ -183,130 +218,179 @@ void TileMap::UnmapVertexBuffer()
   DC->Unmap(vb->GetResource(), 0);
 }
 
-void TileMap::Save(wstring path)
+void TileMap::Save()
 {
-  std::ofstream fout(path);
+  nfdchar_t* nfdPath = NULL;
+  nfdresult_t result = NFD_SaveDialog("txt", NULL, &nfdPath);
 
-  fout << to_string(width) << ' ' << to_string(height) << ' ' << to_string(spacing) << std::endl;
-
-  for (UINT y = 0; y < height; y++)
+  if (result == NFD_OKAY)
   {
-    for (UINT x = 0; x < width; x++)
+    puts(nfdPath);
+
+    std::string path = "";
+    path = nfdPath;
+    free(nfdPath);
+
+    String::Replace(&path, "\\", "/");
+
+    std::string extension = Path::GetExtension(path);
+    if (extension != "txt")
+      path += ".txt";
+
+    std::ofstream fout(path);
+
+    fout << to_string(width) << ' ' << to_string(height) << ' ' << to_string(spacing) << std::endl;
+
+    for (UINT y = 0; y < height; y++)
     {
-      Tile& tile = tiles[y][x];
-      std::string output;
+      for (UINT x = 0; x < width; x++)
+      {
+        Tile& tile = tiles[y][x];
+        std::string output;
 
-      output += std::to_string(tile.GetStartUV().x) + ' ' + std::to_string(tile.GetStartUV().y) + ' ';
-      output += std::to_string(tile.GetEndUV().x) + ' ' + std::to_string(tile.GetEndUV().y);
+        output += std::to_string(tile.GetStartUV().x) + ' ' + std::to_string(tile.GetStartUV().y) + ' ';
+        output += std::to_string(tile.GetEndUV().x) + ' ' + std::to_string(tile.GetEndUV().y);
 
-      fout << output << endl;
+        fout << output << endl;
+      }
     }
+  }
+  else if (result == NFD_CANCEL)
+  {
+    puts("User pressed cancel.");
+  }
+  else
+  {
+    std::cout << "Error::" << NFD_GetError();
   }
 }
 
-void TileMap::Load(wstring path)
+void TileMap::Load()
 {
-  std::ifstream fin(path);
+  nfdchar_t* nfdPath = NULL;
+  nfdresult_t result = NFD_OpenDialog("txt", NULL, &nfdPath);
 
-  if (fin.fail())
+  if (result == NFD_OKAY)
   {
-    std::cout << "Wrong File" << std::endl;
-    return;
-  }
-  
-  for(UINT y = 0; y < height; y++) SAFE_DELETE_ARRAY(tiles[y]);
-  SAFE_DELETE_ARRAY(tiles);
+    puts("Success!");
+    std::string path = "";
+    path = nfdPath;
+    free(nfdPath);
 
-  char temp[256];
-  fin.getline(temp, 256);
-  std::string t = "";
+    String::Replace(&path, "\\", "/");
 
-  // Reading width, height, spacing
-  for (int i = 0; i < 256; i++)
-  {
-    if (temp[i] != ' ' && temp[i] != '\0')
-      t = temp[i];
-    else
+    std::ifstream fin(path);
+
+    if (fin.fail())
     {
-      if (width == 0)
-      {
-        width = std::stoi(t); // string to int
-        t.clear();
-      }
-      else if (height == 0)
-      {
-        height = std::stoi(t);
-        t.clear();
-      }
-      else if (spacing == 0)
-      {
-        spacing = std::stoi(t);
-      }
-      continue;
+      std::cout << "Wrong File" << std::endl;
+      return;
     }
-  }
 
-  if (width == 0 || height == 0 || spacing == 0) assert(false);
+    for (UINT y = 0; y < height; y++) SAFE_DELETE_ARRAY(tiles[y]);
+    SAFE_DELETE_ARRAY(tiles);
 
-  tiles = new Tile * [height];
-  int count = 0;
+    char temp[256];
+    fin.getline(temp, 256);
+    std::string t = "";
 
-  for (UINT y = 0; y < height; y++)
-  {
-    tiles[y] = new Tile[width];
-    for (UINT x = 0; x < width; x++)
+    // Reading width, height, spacing
+    for (int i = 0; i < 256; i++)
     {
-      float vx = (float)(x * spacing);
-      float vy = (float)(y * spacing);
-      tiles[y][x].SetPosition(Vector3(vx, vy, 0.0f));
-      tiles[y][x].SetIndex(count++);
-
-      fin.getline(temp, 256);
-      Vector2 uv;
-      std::string t;
-
-      int flag = 0;
-      for (int i = 0; i < 256; i++)
+      if (temp[i] != ' ' && temp[i] != '\0')
+        t = temp[i];
+      else
       {
-        if ((i + 1) % 9 == 0)
+        if (width == 0)
         {
-          switch (flag)
-          {
-          case 0:
-          {
-            uv.x = std::stof(t);
-            ++flag;
-            break;
-          }
-          case 1:
-          {
-            uv.y = std::stof(t);
-            ++flag;
-            tiles[y][x].SetStartUV(uv);
-            break;
-          }
-          case 2:
-          {
-            uv.x = std::stof(t);
-            ++flag;
-            break;
-          }
-          case 3:
-          {
-            uv.y = std::stof(t);
-            ++flag;
-            tiles[y][x].SetEndUV(uv);
-            break;
-          }
-          default:
-            break;
-          }
+          width = std::stoi(t); // string to int
           t.clear();
-          continue;
         }
-        else t += temp[i];
+        else if (height == 0)
+        {
+          height = std::stoi(t);
+          t.clear();
+        }
+        else if (spacing == 0)
+        {
+          spacing = std::stoi(t);
+        }
+        continue;
       }
     }
+
+    if (width == 0 || height == 0 || spacing == 0) assert(false);
+
+    tiles = new Tile * [height];
+    int count = 0;
+
+    for (UINT y = 0; y < height; y++)
+    {
+      tiles[y] = new Tile[width];
+      for (UINT x = 0; x < width; x++)
+      {
+        float vx = (float)(x * spacing);
+        float vy = (float)(y * spacing);
+        tiles[y][x].SetPosition(Vector3(vx, vy, 0.0f));
+        tiles[y][x].SetIndex(count++);
+        tiles[y][x].SetTilePosition(Vector2(x, y));
+
+        fin.getline(temp, 256);
+        Vector2 uv;
+        std::string t;
+
+        int flag = 0;
+        for (int i = 0; i < 256; i++)
+        {
+          if ((i + 1) % 9 == 0)
+          {
+            switch (flag)
+            {
+            case 0:
+            {
+              uv.x = std::stof(t);
+              ++flag;
+              break;
+            }
+            case 1:
+            {
+              uv.y = std::stof(t);
+              ++flag;
+              tiles[y][x].SetStartUV(uv);
+              break;
+            }
+            case 2:
+            {
+              uv.x = std::stof(t);
+              ++flag;
+              break;
+            }
+            case 3:
+            {
+              uv.y = std::stof(t);
+              ++flag;
+              tiles[y][x].SetEndUV(uv);
+              break;
+            }
+            default:
+              break;
+            }
+            t.clear();
+            continue;
+          }
+          else t += temp[i];
+        }
+      }
+    }
+
+  }
+  else if (result == NFD_CANCEL)
+  {
+    puts("User pressed cancel.");
+  }
+  else
+  {
+    std::cout << "Error::" << NFD_GetError();
   }
 }
 

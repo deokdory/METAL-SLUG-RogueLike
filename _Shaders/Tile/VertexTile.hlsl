@@ -53,7 +53,7 @@ SamplerState _samp : register(s0);
 
 float4 PS(PixelInput input) : SV_Target
 {
-    float4 color = 0;
+    float4 color;
     
     if (input.uv.x > 0.0f || input.uv.y > 0.0f)
         color = _sourceTex.Sample(_samp, input.uv);

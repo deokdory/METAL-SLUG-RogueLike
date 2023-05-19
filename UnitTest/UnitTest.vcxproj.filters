@@ -23,6 +23,7 @@
     <ClInclude Include="Utilities\Movements\ThrowableMovement.h" />
     <ClInclude Include="Utilities\Gun\Gun.h" />
     <ClInclude Include="Utilities\Movements\Movement.h" />
+    <ClInclude Include="Demos\TileMapDemo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
@@ -45,6 +46,7 @@
     <ClCompile Include="Utilities\Movements\ThrowableMovement.cpp" />
     <ClCompile Include="Utilities\Gun\Gun.cpp" />
     <ClCompile Include="Utilities\Movements\Movement.cpp" />
+    <ClCompile Include="Demos\TileMapDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Framework.lib" />
