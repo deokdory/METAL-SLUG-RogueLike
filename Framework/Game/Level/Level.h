@@ -1,8 +1,11 @@
 #pragma once
 #include "Objects/Terrain.h"
+#include "Game/Level/Room/Room.h"
 
 class Level {
- public:
+public:
+
+  Level();
   virtual ~Level();
 
   virtual void init();
@@ -14,11 +17,19 @@ class Level {
 
   std::vector<Terrain*>& GetTerrains() { return terrains; }
   std::vector<GameObject*>& GetObjects() { return objects; }
-  
-  protected:
+
+protected:
+  std::vector<Room*> rooms;
+
+  UINT levelWidth = 7;
+  UINT levelHeight = 5;
+
   //std::vector<Background*> backgrounds;
   //std::vector<Decoration*> decos;
-  
+
+  GameObject* player = nullptr;
+
   std::vector<Terrain*> terrains;
   std::vector<GameObject*> objects;
+  
 };

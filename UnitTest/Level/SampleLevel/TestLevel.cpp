@@ -7,7 +7,8 @@
 #include "Character/Animations.h"
 #include "UI/HUD.h"
 
-TestLevel::TestLevel() { init(); }
+TestLevel::TestLevel() 
+: Level() { init(); }
 
 void TestLevel::init() {
 

@@ -1,13 +1,18 @@
 #include "Framework.h"
 #include "Level.h"
 
+Level::Level()
+{
+  
+}
+
 Level::~Level() {
-  for (auto terr : terrains) {
-    SAFE_DELETE(terr);
-  }
-  for (auto obj : objects) {
-    SAFE_DELETE(obj);
-  }
+ 
+  for (auto room : rooms) SAFE_DELETE(room);
+  //for (auto terr : terrains) SAFE_DELETE(terr);
+  for (auto obj : objects) SAFE_DELETE(obj);
+
+  rooms.clear();
   terrains.clear();
   objects.clear();
 }

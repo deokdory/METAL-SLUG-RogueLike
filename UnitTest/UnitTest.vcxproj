@@ -149,7 +149,6 @@
   <ItemGroup>
     <ClInclude Include="Character\Enemy.h" />
     <ClInclude Include="Character\SoldierSample.h" />
-    <ClInclude Include="Demos\TileMapDemo.h" />
     <ClInclude Include="GameObjects\Throwable\Throwable.h" />
     <ClInclude Include="GameObjects\Bullet\Bullet.h" />
     <ClInclude Include="Character\Animations.h" />
@@ -161,6 +160,7 @@
     <ClInclude Include="Utilities\Decoration.h" />
     <ClInclude Include="Utilities\Game.h" />
     <ClInclude Include="Utilities\GameWorld.h" />
+    <ClInclude Include="Utilities\LevelEditor\LevelEditor.h" />
     <ClInclude Include="Utilities\Movements\PlayerMovement.h" />
     <ClInclude Include="Utilities\Movements\ThrowableMovement.h" />
     <ClInclude Include="Level\Background.h" />
@@ -174,7 +174,6 @@
   <ItemGroup>
     <ClCompile Include="Character\Enemy.cpp" />
     <ClCompile Include="Character\SoldierSample.cpp" />
-    <ClCompile Include="Demos\TileMapDemo.cpp" />
     <ClCompile Include="GameObjects\Throwable\Throwable.cpp" />
     <ClCompile Include="GameObjects\Bullet\Bullet.cpp" />
     <ClCompile Include="Character\Animations.cpp" />
@@ -185,6 +184,7 @@
     <ClCompile Include="Utilities\Combat\PlayerCombat.cpp" />
     <ClCompile Include="Utilities\Game.cpp" />
     <ClCompile Include="Utilities\GameWorld.cpp" />
+    <ClCompile Include="Utilities\LevelEditor\LevelEditor.cpp" />
     <ClCompile Include="Utilities\Movements\PlayerMovement.cpp" />
     <ClCompile Include="Utilities\Movements\ThrowableMovement.cpp" />
     <ClCompile Include="Level\Background.cpp" />

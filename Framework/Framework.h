@@ -124,6 +124,10 @@ typedef UINT		uint;
 #define WinMaxWidth 1280
 #define WinMaxHeight 720
 
+#define TILESIZE 32
+
+// position = (mousePos / TILESIZE) * TILESIZE + TILESIZE / 2;
+
 const wstring ShaderPath = L"../_Shaders/";
 const wstring TexturePath = L"../_Resources/_Textures/";
 const wstring TilePath = L"../_Resources/_TileData/";

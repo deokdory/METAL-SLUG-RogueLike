@@ -62,8 +62,13 @@ float4 PS(PixelInput input) : SV_Target
     
     if (input.index == _index)
     {
-        if (input.uv2.x < 0.05f || input.uv2.x > 0.95f || input.uv2.y < 0.05f || input.uv2.y > 0.95f)
+        if (input.uv2.x < 0.025f || input.uv2.x > 0.975f || input.uv2.y < 0.025f || input.uv2.y > 0.975f)
             color = float4(1, 0, 0, 1);
+    }
+    else
+    {
+        if (input.uv2.x < 0.02f || input.uv2.x > 0.98f || input.uv2.y < 0.02f || input.uv2.y > 0.98f)
+            color = float4(1, 1, 1, 0.1);
     }
     
     return color;
