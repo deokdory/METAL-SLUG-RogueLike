@@ -17,8 +17,8 @@ void Program::Init()
 
 		Camera::Create();
   }
-  //Push(new Game);
-	Push(new TileMapDemo);
+  Push(new Game);
+	//Push(new TileMapDemo);
 }
 
 void Program::Destroy()

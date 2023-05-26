@@ -45,8 +45,8 @@ class BoundingBox {
 
   void UpdateCollisionData();
 
-  void MapVertexBuffer();
-  void UnmapVertexBuffer();
+  void mapVertexBuffer();
+  void unmapVertexBuffer();
 
   static bool AABB(BoundingBox* a, BoundingBox* b);
   static bool OBB(BoundingBox* a, BoundingBox* b);

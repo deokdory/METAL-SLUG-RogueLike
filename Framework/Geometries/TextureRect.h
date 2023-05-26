@@ -26,11 +26,10 @@ class TextureRect {
   TextureRect(Vector3 position, Vector3 size, float rotation);
   ~TextureRect();
 
-  void MapVertexBuffer();
-  void UnmapVertexBuffer();
-
   void SetSRV(ID3D11ShaderResourceView* srv) { this->shaderResourceView = srv; }
   void SetShader(std::wstring shaderpath);
+
+  void SetUV(Vector2 startUV, Vector2 endUV);
 
   // 중심점 재설정
   void SetAnchorPoint(AnchorPoint anchor);
@@ -62,6 +61,9 @@ class TextureRect {
   float GetOpacity() { return this->opacity; }
 
  protected:
+  void mapVertexBuffer();
+  void unmapVertexBuffer();
+
   std::vector<VertexTexture> vertices;
   VertexBuffer* vertexBuffer = nullptr;
 

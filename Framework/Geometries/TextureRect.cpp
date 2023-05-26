@@ -163,11 +163,11 @@ void TextureRect::Move(Vector2 Move) {
   position += {Move.x, Move.y, 0.0f};
 }
 
-void TextureRect::MapVertexBuffer() {
+void TextureRect::mapVertexBuffer() {
   DC->Map(vertexBuffer->GetResource(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
 }
 
-void TextureRect::UnmapVertexBuffer() {
+void TextureRect::unmapVertexBuffer() {
   std::memcpy(subResource.pData, vertices.data(),
     sizeof(vertices[0]) * vertices.size());
   DC->Unmap(vertexBuffer->GetResource(), 0);
@@ -182,12 +182,31 @@ void TextureRect::SetShader(std::wstring shaderpath) {
   pixelShader->Create(shaderpath, "PS");
 }
 
+void TextureRect::SetUV(Vector2 startUV, Vector2 endUV)
+{
+  mapVertexBuffer();
+  {
+    vertices[0].uv.x = startUV.x;
+    vertices[0].uv.y = endUV.y;
+
+    vertices[1].uv.x = endUV.x;
+    vertices[1].uv.y = startUV.y;
+
+    vertices[2].uv.x = endUV.x;
+    vertices[2].uv.y = endUV.y;
+
+    vertices[3].uv.x = startUV.x;
+    vertices[3].uv.y = startUV.y;
+  }
+  unmapVertexBuffer();
+}
+
 void TextureRect::SetAnchorPoint(AnchorPoint anchor) {
 
   switch (anchor)
   {
   case AnchorPoint::LEFT_TOP:
-    MapVertexBuffer();
+    mapVertexBuffer();
     {
       vertices[0].position = verticesLocalPosition[0] =
         Vector3(0.0f, -1.0f, 0.0f);
@@ -198,10 +217,10 @@ void TextureRect::SetAnchorPoint(AnchorPoint anchor) {
       vertices[3].position = verticesLocalPosition[3] =
         Vector3(0.0f, 0.0f, 0.0f);
     }
-    UnmapVertexBuffer();
+    unmapVertexBuffer();
     break;
   case AnchorPoint::MID_TOP:
-    MapVertexBuffer();
+    mapVertexBuffer();
     {
       vertices[0].position = verticesLocalPosition[0] =
         Vector3(-0.5f, -1.0f, 0.0f);
@@ -212,10 +231,10 @@ void TextureRect::SetAnchorPoint(AnchorPoint anchor) {
       vertices[3].position = verticesLocalPosition[3] =
         Vector3(-0.5f, 0.0f, 0.0f);
     }
-    UnmapVertexBuffer();
+    unmapVertexBuffer();
     break;
   case AnchorPoint::RIGHT_TOP:
-    MapVertexBuffer();
+    mapVertexBuffer();
     {
       vertices[0].position = verticesLocalPosition[0] =
         Vector3(-1.0f, -1.0f, 0.0f);
@@ -226,10 +245,10 @@ void TextureRect::SetAnchorPoint(AnchorPoint anchor) {
       vertices[3].position = verticesLocalPosition[3] =
         Vector3(-1.0f, 0.0f, 0.0f);
     }
-    UnmapVertexBuffer();
+    unmapVertexBuffer();
     break;
   case AnchorPoint::LEFT_MID:
-    MapVertexBuffer();
+    mapVertexBuffer();
     {
       vertices[0].position = verticesLocalPosition[0] =
         Vector3(0.0f, -0.5f, 0.0f);
@@ -240,10 +259,10 @@ void TextureRect::SetAnchorPoint(AnchorPoint anchor) {
       vertices[3].position = verticesLocalPosition[3] =
         Vector3(0.0f, 0.5f, 0.0f);
     }
-    UnmapVertexBuffer();
+    unmapVertexBuffer();
     break;
   case AnchorPoint::CENTER:
-    MapVertexBuffer();
+    mapVertexBuffer();
     {
       vertices[0].position = verticesLocalPosition[0] =
         Vector3(-0.5f, -0.5f, 0.0f);
@@ -254,10 +273,10 @@ void TextureRect::SetAnchorPoint(AnchorPoint anchor) {
       vertices[3].position = verticesLocalPosition[3] =
         Vector3(-0.5f, 0.5f, 0.0f);
     }
-    UnmapVertexBuffer();
+    unmapVertexBuffer();
     break;
   case AnchorPoint::RIGHT_MID:
-    MapVertexBuffer();
+    mapVertexBuffer();
     {
       vertices[0].position = verticesLocalPosition[0] =
         Vector3(-1.0f, -0.5f, 0.0f);
@@ -268,10 +287,10 @@ void TextureRect::SetAnchorPoint(AnchorPoint anchor) {
       vertices[3].position = verticesLocalPosition[3] =
         Vector3(-1.0f, 0.5f, 0.0f);
     }
-    UnmapVertexBuffer();
+    unmapVertexBuffer();
     break;
   case AnchorPoint::LEFT_BOT:
-    MapVertexBuffer();
+    mapVertexBuffer();
     {
       vertices[0].position = verticesLocalPosition[0] =
         Vector3(0.0f, 0.0f, 0.0f);
@@ -282,10 +301,10 @@ void TextureRect::SetAnchorPoint(AnchorPoint anchor) {
       vertices[3].position = verticesLocalPosition[3] =
         Vector3(0.0f, 1.0f, 0.0f);
     }
-    UnmapVertexBuffer();
+    unmapVertexBuffer();
     break;
   case AnchorPoint::MID_BOT:
-    MapVertexBuffer();
+    mapVertexBuffer();
     {
       vertices[0].position = verticesLocalPosition[0] =
         Vector3(-0.5f, 0.0f, 0.0f);
@@ -296,10 +315,10 @@ void TextureRect::SetAnchorPoint(AnchorPoint anchor) {
       vertices[3].position = verticesLocalPosition[3] =
         Vector3(-0.5f, 1.0f, 0.0f);
     }
-    UnmapVertexBuffer();
+    unmapVertexBuffer();
     break;
   case AnchorPoint::RIGHT_BOT:
-    MapVertexBuffer();
+    mapVertexBuffer();
     {
       vertices[0].position = verticesLocalPosition[0] =
         Vector3(-1.0f, 0.0f, 0.0f);
@@ -310,7 +329,7 @@ void TextureRect::SetAnchorPoint(AnchorPoint anchor) {
       vertices[3].position = verticesLocalPosition[3] =
         Vector3(-1.0f, 1.0f, 0.0f);
     }
-    UnmapVertexBuffer();
+    unmapVertexBuffer();
     break;
   default:
     break;

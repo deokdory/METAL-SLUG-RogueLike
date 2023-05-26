@@ -294,6 +294,29 @@ void ObjectGraphic::SetCurrentFrame(UINT index, Slot slot)
 //  }
 //}
 
+void ObjectGraphic::SetUV(Vector2 startUV, Vector2 endUV, Slot slot)
+{
+  TextureRect* textureRect = nullptr;
+  switch (slot)
+  {
+  case ObjectGraphic::NORMAL:
+    textureRect = texRects[0];
+    break;
+  case ObjectGraphic::LOWER:
+    textureRect = texRects[1];
+    break;
+  case ObjectGraphic::UPPER:
+    textureRect = texRects[2];
+    break;
+  default:
+    break;
+  }
+
+  if (textureRect == nullptr) return;
+
+  textureRect->SetUV(startUV, endUV);
+}
+
 void ObjectGraphic::AddRotation(float rotation, Type type, Slot slot)
 {
   switch (type)

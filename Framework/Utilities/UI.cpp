@@ -136,7 +136,8 @@ void UI::Init(Vector3 position, Vector3 size, float rotation, std::wstring path,
   SAFE_DELETE(srcTex);
 }
 
-void UI::Init(Vector3 position, Vector3 size, float rotation, FillType type) {
+void UI::Init(Vector3 position, Vector3 size, float rotation, FillType type) 
+{
   this->position = position;
   this->size = this->originSize = size;
   this->rotation = rotation;
@@ -185,19 +186,22 @@ void UI::Init(Vector3 position, Vector3 size, float rotation, FillType type) {
   { wb = new WorldBuffer(); }
 }
 
-void UI::MapVertexBuffer() {
+void UI::mapVertexBuffer() 
+{
   DC->Map(vb->GetResource(), 0, D3D11_MAP_WRITE_DISCARD, 0,
           &subResource);
 }
 
-void UI::UnmapVertexBuffer() {
+void UI::unmapVertexBuffer() 
+{
   std::memcpy(subResource.pData, textureVertices.data(),
               sizeof(textureVertices[0]) * textureVertices.size());
   DC->Unmap(vb->GetResource(), 0);
 }
 
 template <typename T>
-inline void UI::SetVertices(std::vector<T>& vertices, FillType type) {
+inline void UI::SetVertices(std::vector<T>& vertices, FillType type) 
+{
 
   switch (type) {
     case UI::NONE: {
@@ -208,47 +212,31 @@ inline void UI::SetVertices(std::vector<T>& vertices, FillType type) {
       break;
     }
     case UI::LEFT_TO_RIGHT: {
-      vertices[0].position =
-          Vector3(0.0f, -0.5f, 0.0f);
-      vertices[1].position = 
-          Vector3(1.0f, 0.5f, 0.0f);
-      vertices[2].position =
-          Vector3(1.0f, -0.5f, 0.0f);
-      vertices[3].position = 
-          Vector3(0.0f, 0.5f, 0.0f);
+      vertices[0].position = Vector3(0.0f, -0.5f, 0.0f);
+      vertices[1].position = Vector3(1.0f, 0.5f, 0.0f);
+      vertices[2].position = Vector3(1.0f, -0.5f, 0.0f);
+      vertices[3].position = Vector3(0.0f, 0.5f, 0.0f);
       break;
     }
     case UI::RIGHT_TO_LEFT: {
-      vertices[0].position = 
-          Vector3(-1.0f, -0.5f, 0.0f);
-      vertices[1].position = 
-          Vector3(0.0f, 0.5f, 0.0f);
-      vertices[2].position = 
-          Vector3(0.0f, -0.5f, 0.0f);
-      vertices[3].position = 
-          Vector3(-1.0f, 0.5f, 0.0f);
+      vertices[0].position = Vector3(-1.0f, -0.5f, 0.0f);
+      vertices[1].position = Vector3(0.0f, 0.5f, 0.0f);
+      vertices[2].position = Vector3(0.0f, -0.5f, 0.0f);
+      vertices[3].position = Vector3(-1.0f, 0.5f, 0.0f);
       break;
     }
     case UI::UP_TO_DOWN: {
-      vertices[0].position = 
-          Vector3(-0.5f, 0.0f, 0.0f);
-      vertices[1].position = 
-          Vector3(0.5f, 1.0f, 0.0f);
-      vertices[2].position = 
-          Vector3(0.5f, 0.0f, 0.0f);
-      vertices[3].position = 
-          Vector3(-0.5f, 1.0f, 0.0f);
+      vertices[0].position = Vector3(-0.5f, 0.0f, 0.0f);
+      vertices[1].position = Vector3(0.5f, 1.0f, 0.0f);
+      vertices[2].position = Vector3(0.5f, 0.0f, 0.0f);
+      vertices[3].position = Vector3(-0.5f, 1.0f, 0.0f);
       break;
     }
     case UI::DOWN_TO_UP: {
-      vertices[0].position = 
-          Vector3(-0.5f, -1.0f, 0.0f);
-      vertices[1].position = 
-          Vector3(0.5f, 0.0f, 0.0f);
-      vertices[2].position = 
-          Vector3(0.5f, -1.0f, 0.0f);
-      vertices[3].position = 
-          Vector3(-0.5f, 0.0f, 0.0f);
+      vertices[0].position = Vector3(-0.5f, -1.0f, 0.0f);
+      vertices[1].position = Vector3(0.5f, 0.0f, 0.0f);
+      vertices[2].position = Vector3(0.5f, -1.0f, 0.0f);
+      vertices[3].position = Vector3(-0.5f, 0.0f, 0.0f);
       break;
     }
     default:
@@ -256,7 +244,8 @@ inline void UI::SetVertices(std::vector<T>& vertices, FillType type) {
   }
 }
 
-void UI::SetShader(std::wstring shaderpath) {
+void UI::SetShader(std::wstring shaderpath) 
+{
   vs->Clear();
   ps->Clear();
 

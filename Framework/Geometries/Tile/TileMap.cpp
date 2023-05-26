@@ -129,7 +129,7 @@ void TileMap::Render()
     for (UINT x = 0; x < width; x++)
     {
       Tile& tile = tiles[y][x];
-      MapVertexBuffer();
+      mapVertexBuffer();
       {
         for (VertexTile& v : vertices)
         {
@@ -148,7 +148,7 @@ void TileMap::Render()
         vertices[3].uv2 = Vector2(1.f, 0.f);
 
       }
-      UnmapVertexBuffer();
+      unmapVertexBuffer();
       world = DXMath::Translation(tile.GetPosition());
 
       wb->SetWorld(world);
@@ -207,12 +207,12 @@ void TileMap::GenerateTileMap()
   }
 }
 
-void TileMap::MapVertexBuffer()
+void TileMap::mapVertexBuffer()
 {
   DC->Map(vb->GetResource(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
 }
 
-void TileMap::UnmapVertexBuffer()
+void TileMap::unmapVertexBuffer()
 {
   memcpy(subResource.pData, vertices.data(), sizeof(vertices[0]) * vertices.size());
   DC->Unmap(vb->GetResource(), 0);

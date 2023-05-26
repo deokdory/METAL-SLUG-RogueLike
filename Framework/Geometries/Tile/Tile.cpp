@@ -3,9 +3,9 @@
 
 //void Tile::SetStartUV(Vector2 startUV)
 //{
-//  texRect->MapVertexBuffer();
+//  texRect->mapVertexBuffer();
 //
-//  texRect->UnmapVertexBuffer();
+//  texRect->unmapVertexBuffer();
 //}
 //
 //void Tile::SetEndUV(Vector2 endUV)

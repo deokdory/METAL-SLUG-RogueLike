@@ -7,22 +7,20 @@ class Collision {
    { TOP, BASE, BOTTOM };
 
   Collision(class GameObject* object);
-  ~Collision();
+  virtual ~Collision();
 
   virtual void Update();
   virtual void Render();
 
   void InitializeBase();
-  void InitializeTop();
-  void InitializeBottom();
+  void InitializeFootholder();
+  //void InitializeBottom();
 
   void DeleteBase()   { SAFE_DELETE(base) };
-  void DeleteTop()    { SAFE_DELETE(top) };
-  void DeleteBottom() { SAFE_DELETE(bottom) };
+  void DeleteFootholder()    { SAFE_DELETE(footholder) };
 
   BoundingBox* GetBase() { return base; }
-  BoundingBox* GetBottom() { return bottom; }
-  BoundingBox* GetTop() { return top; }
+  BoundingBox* GetFootholder() { return footholder; }
 
   void SetAnchorPoint(AnchorPoint anchorPoint) { this->anchorPoint = anchorPoint; }
 
@@ -35,8 +33,27 @@ class Collision {
   AnchorPoint anchorPoint = AnchorPoint::MID_BOT;
 
   BoundingBox* base = nullptr;
-  BoundingBox* bottom = nullptr;
-  BoundingBox* top = nullptr;
+  BoundingBox* footholder = nullptr;
 
   const float collisionThickness = 4;
+};
+
+class TerrainCollision : public Collision
+{
+public:
+  enum class Type
+  {
+    FH_MID, // Foot holder
+    FH_EDGE_L,
+    FH_EDGE_R,
+    STAIR_UP,
+    STAIR_DOWN
+  };
+
+  TerrainCollision(GameObject* object, Type type);
+
+  virtual void Update();
+  
+private:
+  TerrainCollision::Type terrainType;
 };

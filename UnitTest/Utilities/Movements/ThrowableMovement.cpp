@@ -55,8 +55,8 @@ void ThrowableMovement::collisionCheck()
   auto& terrains = GameManager::Get()->GetCurrentLevel()->GetTerrains();
   auto& objects = GameManager::Get()->GetCurrentLevel()->GetObjects();
 
-  auto* bottom = object->GetCollision()->GetBottom();
-  auto* top = object->GetCollision()->GetTop();
+  //auto* bottom = object->GetCollision()->GetBottom();
+  auto* footholder = object->GetCollision()->GetFootholder();
   auto* base = object->GetCollision()->GetBase();
 
   auto* bottomSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::BOTTOM);
@@ -77,15 +77,15 @@ void ThrowableMovement::collisionCheck()
 
   for (auto terr : terrains) {
 
-    terrTop = terr->GetCollision()->GetTop();
+    terrTop = terr->GetCollision()->GetFootholder();
     terrBase = terr->GetCollision()->GetBase();
-    terrBottom = terr->GetCollision()->GetBottom();
+    //terrBottom = terr->GetCollision()->GetBottom();
 
     terrPos = terr->GetPosition();
     terrSize = terr->GetSize();
 
     if (ySpeed < 0) {
-      if (BoundingBox::AABB(bottomSpeedBox, terrTop))
+      if (BoundingBox::OBB(bottomSpeedBox, terrTop))
       {
         isFalling = false;
         bounce.y = (std::abs(ySpeed) / Time::Get()->GetGlobalSpeed()) * 0.5f;
@@ -101,24 +101,24 @@ void ThrowableMovement::collisionCheck()
       }
     }
 
-    if (ySpeed > 0)
-    {
-      if (BoundingBox::AABB(topSpeedBox, terrBottom))
-      {
-        ySpeedOrigin = 0;
-        if (nearestY == nullptr || terrBottom->GetRect()->LB.y < nearestY->GetRect()->LB.y)
-        {
-          nearestY = terrBottom;
-          float depth = std::abs(topSpeedBox->GetRect()->LT.y - terrBottom->GetRect()->LB.y);
-
-          ySpeed -= depth;
-          SlowDown();
-        }
-      }
-    }
+    //if (ySpeed > 0)
+    //{
+    //  if (BoundingBox::AABB(topSpeedBox, terrBottom))
+    //  {
+    //    ySpeedOrigin = 0;
+    //    if (nearestY == nullptr || terrBottom->GetRect()->LB.y < nearestY->GetRect()->LB.y)
+    //    {
+    //      nearestY = terrBottom;
+    //      float depth = std::abs(topSpeedBox->GetRect()->LT.y - terrBottom->GetRect()->LB.y);
+    //
+    //      ySpeed -= depth;
+    //      SlowDown();
+    //    }
+    //  }
+    //}
 
     //if (ySpeed >= 0) {
-    //  if (BoundingBox::AABB(top, terrBottom)) {
+    //  if (BoundingBox::AABB(footholder, terrBottom)) {
     //    ySpeed = 0;
     //  }
     //}
@@ -126,7 +126,7 @@ void ThrowableMovement::collisionCheck()
 
     if (xSpeed > 0)
     {
-      if (BoundingBox::AABB(rightSpeedBox, terrBase) == true) 
+      if (BoundingBox::OBB(rightSpeedBox, terrBase) == true) 
       {
         bounce.x = ( -xSpeed / Time::Get()->GetGlobalSpeed()) * 0.5;
 
@@ -142,7 +142,7 @@ void ThrowableMovement::collisionCheck()
 
     if (xSpeed < 0)
     {
-      if (BoundingBox::AABB(leftSpeedBox, terrBase) == true)
+      if (BoundingBox::OBB(leftSpeedBox, terrBase) == true)
       {
         bounce.x = ( -xSpeed / Time::Get()->GetGlobalSpeed()) * 0.5;
 

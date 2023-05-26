@@ -6,7 +6,7 @@ Character::Character(Vector3 position, Vector3 size)
 
   SetAnchorPoint(AnchorPoint::MID_BOT);
 
-  type = Type::CHARACTER;
+  objectType = Type::CHARACTER;
 
   hp = hpMax;
 

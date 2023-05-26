@@ -2,10 +2,26 @@
 
 class Terrain : public GameObject {
  public:
-   Terrain(Vector3 position, Vector3 size, std::wstring path);
-  ~Terrain();
+   enum class Type
+   {
+     FH_EDGE_L, 
+     FH_MID, 
+     FH_MID_L_WP, // With Pannel (Decoration)
+     FH_MID_R_WP, 
+     FH_EDGE_R_WP, 
+     FH_EDGE_R, 
+     STAIR_UP, 
+     STAIR_DOWN
+   };
 
-  virtual void Update();
-  virtual void Render();
+   Terrain(Vector3 position, Type type);
+   ~Terrain();
 
+   virtual void Update();
+   virtual void Render();
+
+   Type GetTerrainType() { return terrainType; }
+
+private:
+  Type terrainType;
 };

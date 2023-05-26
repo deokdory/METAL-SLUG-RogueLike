@@ -8,6 +8,13 @@ GameObject::GameObject(Vector3 position, Vector3 size)
   collision = new Collision(this);
 }
 
+GameObject::GameObject(Vector3 position) // 지형 용 생성자
+  : position(position), rotation(0)
+{
+  graphic = new ObjectGraphic(this);
+  //collision = new Collision(this);
+}
+
 GameObject::~GameObject() {
   SAFE_DELETE(graphic);
   SAFE_DELETE(collision);

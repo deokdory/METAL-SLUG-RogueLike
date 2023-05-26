@@ -5,6 +5,8 @@ class GameObject {
   enum class Type { NONE, CHARACTER, PLAYER, VEHICLE, PROP, TERRAIN, BULLET, THROWABLE };
 
   GameObject(Vector3 position, Vector3 size);
+  GameObject(Vector3 position);
+
   virtual ~GameObject();
 
   virtual void Update();
@@ -30,22 +32,21 @@ class GameObject {
   bool GetIsWaitingDelete() { return isWaitingDelete; }
   void SetIsWaitingDelete(bool isWaitingDelete) { this->isWaitingDelete = isWaitingDelete; }
 
-  GameObject::Type GetObjectType() { return type; }
+  GameObject::Type GetObjectType() { return objectType; }
 
   AnchorPoint GetAnchorPoint() { return anchorPoint; }
   void SetAnchorPoint(AnchorPoint anchorPoint);
 
 protected:
-
-  Type type = Type::NONE;
+  Type objectType = Type::NONE;
 
   class ObjectGraphic* graphic = nullptr;
   class Collision* collision = nullptr;
 
   AnchorPoint anchorPoint = AnchorPoint::MID_BOT;
 
-  Vector3 position;
-  Vector3 size;
+  Vector3 position = Values::ZeroVec3;
+  Vector3 size = Values::ZeroVec3;
   float rotation = 0;
 
   bool isFliped = false;

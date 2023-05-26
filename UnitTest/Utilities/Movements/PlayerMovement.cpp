@@ -30,8 +30,8 @@ void PlayerMovement::collisionCheck()
 
   auto& terrains = GameManager::Get()->GetCurrentLevel()->GetTerrains();
 
-  auto* bottom = object->GetCollision()->GetBottom();
-  auto* top = object->GetCollision()->GetTop();
+  //auto* bottom = object->GetCollision()->GetBottom();
+  auto* footholder = object->GetCollision()->GetFootholder();
   auto* base = object->GetCollision()->GetBase();
 
   auto* bottomSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::BOTTOM);
@@ -47,54 +47,58 @@ void PlayerMovement::collisionCheck()
 
   BoundingBox* terrTop, * terrBottom, * terrBase;
 
-  BoundingBox* nearestY = nullptr;
-  BoundingBox* nearestX = nullptr;
+  Terrain* nearestTerrainY = nullptr;
+  Terrain* nearestTerrainX = nullptr;
+
+  float nearestPositionY = 0.0f;
+  float nearestPositionX = 0.0f;
 
   for (auto terr : terrains) {
-    terrTop = terr->GetCollision()->GetTop();
+    auto terrainType = terr->GetTerrainType();
+
+    terrTop = terr->GetCollision()->GetFootholder();
     terrBase = terr->GetCollision()->GetBase();
-    terrBottom = terr->GetCollision()->GetBottom();
+    //terrBottom = terr->GetCollision()->GetBottom();
 
     terrPos = terr->GetPosition();
     terrSize = terr->GetSize();
 
     if (ySpeed < 0)
     {
-      if (BoundingBox::AABB(bottomSpeedBox, terrTop))
-      {
-        isFalling = false;
-        if (nearestY == nullptr || terrTop->GetRect()->LT.y > nearestY->GetRect()->LT.y)
+        if (BoundingBox::OBB(bottomSpeedBox, terrTop))
         {
-          nearestY = terrTop;
-
-          float depth = std::abs(bottomSpeedBox->GetRect()->RB.y - nearestY->GetRect()->LT.y);
-          ySpeed += depth;
+          isFalling = false;
+          if (nearestTerrainY == nullptr || terrTop->GetRect()->LT.y > nearestPositionY)
+          {
+            nearestPositionY = terrTop->GetRect()->LT.y;
+            nearestTerrainY = terr;
+          }
         }
-      }
     }
-    if (ySpeed > 0) {
-      if (BoundingBox::AABB(topSpeedBox, terrBottom))
-      {
-        if (nearestY == nullptr || terrBottom->GetRect()->LB.y < nearestY->GetRect()->LB.y)
-        {
-          nearestY = terrBottom;
-
-          float depth = std::abs(topSpeedBox->GetRect()->LT.y - nearestY->GetRect()->LB.y);
-          ySpeed -= depth;
-
-          isJumping = false;
-          ySpeedOrigin = 0;
-        }
-      }
-    }
+    //if (ySpeed > 0) {
+    //  if (BoundingBox::AABB(topSpeedBox, terrBottom))
+    //  {
+    //    if (nearestY == nullptr || terrBottom->GetRect()->LB.y < nearestY->GetRect()->LB.y)
+    //    {
+    //      nearestY = terrBottom;
+    //
+    //      float depth = std::abs(topSpeedBox->GetRect()->LT.y - nearestY->GetRect()->LB.y);
+    //      ySpeed -= depth;
+    //
+    //      isJumping = false;
+    //      ySpeedOrigin = 0;
+    //    }
+    //  }
+    //}
 
     if (xSpeed > 0)
     {
-      if (BoundingBox::AABB(rightSpeedBox, terrBase) == true)
+      if (BoundingBox::OBB(rightSpeedBox, terrBase) == true)
       {
-        if (nearestX == nullptr || terrBase->GetRect()->LB.x < nearestX->GetRect()->LB.x)
+        if (nearestTerrainX == nullptr || terrBase->GetRect()->LB.x < nearestPositionX)
         {
-          nearestX = terrBase;
+          nearestPositionX = terrBase->GetRect()->LB.x;
+          nearestTerrainX = terr;
           float depth = rightSpeedBox->GetRect()->RB.x - terrBase->GetRect()->LB.x;
 
           xSpeed -= depth;
@@ -103,13 +107,15 @@ void PlayerMovement::collisionCheck()
       }
     }
 
-    if (xSpeed < 0)
+    else if (xSpeed < 0)
     {
-      if (BoundingBox::AABB(leftSpeedBox, terrBase) == true)
+      if (BoundingBox::OBB(leftSpeedBox, terrBase) == true)
       {
-        if (nearestX == nullptr || terrBase->GetRect()->RB.x > nearestX->GetRect()->RB.x)
+        if (nearestTerrainX == nullptr || terrBase->GetRect()->RB.x > nearestPositionX)
         {
-          nearestX = terrBase;
+          nearestPositionX = terrBase->GetRect()->RB.x;
+          nearestTerrainX = terr;
+
           float depth = terrBase->GetRect()->RB.x - leftSpeedBox->GetRect()->LB.x;
 
           xSpeed += depth;
@@ -131,6 +137,54 @@ void PlayerMovement::collisionCheck()
     //    if (xSpeed < 0) xSpeed = 0;
     //  }
     //}
+  }
+  if (nearestTerrainY != nullptr)
+  {
+    float depth = 0.0f;
+    auto terrainType = nearestTerrainY->GetTerrainType();
+
+    if (terrainType == Terrain::Type::STAIR_DOWN || terrainType == Terrain::Type::STAIR_UP)
+    {
+      float rotation = 0.0f;
+      Vector3 speedBoxEdge = Values::ZeroVec3;
+      Vector3 terrBoxEdgeBottom = Values::ZeroVec3;
+      float length = 0.0f;
+
+      if (terrainType == Terrain::Type::STAIR_UP)
+      {
+        rotation = 45;
+        speedBoxEdge = bottomSpeedBox->GetRect()->RB;
+        terrBoxEdgeBottom = nearestTerrainY->GetCollision()->GetFootholder()->GetRect()->LT;
+
+        //if (speedBoxEdge.x > ) speedBoxEdge.x = terrBoxEdgeBottom.x;
+
+        length = speedBoxEdge.x - terrBoxEdgeBottom.x;
+        //std::cout << length << std::endl;
+      }
+      else
+      {
+        rotation = -45;
+        speedBoxEdge = bottomSpeedBox->GetRect()->LB;
+        terrBoxEdgeBottom = nearestTerrainY->GetCollision()->GetFootholder()->GetRect()->RT;
+
+        if (speedBoxEdge.x < terrBoxEdgeBottom.x) speedBoxEdge.x = terrBoxEdgeBottom.x;
+
+        length = terrBoxEdgeBottom.x - speedBoxEdge.x;
+      }
+      //float tangent = length * std::tan(rotation);
+
+      //std::cout << "ÅºÁ¨Æ® : " << tangent << std::endl;
+      std::cout << "¹Ù´Ú¿¡¼­ ½ºÇÇµå¹Ú½º±îÁö : " << speedBoxEdge.y - terrBoxEdgeBottom.y << std::endl;
+
+      depth = length - (speedBoxEdge.y - terrBoxEdgeBottom.y);
+    }
+    else
+    {
+      depth = std::abs(bottomSpeedBox->GetRect()->RB.y - nearestPositionY);
+    }
+    ySpeed += depth;
+    ySpeedOrigin = 0;
+    std::cout << "µª¾² : " << depth << std::endl;
   }
 }
 

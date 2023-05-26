@@ -11,7 +11,7 @@ Throwable::Throwable(GameObject* thrown, Side side, float damage, float range, s
   SetAnchorPoint(AnchorPoint::CENTER);
 
   movement = new ThrowableMovement(this, 0, 0);
-  type = Type::THROWABLE;
+  objectType = Type::THROWABLE;
 }
 
 Throwable::~Throwable()

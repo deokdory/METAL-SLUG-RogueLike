@@ -43,8 +43,8 @@ public:
   void GUI();
 
   void GenerateTileMap();
-  void MapVertexBuffer();
-  void UnmapVertexBuffer();
+  void mapVertexBuffer();
+  void unmapVertexBuffer();
 
   void Save();
   void Load();

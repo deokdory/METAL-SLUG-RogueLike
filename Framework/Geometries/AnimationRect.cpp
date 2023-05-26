@@ -18,7 +18,7 @@ void AnimationRect::Update() {
 
 
   if (bFliped) {
-    MapVertexBuffer();
+    mapVertexBuffer();
     {
       vertices[0].uv.x = animator->GetCurrentFrame().x + animator->GetTexelFrameSize().x;
       vertices[0].uv.y = animator->GetCurrentFrame().y + animator->GetTexelFrameSize().y;
@@ -32,10 +32,10 @@ void AnimationRect::Update() {
       vertices[3].uv.x = animator->GetCurrentFrame().x + animator->GetTexelFrameSize().x;
       vertices[3].uv.y = animator->GetCurrentFrame().y;
     }
-    UnmapVertexBuffer();
+    unmapVertexBuffer();
   }
   else {
-    MapVertexBuffer();
+    mapVertexBuffer();
     {
       vertices[0].uv.x = animator->GetCurrentFrame().x;
       vertices[0].uv.y = animator->GetCurrentFrame().y + animator->GetTexelFrameSize().y;
@@ -49,7 +49,7 @@ void AnimationRect::Update() {
       vertices[3].uv.x = animator->GetCurrentFrame().x;
       vertices[3].uv.y = animator->GetCurrentFrame().y;
     }
-    UnmapVertexBuffer();
+    unmapVertexBuffer();
   }
 
   __super::Update();

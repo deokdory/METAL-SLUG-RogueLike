@@ -6,7 +6,7 @@
 Bullet::Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath)
 : GameObject(fired->GetPosition(), Vector3(62, 14, 0)), fired(fired), side(side), speed(speed), damage(damage), texturePath(texturePath)
 {
-  type = Type::BULLET;
+  objectType = Type::BULLET;
 }
 
 Bullet::~Bullet()
@@ -48,8 +48,8 @@ void Bullet::Render()
 
 void Bullet::hit(GameObject* object)
 {
-  auto type = object->GetObjectType();
-  switch (type)
+  auto objectType = object->GetObjectType();
+  switch (objectType)
   {
   case GameObject::Type::VEHICLE:
   case GameObject::Type::PROP:
@@ -58,7 +58,7 @@ void Bullet::hit(GameObject* object)
     return;
   }
 
-  if (type == GameObject::Type::CHARACTER) // 캐릭터와 부딪혔다면 (적군 포함)
+  if (objectType == GameObject::Type::CHARACTER) // 캐릭터와 부딪혔다면 (적군 포함)
   {
     Character* character = dynamic_cast<Character*>(object); // 게임오브젝트 클래스 포인터를 다운캐스팅
     if (character->GetIsDead() == false) // 캐릭터가 살아있는 상태라면

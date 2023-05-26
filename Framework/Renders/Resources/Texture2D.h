@@ -40,7 +40,7 @@ private:
 };
 
 class Textures {
- public:
+public:
   static void Delete();
 
   private:

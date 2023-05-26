@@ -32,6 +32,9 @@ public:
   // 지오메트리 중심점 설정
   void SetAnchorPoint(AnchorPoint anchorPoint) { this->anchorPoint = anchorPoint; }
 
+  // UV 설정
+  void SetUV(Vector2 startUV, Vector2 endUV, Slot slot = Slot::NORMAL);
+  
   // 회전
   void AddRotation(float rotation, Type type, Slot slot = Slot::NORMAL);
 
@@ -57,5 +60,4 @@ protected:
 
   std::vector<AnimationRect*> animRects; // 애니메이션 렉트
   std::vector<Animator*> animators; // 애니메이터
-
 };

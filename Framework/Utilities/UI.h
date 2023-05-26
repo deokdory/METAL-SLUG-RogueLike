@@ -22,8 +22,8 @@ class UI {
             FillType type = NONE);
   void Init(Vector3 position, Vector3 size, float rotation, FillType type = NONE);
 
-  void MapVertexBuffer();
-  void UnmapVertexBuffer();
+  void mapVertexBuffer();
+  void unmapVertexBuffer();
 
   void SetShader(std::wstring shaderpath);
 

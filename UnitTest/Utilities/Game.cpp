@@ -6,6 +6,10 @@ void Game::Init() {
   gameWorld = new GameWorld();
   prevTime = Time::Get()->Running();
   Time::Get()->InitNewTimer("game");
+
+  // Texture Pre load
+  //Texture2D* terrainsTex = new Texture2D(TexturePath + L"terrains.png");
+  
 }
 
 void Game::Destroy() {

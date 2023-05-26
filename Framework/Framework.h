@@ -124,7 +124,7 @@ typedef UINT		uint;
 #define WinMaxWidth 1280
 #define WinMaxHeight 720
 
-#define TILESIZE 32
+#define TILESIZE 64
 
 // position = (mousePos / TILESIZE) * TILESIZE + TILESIZE / 2;
 
