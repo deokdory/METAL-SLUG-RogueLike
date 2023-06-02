@@ -84,6 +84,23 @@ void Input::Update(Agent& agent)
         }
       }
 
+      // 계단
+      if (Keyboard::Get()->Press('S') && !Keyboard::Get()->Press('W'))
+      {
+        movement->SetIsDirectingDown(true);
+        movement->SetIsDirectingUp(false);
+      }
+      else if (Keyboard::Get()->Press('W') && !Keyboard::Get()->Press('S'))
+      {
+        movement->SetIsDirectingDown(false);
+        movement->SetIsDirectingUp(true);
+      }
+      else
+      {
+        movement->SetIsDirectingDown(false);
+        movement->SetIsDirectingUp(false);
+      }
+
       // 슬라이딩
       if (std::abs(xSpeed) > 2 && Keyboard::Get()->Press(VK_LSHIFT) && isPressSliding == false)
       {

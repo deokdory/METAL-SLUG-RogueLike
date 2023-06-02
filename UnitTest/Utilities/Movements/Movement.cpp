@@ -62,50 +62,50 @@ void MovementSpeedBox::Update(float xSpeed, float ySpeed)
   Vector3 leftPos, rightPos, topPos, bottomPos;
   leftPos = rightPos = topPos = bottomPos = object->GetPosition();
 
-  leftPos.x -= objectSize.x / 2;
-  rightPos.x += objectSize.x / 2;
+  leftPos.x += -objectSize.x / 2 + 1;
+  rightPos.x += objectSize.x / 2 - 1;
 
   if (anchorPoint == AnchorPoint::CENTER)
   {
-    topPos.y += objectSize.y / 2;
-    bottomPos.y -= objectSize.y / 2;
+    topPos.y += objectSize.y / 2 - 1;
+    bottomPos.y += -objectSize.y / 2 + 1;
   }
 
   if (anchorPoint == AnchorPoint::MID_BOT)
   {
-    topPos.y += objectSize.y;
+    topPos.y += objectSize.y - 1;
   }
 
   Vector3 leftSize, rightSize, topSize, bottomSize;
   leftSize = rightSize = topSize = bottomSize = objectSize;
 
-  leftSize.y = rightSize.y = objectSize.y - 1;
-  topSize.x = bottomSize.x = objectSize.x - 1;
+  leftSize.y = rightSize.y = objectSize.y;
+  topSize.x = bottomSize.x = objectSize.x;
 
-  if (ySpeed > 0.1f) {
+  if (ySpeed > 1.0f) {
     topSize.y = ySpeed;
-    bottomSize.y = 0;
+    bottomSize.y = 1.0f;
   }
-  else if (ySpeed < -0.1f) {
-    topSize.y = 0;
+  else if (ySpeed < -1.0f) {
+    topSize.y = 1.0f;
     bottomSize.y = -ySpeed;
   }
   else
   {
-    topSize.y = bottomSize.y = 0;
+    topSize.y = bottomSize.y = 1.0f;
   }
   
-  if (xSpeed > 0.1f) {
-    leftSize.x = 0;
+  if (xSpeed > 1.0f) {
+    leftSize.x = 1.0f;
     rightSize.x = xSpeed;
   }
-  else if ( xSpeed < -0.1f) {
+  else if ( xSpeed < -1.0f) {
     leftSize.x = -xSpeed;
-    rightSize.x = 0;
+    rightSize.x = 1.0f;
   }
   else
   {
-    leftSize.x = rightSize.x = 0;
+    leftSize.x = rightSize.x = 1.0f;
   }
 
   speedBoxT->Update(topPos, topSize, 0);
@@ -160,7 +160,11 @@ void Movement::Update()
   ySpeed = ySpeedOrigin * globalSpeed;
 
   speedBox->Update(xSpeed, ySpeed);
-  collisionCheck();
+
+  terrainCollisionCheck();
+  interaction();
+
+  if (isFalling) standOn = nullptr;
 
   Vector3 move = {xSpeed, ySpeed, 0 };
   object->Move(move);
@@ -193,7 +197,7 @@ void Movement::Falling()
   }
   else
   {
-    ySpeedOrigin = -0.1f;
+    ySpeedOrigin = 0.0f;
   }
 }
 
@@ -230,6 +234,7 @@ void Movement::Jump()
   {
     ySpeedOrigin = jumpPower;
     isFalling = true;
+    standOn = nullptr;
   }
 }
 
@@ -238,14 +243,16 @@ void Movement::UpdateAccel()
   accel = accelOrigin * Time::Get()->GetGlobalSpeed();
 }
 
-void Movement::collisionCheck()
+void Movement::terrainCollisionCheck()
 {
-  isFalling = true;
+  nearestFootholder = nullptr;
+  nearestTerrainR = nullptr;
+  nearestTerrainL = nullptr;
+
+  nearestStair = nullptr;
 
   auto& terrains = GameManager::Get()->GetCurrentLevel()->GetTerrains();
 
-  //auto* bottom = object->GetCollision()->GetBottom();
-  auto* footholder = object->GetCollision()->GetFootholder();
   auto* base = object->GetCollision()->GetBase();
 
   auto* bottomSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::BOTTOM);
@@ -259,34 +266,66 @@ void Movement::collisionCheck()
   Vector3 terrPos;
   Vector3 terrSize;
 
-  BoundingBox* terrTop, * terrBottom, * terrBase;
+  BoundingBox* footholder, * terrBottom, * terrBase;
+  float nearestPositionX = 0.0f;
+  float nearestPositionY = 0.0f;
 
-  BoundingBox* nearestY = nullptr;
-  BoundingBox* nearestX = nullptr;
+  Terrain::Type currentTerrType;
 
   for (auto terr : terrains) {
-    terrTop = terr->GetCollision()->GetFootholder();
+    footholder = terr->GetCollision()->GetFootholder();
     terrBase = terr->GetCollision()->GetBase();
     //terrBottom = terr->GetCollision()->GetBottom();
 
     terrPos = terr->GetPosition();
     terrSize = terr->GetSize();
 
-    if (ySpeed < 0)
-    {
-      if (BoundingBox::OBB(bottomSpeedBox, terrTop))
-      {
-        isFalling = false;
-        if (nearestY == nullptr || terrTop->GetRect()->LT.y > nearestY->GetRect()->LT.y)
-        {
-          //std::cout << std::fixed << "촥 " << ySpeed << std::endl;
-          nearestY = terrTop;
+    currentTerrType = terr->GetTerrainType();
 
-          float depth = std::abs(bottomSpeedBox->GetRect()->RB.y - nearestY->GetRect()->LT.y);
-          ySpeed += depth;
+    if (ySpeed <= 0.0f)
+    {
+      if (BoundingBox::OBB(bottomSpeedBox, footholder))
+      {
+        switch (currentTerrType)
+        {
+        case Terrain::Type::STAIR_UP:
+        case Terrain::Type::STAIR_DOWN:
+          nearestStair = terr;
+        //{
+        //  RectEdge stairRect = *footholder->GetRect();
+        //  RectEdge bottomSpeedBoxRect = *bottomSpeedBox->GetRect();
+        //
+        //  float heightOnStair = 0.0f;
+        //
+        //  float length = 0.0f;
+        //  if (currentTerrType == Terrain::Type::STAIR_UP)
+        //  {
+        //    length = stairRect.RT.x - bottomSpeedBoxRect.RB.x;
+        //    if (length < 0) length = 0;
+        //
+        //    heightOnStair = stairRect.RT.y - length - 1;
+        //  }
+        //  else
+        //  {
+        //    length = bottomSpeedBoxRect.LB.x - stairRect.LT.x;
+        //    if (length < 0) length = 0;
+        //
+        //    heightOnStair = stairRect.LT.y - length - 1;
+        //  }
+        //  if (bottomSpeedBoxRect.LT.y > heightOnStair) nearestStair = terr;
+        //}
+          break;
+        default:
+          if (nearestFootholder == nullptr || footholder->GetRect()->LT.y > nearestPositionY)
+          {
+            nearestPositionY = footholder->GetRect()->LT.y;
+            nearestFootholder = terr;
+          }
+          break;
         }
       }
     }
+    
     //if (ySpeed > 0) {
     //  if (BoundingBox::AABB(topSpeedBox, terrBottom))
     //  {
@@ -305,13 +344,10 @@ void Movement::collisionCheck()
     {
       if (BoundingBox::OBB(rightSpeedBox, terrBase) == true)
       {
-        if (nearestX == nullptr || terrBase->GetRect()->LB.x < nearestX->GetRect()->LB.x)
+        if (nearestTerrainR == nullptr || terrBase->GetRect()->LB.x < nearestPositionX)
         {
-          nearestX = terrBase;
-          float depth = rightSpeedBox->GetRect()->RB.x - terrBase->GetRect()->LB.x;
-
-          xSpeed -= depth;
-          xSpeedOrigin = 0;
+          nearestPositionX = terrBase->GetRect()->LB.x;
+          nearestTerrainR = terr;
         }
       }
     }
@@ -320,13 +356,10 @@ void Movement::collisionCheck()
     {
       if (BoundingBox::OBB(leftSpeedBox, terrBase) == true)
       {
-        if (nearestX == nullptr || terrBase->GetRect()->RB.x > nearestX->GetRect()->RB.x)
+        if (nearestTerrainL == nullptr || terrBase->GetRect()->RB.x > nearestPositionX)
         {
-          nearestX = terrBase;
-          float depth = terrBase->GetRect()->RB.x - leftSpeedBox->GetRect()->LB.x;
-
-          xSpeed += depth;
-          xSpeedOrigin = 0;
+          nearestPositionX = terrBase->GetRect()->LB.x;
+          nearestTerrainL = terr;
         }
       }
     }
@@ -346,4 +379,157 @@ void Movement::collisionCheck()
     //  }
     //}
   }
+}
+
+void Movement::interaction()
+{
+  isFalling = true;
+
+  auto* objectBox = object->GetCollision()->GetBase();
+
+  auto* bottomSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::BOTTOM);
+  auto* topSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::TOP);
+  auto* leftSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::LEFT);
+  auto* rightSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::RIGHT);
+
+  Vector3 forcePosition = Values::ZeroVec3;
+
+  if (standOn != nullptr)
+  {
+    if (standOn == nearestStair)
+    {
+      isFalling = false;
+      ySpeedOrigin = 0.0f;
+
+      if (xSpeed)
+      {
+        switch (standOn->GetTerrainType())
+        {
+        case Terrain::Type::STAIR_UP:
+        {
+          xSpeed = ySpeed = xSpeed * 0.5f;
+          break;
+        }
+        case Terrain::Type::STAIR_DOWN:
+        {
+          ySpeed = -xSpeed * 0.5f;
+          xSpeed = xSpeed * 0.5f;
+          break;
+        }
+        default:
+          break;
+        }
+      }
+    }
+    else if (standOn == nearestFootholder)
+    {
+
+    }
+  }
+  else
+  {
+    // 발판에 충돌을 안했다면 계단은 충돌했는지
+    if (nearestFootholder == nullptr) nearestFootholder = nearestStair;
+    if (nearestStair != nullptr && (isDirectingDown || isDirectingUp)) nearestFootholder = nearestStair;
+
+    // 계단 혹은 발판에 충돌함
+    if (nearestFootholder != nullptr)
+    {
+      //isFalling = false;
+
+      float depth = 0.0f;
+      auto terrainType = nearestFootholder->GetTerrainType();
+
+      // 계단(경사로)
+      if (terrainType == Terrain::Type::STAIR_DOWN || terrainType == Terrain::Type::STAIR_UP)
+      {
+        float rotation = 0.0f;
+        Vector3 objectBoxEdge = Values::ZeroVec3;
+        Vector3 stairBeginPoint = Values::ZeroVec3; // 아래쪽 계단 시작점의 발판 상단 끝
+        RectEdge stairRect = *nearestFootholder->GetCollision()->GetFootholder()->GetRect();
+        float length = 0.0f;
+
+        if (terrainType == Terrain::Type::STAIR_UP)
+        {
+          rotation = 45;
+          objectBoxEdge = objectBox->GetRect()->RB;
+          stairBeginPoint = stairRect.RT;
+
+          // 계단 상단 끝부분에 닿아있을 때 X값 제한
+          if (objectBoxEdge.x > stairBeginPoint.x)
+          {
+            length = 0;
+          }
+          // 그 외 상황
+          else
+          {
+            length = stairBeginPoint.x - objectBoxEdge.x;
+          }
+        }
+        else
+        {
+          rotation = -45;
+          objectBoxEdge = objectBox->GetRect()->LB;
+          stairBeginPoint = stairRect.RT;
+
+          if (objectBoxEdge.x < stairRect.LT.x)
+          {
+            length = 0;
+          }
+          else
+          {
+            length = objectBoxEdge.x - stairBeginPoint.x;
+          }
+          //if (length > bottomSpeedBox->GetRect()->LT.y)
+          //{
+          //  isFalling = true;
+          //}
+
+        }
+        isFalling = false;
+        depth = length - (stairBeginPoint.y - bottomSpeedBox->GetRect()->RB.y);
+
+        std::cout << "ySpeed : " << ySpeed << "|| depth : " << depth << std::endl;
+
+        ySpeed = -depth;
+        ySpeedOrigin = 0.0f;
+
+        lastStanded = standOn = nearestFootholder;
+      }
+
+      // 계단이 아님
+      else
+      {
+        isFalling = false;
+
+        float footholderEdge = nearestFootholder->GetCollision()->GetFootholder()->GetRect()->RT.y;
+        depth = std::abs(bottomSpeedBox->GetRect()->RB.y - footholderEdge);
+
+        ySpeed += depth;
+        ySpeedOrigin = 0;
+
+        lastStanded = standOn = nearestFootholder;
+      }
+    }
+  }
+  // 왼쪽 지형에 부딪힘
+  if (nearestTerrainL != nullptr)
+  {
+    float terrainEdge = nearestTerrainL->GetCollision()->GetBase()->GetRect()->RB.x;
+    float depth = terrainEdge - leftSpeedBox->GetRect()->LB.x;
+
+    xSpeed += depth;
+    xSpeedOrigin = 0;
+  }
+
+  // 오른쪽 지형에 부딪힘
+  if (nearestTerrainR != nullptr)
+  {
+    float terrainEdge = nearestTerrainR->GetCollision()->GetBase()->GetRect()->LB.x;
+    float depth = rightSpeedBox->GetRect()->RB.x - terrainEdge;
+
+    xSpeed -= depth;
+    xSpeedOrigin = 0;
+  }
+
 }

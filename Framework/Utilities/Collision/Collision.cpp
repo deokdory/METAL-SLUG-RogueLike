@@ -24,29 +24,6 @@ void Collision::Update() {
     Vector3 size = objSize - Vector3(1, 1, 0);
     base->Update(objPos, size, objRotation);
   }
-
-  //if (bottom) {
-  //  Vector3 position = objPos;
-  //  Vector3 size = objSize;
-  //
-  //  if (anchorPoint == AnchorPoint::CENTER) position.y -= objSize.y / 2;
-  //
-  //  size.x -= 1;
-  //  size.y = collisionThickness;
-  //
-  //  bottom->Update(position, size, objRotation);
-  //}
-  //if (footholder) {
-  //  Vector3 position = objPos;
-  //  Vector3 size = objSize;
-  //
-  //  if (anchorPoint == AnchorPoint::CENTER) position.y += objSize.y / 2;
-  //
-  //  size.x -= 1;
-  //  size.y = collisionThickness;
-  //
-  //  footholder->Update(position, size, objRotation);
-  //}
 }
 
 void Collision::Render() {
@@ -97,56 +74,54 @@ TerrainCollision::TerrainCollision(GameObject* object, Type type)
   objPos = object->GetPosition();
   objSize = object->GetSize();
 
-  Vector3 position = Values::ZeroVec3;
-  Vector3 size = { TILESIZE, collisionThickness, 0 };
-  float rotation = 0.0f;
+  size = { TILESIZE, collisionThickness, 0 };
+  rotation = 0.0f;
 
   switch (type)
   {
   case TerrainCollision::Type::FH_MID:
-    position = objPos + Vector3(0, 20, 0);
-    footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 0.25f));
+    position = objPos + Vector3(10, 16, 0);
+    footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 1.0f));
     break;
+
   case TerrainCollision::Type::FH_EDGE_L:
-    position = objPos + Vector3(0, 20, 0);
+    position = objPos + Vector3(10, 16, 0);
     size.x /= 2;
 
-    footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 0.25f));
-    footholder->SetAnchorPoint(AnchorPoint::LEFT_MID);
-
-    break;
-  case TerrainCollision::Type::FH_EDGE_R:
-    position = objPos + Vector3(0, 20, 0);
-    size.x /= 2;
-
-    footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 0.25f));
+    footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 1.0f));
     footholder->SetAnchorPoint(AnchorPoint::RIGHT_MID);
-
     break;
+
+  case TerrainCollision::Type::FH_EDGE_R:
+    position = objPos + Vector3(10, 16, 0);
+    size.x /= 2;
+
+    footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 1.0f));
+    footholder->SetAnchorPoint(AnchorPoint::LEFT_MID);
+    break;
+
   case TerrainCollision::Type::STAIR_UP:
-    position = objPos;
-    size.x = TILESIZE * 4;
+    position = objPos + Vector3(0, 16, 0);
+    size.x = 266;
     rotation = 45;
 
-    footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 0.25f));
-    
+    footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 1.0f));
     break;
+
   case TerrainCollision::Type::STAIR_DOWN:
-    position = objPos;
-    size.x = TILESIZE * 4;
+    position = objPos + Vector3(0, 16, 0);
+    size.x = 266;
     rotation = -45;
 
-    footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 0.25f));
-
+    footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 1.0f));
     break;
+
   default:
     break;
   }
-
-  footholder->Update(position, size, rotation);
-
 }
 
 void TerrainCollision::Update()
 {
+  footholder->Update(position, size, rotation);
 }

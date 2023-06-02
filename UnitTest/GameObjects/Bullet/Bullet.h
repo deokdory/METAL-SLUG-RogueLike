@@ -23,7 +23,7 @@ protected:
   // 복제본 생성 위한 생성자
   Bullet(GameObject* fired, Side side, float speed, float damage, std::wstring texturePath, Vector3 position, Vector3 axis); 
   
-  bool collisionCheck();
+  bool terrainCollisionCheck();
 
   GameObject* fired; // 쏜 캐릭터
   Side side;  // 아군 | 적군

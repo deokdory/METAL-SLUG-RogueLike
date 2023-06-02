@@ -44,8 +44,10 @@ public:
   virtual void SlowDown();
 
   virtual void Jump();
-
   virtual void UpdateAccel();
+
+  void SetIsDirectingDown(bool isDirectingDown = true) { this->isDirectingDown = isDirectingDown; }
+  void SetIsDirectingUp(bool isDirectingUp = true) { this->isDirectingUp = isDirectingUp; }
 
   bool GetIsFalling() { return isFalling; }
 
@@ -61,12 +63,27 @@ public:
   float GetFallingSpeedMax() { return fallingSpeedMax; }
 
 protected:
-  virtual void collisionCheck();
+  virtual void terrainCollisionCheck(); // 위, 아래, 양옆의 충돌한 지형이 있는지,
+                                        // 있다면 가장 가까운 지형이 어떤 것인지 체크
+
+  virtual void interaction(); // 충돌한 각 객체들과의 상호작용을 수행
 
 protected:
+  Terrain* nearestFootholder = nullptr;
+  Terrain* nearestTerrainR   = nullptr;
+  Terrain* nearestTerrainL   = nullptr;
+
+  Terrain* nearestStair = nullptr;
+
+  Terrain* standOn = nullptr;
+  Terrain* lastStanded = nullptr;
+
   AnchorPoint anchorPoint = AnchorPoint::MID_BOT;
 
   bool isFalling = false; // 떨어지고 있는가
+  
+  bool isDirectingUp = false;   // 위로 향하는가
+  bool isDirectingDown = false; // 아래로 향하는가
 
   float ySpeed = 0; // 수직 속도
   float ySpeedOrigin = 0;

@@ -3,7 +3,8 @@
 
 BoundingBox::BoundingBox(Vector3 position, Vector3 size, float rotation,
   Color color)
-  : position(position), size(size), rotation(rotation), color(color) {
+  : position(position), size(size), rotation(rotation), color(color) 
+{
   edge = new RectEdge();
   data = new AxisData();
 
@@ -62,7 +63,8 @@ void BoundingBox::Init() {
 void BoundingBox::SetAnchorPoint(AnchorPoint point) {
 
 	switch (point) {
-	case AnchorPoint::CENTER: {
+	case AnchorPoint::CENTER: 
+  {
 		mapVertexBuffer();
 		vertices[0].position = Vector3(-0.5f, -0.5f, 0.0f);
 		vertices[1].position = Vector3(0.5f, 0.5f, 0.0f);
@@ -71,25 +73,8 @@ void BoundingBox::SetAnchorPoint(AnchorPoint point) {
 		unmapVertexBuffer();
 		return;
 	}
-	case AnchorPoint::LEFT_TOP: {
-		mapVertexBuffer();
-		vertices[0].position = Vector3(0.0f, -1.0f, 0.0f);
-		vertices[1].position = Vector3(1.0f, 0.0f, 0.0f);
-		vertices[2].position = Vector3(1.0f, -1.0f, 0.0f);
-		vertices[3].position = Vector3(0.0f, 0.0f, 0.0f);
-		unmapVertexBuffer();
-		return;
-	}
-	case AnchorPoint::MID_TOP: {
-		mapVertexBuffer();
-		vertices[0].position = Vector3(-0.5f, -1.0f, 0.0f);
-		vertices[1].position = Vector3(0.5f, 0.0f, 0.0f);
-		vertices[2].position = Vector3(0.5f, -1.0f, 0.0f);
-		vertices[3].position = Vector3(-0.5f, 0.0f, 0.0f);
-		unmapVertexBuffer();
-		return;
-	}
-	case AnchorPoint::RIGHT_TOP: {
+	case AnchorPoint::LEFT_TOP: 
+  {
 		mapVertexBuffer();
 		vertices[0].position = Vector3(-1.0f, -1.0f, 0.0f);
 		vertices[1].position = Vector3(0.0f, 0.0f, 0.0f);
@@ -98,7 +83,38 @@ void BoundingBox::SetAnchorPoint(AnchorPoint point) {
 		unmapVertexBuffer();
 		return;
 	}
-	case AnchorPoint::LEFT_MID: {
+	case AnchorPoint::MID_TOP: 
+  {
+		mapVertexBuffer();
+		vertices[0].position = Vector3(-0.5f, -1.0f, 0.0f);
+		vertices[1].position = Vector3(0.5f, 0.0f, 0.0f);
+		vertices[2].position = Vector3(0.5f, -1.0f, 0.0f);
+		vertices[3].position = Vector3(-0.5f, 0.0f, 0.0f);
+		unmapVertexBuffer();
+		return;
+	}
+	case AnchorPoint::RIGHT_TOP: 
+  {
+		mapVertexBuffer();
+		vertices[0].position = Vector3(-1.0f, -1.0f, 0.0f);
+		vertices[1].position = Vector3(0.0f, 0.0f, 0.0f);
+		vertices[2].position = Vector3(0.0f, -1.0f, 0.0f);
+		vertices[3].position = Vector3(-1.0f, 0.0f, 0.0f);
+		unmapVertexBuffer();
+		return;
+	}
+	case AnchorPoint::LEFT_MID: 
+  {
+		mapVertexBuffer();
+		vertices[0].position = Vector3(0.0f, -0.5f, 0.0f);
+		vertices[1].position = Vector3(-1.0f, 0.5f, 0.0f);
+		vertices[2].position = Vector3(-1.0f, -0.5f, 0.0f);
+		vertices[3].position = Vector3(0.0f, 0.5f, 0.0f);
+		unmapVertexBuffer();
+		return;
+	}
+	case AnchorPoint::RIGHT_MID: 
+  {
 		mapVertexBuffer();
 		vertices[0].position = Vector3(0.0f, -0.5f, 0.0f);
 		vertices[1].position = Vector3(1.0f, 0.5f, 0.0f);
@@ -107,16 +123,8 @@ void BoundingBox::SetAnchorPoint(AnchorPoint point) {
 		unmapVertexBuffer();
 		return;
 	}
-	case AnchorPoint::RIGHT_MID: {
-		mapVertexBuffer();
-		vertices[0].position = Vector3(-1.0f, -0.5f, 0.0f);
-		vertices[1].position = Vector3(0.0f, 0.5f, 0.0f);
-		vertices[2].position = Vector3(0.0f, -0.5f, 0.0f);
-		vertices[3].position = Vector3(-1.0f, 0.5f, 0.0f);
-		unmapVertexBuffer();
-		return;
-	}
-	case AnchorPoint::LEFT_BOT: {
+	case AnchorPoint::LEFT_BOT: 
+  {
 		mapVertexBuffer();
 		vertices[0].position = Vector3(0.0f, 0.0f, 0.0f);
 		vertices[1].position = Vector3(1.0f, 1.0f, 0.0f);
@@ -125,7 +133,8 @@ void BoundingBox::SetAnchorPoint(AnchorPoint point) {
 		unmapVertexBuffer();
 		return;
 	}
-	case AnchorPoint::MID_BOT: {
+	case AnchorPoint::MID_BOT: 
+  {
 		mapVertexBuffer();
 		vertices[0].position = Vector3(-0.5f, 0.0f, 0.0f);
 		vertices[1].position = Vector3(0.5f, 1.0f, 0.0f);
@@ -134,7 +143,8 @@ void BoundingBox::SetAnchorPoint(AnchorPoint point) {
 		unmapVertexBuffer();
 		return;
 	}
-	case AnchorPoint::RIGHT_BOT: {
+	case AnchorPoint::RIGHT_BOT: 
+  {
 		mapVertexBuffer();
 		vertices[0].position = Vector3(-1.0f, 0.0f, 0.0f);
 		vertices[1].position = Vector3(0.0f, 1.0f, 0.0f);

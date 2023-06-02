@@ -32,7 +32,7 @@ void Bullet::Update()
     graphic->Update();
     collision->Update();
 
-    collisionCheck();
+    terrainCollisionCheck();
   }
 }
 
@@ -74,7 +74,7 @@ Bullet* Bullet::NewBullet(Vector3 position, Vector3 axis)
   return new Bullet(fired, side, speed, damage, texturePath, position, axis);
 }
 
-bool Bullet::collisionCheck()
+bool Bullet::terrainCollisionCheck()
 {
   auto level = GameManager::Get()->GetCurrentLevel();
 
@@ -83,8 +83,6 @@ bool Bullet::collisionCheck()
 
   BoundingBox* objectBase = nullptr;
   BoundingBox* bulletBox = collision->GetBase();
-
-  GameObject* nearest;
 
   for (GameObject* obj : objects)
   {

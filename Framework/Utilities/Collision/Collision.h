@@ -56,4 +56,8 @@ public:
   
 private:
   TerrainCollision::Type terrainType;
+
+  Vector3 position = Values::ZeroVec3;
+  Vector3 size = Values::ZeroVec3;
+  float rotation = 0.0f;
 };

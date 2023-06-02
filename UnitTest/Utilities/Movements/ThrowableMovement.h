@@ -14,6 +14,6 @@ public:
   virtual void Falling() override;
 
 protected:
-  virtual void collisionCheck() override;
+  virtual void interaction() override;
   Vector3 bounce = Values::ZeroVec3;
 };

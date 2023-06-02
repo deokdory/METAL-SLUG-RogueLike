@@ -9,8 +9,6 @@ public:
 
   virtual void Update() override;
 
-  virtual void Jump() override;
-
   void Jumping();
 
   void Slide() { isSliding = true; }
@@ -22,7 +20,6 @@ public:
   bool GetIsJumping() { return isJumping; }
 
 private:
-  virtual void collisionCheck();
   bool isJumping = false;
   bool isSliding = false;
 };
