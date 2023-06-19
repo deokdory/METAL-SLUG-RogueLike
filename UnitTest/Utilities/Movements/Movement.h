@@ -44,6 +44,7 @@ public:
   virtual void SlowDown();
 
   virtual void Jump();
+  virtual void Drop();
   virtual void UpdateAccel();
 
   void SetIsDirectingDown(bool isDirectingDown = true) { this->isDirectingDown = isDirectingDown; }
@@ -81,6 +82,7 @@ protected:
   AnchorPoint anchorPoint = AnchorPoint::MID_BOT;
 
   bool isFalling = false; // 떨어지고 있는가
+  bool isDropping = false;
   
   bool isDirectingUp = false;   // 위로 향하는가
   bool isDirectingDown = false; // 아래로 향하는가

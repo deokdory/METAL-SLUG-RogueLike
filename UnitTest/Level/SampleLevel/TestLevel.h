@@ -12,6 +12,5 @@ class TestLevel : public Level {
 
   void InitTestEnemies();
  private:
-
   class HUD* playerHud = nullptr;
 };

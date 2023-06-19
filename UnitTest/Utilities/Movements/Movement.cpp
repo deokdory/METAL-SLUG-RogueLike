@@ -80,7 +80,7 @@ void MovementSpeedBox::Update(float xSpeed, float ySpeed)
   leftSize = rightSize = topSize = bottomSize = objectSize;
 
   leftSize.y = rightSize.y = objectSize.y;
-  topSize.x = bottomSize.x = objectSize.x;
+  topSize.x = bottomSize.x = objectSize.x / 2;
 
   if (ySpeed > 1.0f) {
     topSize.y = ySpeed;
@@ -154,7 +154,7 @@ void Movement::Update()
   UpdateAccel();
 
   // 낙하 
-  Falling();
+  //Falling();
 
   xSpeed = xSpeedOrigin * globalSpeed;
   ySpeed = ySpeedOrigin * globalSpeed;
@@ -163,11 +163,6 @@ void Movement::Update()
 
   terrainCollisionCheck();
   interaction();
-
-  if (isFalling) standOn = nullptr;
-
-  Vector3 move = {xSpeed, ySpeed, 0 };
-  object->Move(move);
 }
 
 void Movement::Render()
@@ -179,11 +174,32 @@ void Movement::GUI()
 {
   std::string speedStr = "X SPD " + std::to_string(xSpeed) + ", Y SPD " + std::to_string(ySpeed);
   std::string accelStr = "Accel " + std::to_string(accel);
+  std::string standOnStr = "Stand On ";
+  if (standOn)
+  {
+    switch (standOn->GetTerrainType())
+    {
+    case Terrain::Type::STAIR_DOWN:
+      standOnStr += "down stair";
+      break;
+    case Terrain::Type::STAIR_UP:
+      standOnStr += "up stair";
+      break;
+    default:
+      standOnStr += "normal footholder";
+      break;
+    }
+  }
+  else
+  {
+    standOnStr += "nothing";
+  }
 
   ImGui::Begin("Movement");
   {
     ImGui::Text(speedStr.c_str());
     ImGui::Text(accelStr.c_str());
+    ImGui::Text(standOnStr.c_str());
   }
   ImGui::End();
 }
@@ -235,6 +251,18 @@ void Movement::Jump()
     ySpeedOrigin = jumpPower;
     isFalling = true;
     standOn = nullptr;
+  }
+}
+
+void Movement::Drop()
+{
+  if (standOn)
+  {
+    if (standOn->GetTerrainType() == Terrain::Type::STAIR_DOWN || standOn->GetTerrainType() == Terrain::Type::STAIR_UP)
+    {
+      standOn == nullptr;
+      isDropping = true;
+    }
   }
 }
 
@@ -392,126 +420,8 @@ void Movement::interaction()
   auto* leftSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::LEFT);
   auto* rightSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::RIGHT);
 
-  Vector3 forcePosition = Values::ZeroVec3;
+  Vector3 objectPosition = object->GetPosition();
 
-  if (standOn != nullptr)
-  {
-    if (standOn == nearestStair)
-    {
-      isFalling = false;
-      ySpeedOrigin = 0.0f;
-
-      if (xSpeed)
-      {
-        switch (standOn->GetTerrainType())
-        {
-        case Terrain::Type::STAIR_UP:
-        {
-          xSpeed = ySpeed = xSpeed * 0.5f;
-          break;
-        }
-        case Terrain::Type::STAIR_DOWN:
-        {
-          ySpeed = -xSpeed * 0.5f;
-          xSpeed = xSpeed * 0.5f;
-          break;
-        }
-        default:
-          break;
-        }
-      }
-    }
-    else if (standOn == nearestFootholder)
-    {
-
-    }
-  }
-  else
-  {
-    // 발판에 충돌을 안했다면 계단은 충돌했는지
-    if (nearestFootholder == nullptr) nearestFootholder = nearestStair;
-    if (nearestStair != nullptr && (isDirectingDown || isDirectingUp)) nearestFootholder = nearestStair;
-
-    // 계단 혹은 발판에 충돌함
-    if (nearestFootholder != nullptr)
-    {
-      //isFalling = false;
-
-      float depth = 0.0f;
-      auto terrainType = nearestFootholder->GetTerrainType();
-
-      // 계단(경사로)
-      if (terrainType == Terrain::Type::STAIR_DOWN || terrainType == Terrain::Type::STAIR_UP)
-      {
-        float rotation = 0.0f;
-        Vector3 objectBoxEdge = Values::ZeroVec3;
-        Vector3 stairBeginPoint = Values::ZeroVec3; // 아래쪽 계단 시작점의 발판 상단 끝
-        RectEdge stairRect = *nearestFootholder->GetCollision()->GetFootholder()->GetRect();
-        float length = 0.0f;
-
-        if (terrainType == Terrain::Type::STAIR_UP)
-        {
-          rotation = 45;
-          objectBoxEdge = objectBox->GetRect()->RB;
-          stairBeginPoint = stairRect.RT;
-
-          // 계단 상단 끝부분에 닿아있을 때 X값 제한
-          if (objectBoxEdge.x > stairBeginPoint.x)
-          {
-            length = 0;
-          }
-          // 그 외 상황
-          else
-          {
-            length = stairBeginPoint.x - objectBoxEdge.x;
-          }
-        }
-        else
-        {
-          rotation = -45;
-          objectBoxEdge = objectBox->GetRect()->LB;
-          stairBeginPoint = stairRect.RT;
-
-          if (objectBoxEdge.x < stairRect.LT.x)
-          {
-            length = 0;
-          }
-          else
-          {
-            length = objectBoxEdge.x - stairBeginPoint.x;
-          }
-          //if (length > bottomSpeedBox->GetRect()->LT.y)
-          //{
-          //  isFalling = true;
-          //}
-
-        }
-        isFalling = false;
-        depth = length - (stairBeginPoint.y - bottomSpeedBox->GetRect()->RB.y);
-
-        std::cout << "ySpeed : " << ySpeed << "|| depth : " << depth << std::endl;
-
-        ySpeed = -depth;
-        ySpeedOrigin = 0.0f;
-
-        lastStanded = standOn = nearestFootholder;
-      }
-
-      // 계단이 아님
-      else
-      {
-        isFalling = false;
-
-        float footholderEdge = nearestFootholder->GetCollision()->GetFootholder()->GetRect()->RT.y;
-        depth = std::abs(bottomSpeedBox->GetRect()->RB.y - footholderEdge);
-
-        ySpeed += depth;
-        ySpeedOrigin = 0;
-
-        lastStanded = standOn = nearestFootholder;
-      }
-    }
-  }
   // 왼쪽 지형에 부딪힘
   if (nearestTerrainL != nullptr)
   {
@@ -532,4 +442,47 @@ void Movement::interaction()
     xSpeedOrigin = 0;
   }
 
+  objectPosition.x += xSpeed; // 발판에 고정시키기 전 xSpeed 반영
+
+  float footholderTop = 0.0f;
+
+  standOn = nearestFootholder;
+  if (standOn == nullptr)
+  {
+    if (isDropping == false) standOn = nearestStair;
+  }
+  else
+  {
+    if (nearestStair != nullptr)
+    {
+      BoundingBox* stairFootholder = nearestStair->GetCollision()->GetFootholder();
+      footholderTop = nearestStair->GetFootholderTop(objectPosition);
+
+      if (isDirectingDown)
+      {
+        if (stairFootholder->GetPosition().y - footholderTop < TILESIZE) standOn = nearestStair;
+      }
+      else if (isDirectingUp)
+      {
+        if (stairFootholder->GetPosition().y - footholderTop > TILESIZE) standOn = nearestStair;
+      }
+    }
+  }
+
+  // 발판에 충돌 중일 때
+  if (standOn != nullptr)
+  {
+    ySpeedOrigin = 0;
+    isFalling = isDropping = false;
+
+    objectPosition.y = standOn->GetFootholderTop(objectPosition);
+  }
+
+  // 발판에 충돌 중이 아닐 때
+  else
+  {
+    objectPosition.y += ySpeed;
+  }
+  
+  object->SetPositionForce(objectPosition);
 }

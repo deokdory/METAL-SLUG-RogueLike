@@ -4,6 +4,7 @@ class Terrain : public GameObject {
  public:
    enum class Type
    {
+     NONE,
      FH_EDGE_L, 
      FH_MID, 
      FH_MID_L_WP, // With Pannel (Decoration)
@@ -21,6 +22,7 @@ class Terrain : public GameObject {
    virtual void Render();
 
    Type GetTerrainType() { return terrainType; }
+   float GetFootholderTop(Vector3 position);
 
 private:
   Type terrainType;

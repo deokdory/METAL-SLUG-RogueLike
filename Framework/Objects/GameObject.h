@@ -14,7 +14,7 @@ class GameObject {
   virtual void GUI();
 
   void Move(Vector3 position);
-  void ForceSetPosition(Vector3 position) { this->position = position; }
+  void SetPositionForce(Vector3 position) { this->position = position; }
 
   Vector3 GetPosition() { return this->position; }
   Vector3 GetSize() { return this->size; }

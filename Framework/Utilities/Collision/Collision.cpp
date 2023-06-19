@@ -43,7 +43,7 @@ void Collision::InitializeBase() {
 //  if (anchorPoint == AnchorPoint::CENTER) position.y -= objSize.y / 2;
 //
 //  size.x -= 1;
-//  size.y = collisionThickness;
+//  size.y = footholderThickness;
 //
 //  bottom = new BoundingBox(position, size, objRotation, Color(1, 0, 1, 0.5f));
 //  bottom->SetAnchorPoint(AnchorPoint::MID_BOT);
@@ -56,7 +56,7 @@ void Collision::InitializeFootholder() {
   if (anchorPoint == AnchorPoint::CENTER) position.y += objSize.y / 2;
 
   size.x -= 1;
-  size.y = collisionThickness;
+  size.y = footholderThickness;
 
   footholder = new BoundingBox(position, size, objRotation, Color(1, 0, 1, 0.5f));
   footholder->SetAnchorPoint(AnchorPoint::MID_TOP);
@@ -74,7 +74,7 @@ TerrainCollision::TerrainCollision(GameObject* object, Type type)
   objPos = object->GetPosition();
   objSize = object->GetSize();
 
-  size = { TILESIZE, collisionThickness, 0 };
+  size = { TILESIZE, footholderThickness, 0 };
   rotation = 0.0f;
 
   switch (type)
@@ -101,16 +101,16 @@ TerrainCollision::TerrainCollision(GameObject* object, Type type)
     break;
 
   case TerrainCollision::Type::STAIR_UP:
-    position = objPos + Vector3(0, 16, 0);
-    size.x = 266;
+    position = objPos + Vector3(2, 18, 0);
+    size.x = 270;
     rotation = 45;
 
     footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 1.0f));
     break;
 
   case TerrainCollision::Type::STAIR_DOWN:
-    position = objPos + Vector3(0, 16, 0);
-    size.x = 266;
+    position = objPos + Vector3(2, 18, 0);
+    size.x = 270;
     rotation = -45;
 
     footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 1.0f));
@@ -120,6 +120,22 @@ TerrainCollision::TerrainCollision(GameObject* object, Type type)
     break;
   }
 }
+
+//float TerrainCollision::GetFootholderTop(Vector3 position)
+//{
+//  switch (this->terrainType)
+//  {
+//  case TerrainCollision::Type::STAIR_UP:
+//  case TerrainCollision::Type::STAIR_DOWN:
+//  {
+//    float r = this->position.x - position.x;
+//    return this->position.y + r * std::sin(D3DXToRadian(rotation));
+//  }
+//  break;
+//  default: return this->position.y;
+//    break;
+//  }
+//}
 
 void TerrainCollision::Update()
 {

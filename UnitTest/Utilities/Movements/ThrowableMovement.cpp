@@ -50,25 +50,12 @@ void ThrowableMovement::Falling()
 
 void ThrowableMovement::interaction()
 {
+  isFalling = true;
+
   auto* bottomSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::BOTTOM);
   auto* rightSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::RIGHT);
   auto* leftSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::LEFT);
   auto* topSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::TOP);
-
-  if (nearestFootholder)
-  {
-    auto terrainType = nearestFootholder->GetTerrainType();
-    if (terrainType != Terrain::Type::STAIR_UP && terrainType != Terrain::Type::STAIR_DOWN)
-    {
-      bounce.y = (std::abs(ySpeed) / Time::Get()->GetGlobalSpeed()) * 0.5f;
-
-      float terrainEdge = nearestFootholder->GetCollision()->GetFootholder()->GetRect()->LT.y;
-      float depth = std::abs(bottomSpeedBox->GetRect()->RB.y - terrainEdge);
-
-      ySpeed += depth;
-      SlowDown();
-    }
-  }
 
   if (nearestTerrainR)
   {
@@ -89,4 +76,22 @@ void ThrowableMovement::interaction()
 
     xSpeed += depth;
   }
+
+  if (nearestFootholder)
+  {
+    auto terrainType = nearestFootholder->GetTerrainType();
+    if (terrainType != Terrain::Type::STAIR_UP && terrainType != Terrain::Type::STAIR_DOWN)
+    {
+      isFalling = false;
+      bounce.y = (std::abs(ySpeed) / Time::Get()->GetGlobalSpeed()) * 0.5f;
+
+      float terrainEdge = nearestFootholder->GetCollision()->GetFootholder()->GetRect()->LT.y;
+      float depth = std::abs(bottomSpeedBox->GetRect()->RB.y - terrainEdge);
+
+      ySpeed += depth;
+      SlowDown();
+    }
+  }
+
+  object->Move(Vector3(xSpeed, ySpeed, 0));
 }

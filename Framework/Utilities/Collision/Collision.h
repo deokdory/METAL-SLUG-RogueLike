@@ -24,6 +24,8 @@ class Collision {
 
   void SetAnchorPoint(AnchorPoint anchorPoint) { this->anchorPoint = anchorPoint; }
 
+  const float GetFootholderThickness() { return footholderThickness; }
+
  protected:
   class GameObject* object = nullptr;
 
@@ -35,7 +37,7 @@ class Collision {
   BoundingBox* base = nullptr;
   BoundingBox* footholder = nullptr;
 
-  const float collisionThickness = 4;
+  const float footholderThickness = 4;
 };
 
 class TerrainCollision : public Collision
@@ -53,6 +55,8 @@ public:
   TerrainCollision(GameObject* object, Type type);
 
   virtual void Update();
+
+  //float GetFootholderTop(Vector3 position);
   
 private:
   TerrainCollision::Type terrainType;

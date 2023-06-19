@@ -12,6 +12,7 @@ public:
 
 private:
   class Level* currentLevel = nullptr;
+  class Room* currentRoom = nullptr;
 
   float globalGravity = 0.25f;
 };

@@ -131,5 +131,6 @@ typedef UINT		uint;
 const wstring ShaderPath = L"../_Shaders/";
 const wstring TexturePath = L"../_Resources/_Textures/";
 const wstring TilePath = L"../_Resources/_TileData/";
+const wstring MapDataPath = L"../_Resources/_MapData/";
 
 extern HWND handle;

@@ -166,7 +166,7 @@ void Agent::Update()
   mousePos.y -= (float)WinMaxHeight / 2;
   mousePos.z = 0.0f;
 
-  Camera::Get()->SetPosition(position + mousePos / 4);
+  Camera::Get()->SetPosition(position);
 }
 
 void Agent::Render() 

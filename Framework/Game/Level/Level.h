@@ -22,13 +22,14 @@ protected:
   std::vector<Room*> rooms;
 
   UINT levelWidth = 7;
-  UINT levelHeight = 5;
+  UINT levelHeight = 3;
 
   //std::vector<Background*> backgrounds;
   //std::vector<Decoration*> decos;
 
   GameObject* player = nullptr;
 
+  std::vector<TextureRect*> backgrounds;
   std::vector<Terrain*> terrains;
   std::vector<GameObject*> objects;
   

@@ -44,6 +44,7 @@ class BoundingBox {
   RectEdge* GetRect() { return edge; }
   Vector3 GetSize() { return size; }
   Vector3 GetPosition() { return position; }
+  float GetRotation() { return rotation; }
 
   void UpdateCollisionData();
 

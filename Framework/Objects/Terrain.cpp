@@ -4,23 +4,23 @@
 Terrain::Terrain(Vector3 position, Type type)
   : GameObject(position), terrainType(type)
 {
-
   objectType = GameObject::Type::TERRAIN;
 
   TerrainCollision* trnCollision = nullptr;
+
   graphic->SetAnchorPoint(AnchorPoint::CENTER);
 
   if (type == Terrain::Type::STAIR_UP || type == Terrain::Type::STAIR_DOWN)
   {
-    size = { 640, 257, 0 };
+    size = { 384, 256, 0 };
     switch (type)
     {
     case Terrain::Type::STAIR_UP:
-      graphic->InitTexture(TexturePath + L"MS5_2-2_TRN_STAIR_UP.png");
+      graphic->InitTexture(TexturePath + L"MS5_2-2_TRN_STAIR_UP_SHORTROAD.png");
       trnCollision = new TerrainCollision(this, TerrainCollision::Type::STAIR_UP);
       break;
     case Terrain::Type::STAIR_DOWN:
-      graphic->InitTexture(TexturePath + L"MS5_2-2_TRN_STAIR_DOWN.png");
+      graphic->InitTexture(TexturePath + L"MS5_2-2_TRN_STAIR_DOWN_SHORTROAD.png");
       trnCollision = new TerrainCollision(this, TerrainCollision::Type::STAIR_DOWN);
       break;
     default:
@@ -71,6 +71,7 @@ Terrain::Terrain(Vector3 position, Type type)
   }
 
   collision = trnCollision;
+  SetAnchorPoint(AnchorPoint::CENTER);
 }
 
 Terrain::~Terrain() {
@@ -85,4 +86,35 @@ void Terrain::Update() {
 void Terrain::Render() { 
   graphic->Render();
   collision->Render();
+}
+
+float Terrain::GetFootholderTop(Vector3 objectPosition)
+{
+  BoundingBox* footholder = collision->GetFootholder();
+
+  Vector3 footholderPosition = footholder->GetPosition();
+  float footholderRotation = footholder->GetRotation();
+
+  float r = 0.0f;
+  float stairEdgeX = 0.0f;
+  switch (terrainType)
+  {
+    // 계단
+  case Terrain::Type::STAIR_UP:
+  case Terrain::Type::STAIR_DOWN:
+    stairEdgeX = footholder->GetSize().x / 2 * std::cos(D3DXToRadian(footholderRotation));
+
+    r = -(footholderPosition.x - objectPosition.x);
+    
+    if (r > stairEdgeX) r = stairEdgeX;
+    else if (r < -stairEdgeX) r = -stairEdgeX;
+
+    return footholderPosition.y + (r * std::tan(D3DXToRadian(footholderRotation)));
+    break;
+
+    // 일반 발판들
+  default:
+    return footholder->GetRect()->LT.y;
+    break;
+  }
 }

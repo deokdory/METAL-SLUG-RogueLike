@@ -114,14 +114,20 @@ void Input::Update(Agent& agent)
       // มกวม
       if (Keyboard::Get()->Down(VK_SPACE))
       {
-        isPressSliding = false;
-        isPressJumping = true;
+        if(Keyboard::Get()->Press('S') == false)
+        {
+          isPressSliding = false;
+          isPressJumping = true;
 
-        movement->SetIsJumping(true);
-        movement->Jump();
-        jumpProgress = 0.0;
+          movement->SetIsJumping(true);
+          movement->Jump();
+          jumpProgress = 0.0;
+        }
+        else
+        {
+          movement->Drop();
+        }
       }
-
       break;
     }
     case Agent::MovementState::SLIDING:

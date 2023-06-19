@@ -12,55 +12,61 @@ TestLevel::TestLevel()
 
 void TestLevel::init() {
 
-  //auto background = new GameObject(Values::CenterOfScreen + Vector3(0, -100, 0), Vector3(4352, 944, 0));
-  //background->SetAnchorPoint(AnchorPoint::CENTER);
-  //background->InitGraphic(TexturePath + L"background_sample.png", ObjectGraphic::Slot::NORMAL);
-  //
-  //objects.push_back(background);
-
   auto player = new Agent(Values::CenterOfScreen, Vector3(44, 80, 0.f));
   player->InitGraphic(Animations::GetEriLower(), ObjectGraphic::Slot::LOWER);
   player->InitGraphic(Animations::GetEriUpper(), ObjectGraphic::Slot::UPPER);
 
   objects.push_back(player);
 
-  //InitTestEnemies();
+  TextureRect* background = new TextureRect(Vector3(640, 360, 0), Vector3(2106, 1024, 0), 0, TexturePath + L"MS5_2-2_BACKGROUND_PATTERN.png");
+  background->Update();
+  backgrounds.push_back(background);
 
-  //auto player2 = new Agent(Values::CenterOfScreen, Vector3(44, 80, 0.f));
-  //
-  //player2->InitGraphic(Animations::GetEriLower(), ObjectGraphic::Slot::LOWER);
-  //player2->InitGraphic(Animations::GetEriUpper(), ObjectGraphic::Slot::UPPER);
-  //
-  //objects.push_back(player2);
-  //player2->SetIsWaitingDelete(true);
+  // InitTestEnemies();
 
-  Vector3 startPosition = { 640 - TILESIZE * 8, 100, 0 };
-  Vector3 currPosition = startPosition;
-  terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_EDGE_L));
-  for (UINT i = 1; i < 15; i++)
+  // 流立 瘤屈 积己 (具啊促)
   {
-    currPosition.x = startPosition.x + TILESIZE * i;
-    terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_MID));
+    //Vector3 startPosition = { 640 - TILESIZE * 8, 100, 0 };
+    //Vector3 currPosition = startPosition;
+    //terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_EDGE_L));
+    //for (UINT i = 1; i < 15; i++)
+    //{
+    //  currPosition.x = startPosition.x + TILESIZE * i;
+    //  terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_MID));
+    //}
+    //currPosition.x = startPosition.x + TILESIZE * 15;
+    //terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_EDGE_R));
+    //
+    //startPosition = { 640 - TILESIZE * 8, 100 + TILESIZE * 3, 0 };
+    //currPosition = startPosition;
+    //terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_EDGE_L));
+    //for (UINT i = 1; i < 15; i++)
+    //{
+    //  currPosition.x = startPosition.x + TILESIZE * i;
+    //  terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_MID));
+    //}
+    //currPosition.x = startPosition.x + TILESIZE * 15;
+    //terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_EDGE_R));
+    //
+    //startPosition = { 640 - TILESIZE * 8, 100 + TILESIZE * 6, 0 };
+    //currPosition = startPosition;
+    //terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_EDGE_L));
+    //for (UINT i = 1; i < 15; i++)
+    //{
+    //  currPosition.x = startPosition.x + TILESIZE * i;
+    //  terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_MID));
+    //}
+    //currPosition.x = startPosition.x + TILESIZE * 15;
+    //terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_EDGE_R));
+    //
+    //terrains.push_back(new Terrain({ 800, 100 + TILESIZE + TILESIZE/2, 0 }, Terrain::Type::STAIR_UP));
+    //terrains.push_back(new Terrain({ 480, 100 + TILESIZE * 3 + TILESIZE * 1.5, 0 }, Terrain::Type::STAIR_DOWN));
   }
-  currPosition.x = startPosition.x + TILESIZE * 15;
-  terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_EDGE_R));
 
-//startPosition = { 640 - TILESIZE * 8, 100 + TILESIZE * 3, 0 };
-//currPosition = startPosition;
-//  terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_EDGE_L));
-//  for (UINT i = 1; i < 15; i++)
-//  {
-//    currPosition.x = startPosition.x + TILESIZE * i;
-//    terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_MID));
-//  }
-//  currPosition.x = startPosition.x + TILESIZE * 15;
-//  terrains.push_back(new Terrain(currPosition, Terrain::Type::FH_EDGE_R));
-
-  terrains.push_back(new Terrain({ 640, 100 + TILESIZE + TILESIZE/2, 0 }, Terrain::Type::STAIR_UP));
-
-  //terrains.push_back(new Terrain(Vector3(640, 100, 0), Vector3(1920, 32, 0), TexturePath + L"SamplePlate.png"));
-  //terrains.push_back(new Terrain(Vector3(1280, 350, 0), Vector3(32, 300, 0), TexturePath + L"SamplePlate.png"));
-  //terrains.push_back(new Terrain(Vector3(640, 420, 0), Vector3(640, 32, 0), TexturePath + L"SamplePlate.png"));
+  // 颇老 阂矾客辑 积己
+  {
+    rooms.push_back(new Room(Room::Type::START));
+  }
 
   __super::init();
 
