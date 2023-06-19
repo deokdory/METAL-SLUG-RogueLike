@@ -6,8 +6,9 @@ class Room
 public:
   enum class Type { EMPTY, START, UPGRADE, BATTLE, ROOT, BOSS, ELIMINATE, ELEVATE, PASSAGE };
   
-  Room(Type type, Room prevRoom); // 罚待 积己侩 积己磊
-  Room(std::wstring mapDataFilePath, Room prevRoom);
+  Room(Type type, Room* prevRoom); // 罚待 积己侩 积己磊
+
+  Room(Type type, std::wstring mapDataFilePath, Room* prevRoom);
   Room(Type type); // TEST
   ~Room();
 
@@ -16,6 +17,7 @@ public:
   void ForegroundRender();
 
 private:
+  void initTerrains(std::wstring mapDataFilePath);
   Vector3 tilePosToVector3(Terrain::Type trnType, UINT tilePositionX, UINT tilePositionY);
   Type type = Type::EMPTY;
 
