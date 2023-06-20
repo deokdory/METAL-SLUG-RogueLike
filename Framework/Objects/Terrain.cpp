@@ -70,7 +70,9 @@ Terrain::Terrain(Vector3 position, Type type)
     assert(false);
   }
 
+  trnCollision->InitializeBase();
   collision = trnCollision;
+
   SetAnchorPoint(AnchorPoint::CENTER);
 }
 

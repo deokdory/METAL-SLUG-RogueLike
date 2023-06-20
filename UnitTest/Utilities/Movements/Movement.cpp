@@ -154,7 +154,7 @@ void Movement::Update()
   UpdateAccel();
 
   // ³«ÇÏ 
-  //Falling();
+  Falling();
 
   xSpeed = xSpeedOrigin * globalSpeed;
   ySpeed = ySpeedOrigin * globalSpeed;
@@ -273,15 +273,47 @@ void Movement::UpdateAccel()
 
 void Movement::terrainCollisionCheck()
 {
+  Room* currentRoom = object->GetCurrentRoom();
+
   nearestFootholder = nullptr;
   nearestTerrainR = nullptr;
   nearestTerrainL = nullptr;
 
   nearestStair = nullptr;
 
-  auto& terrains = GameManager::Get()->GetCurrentLevel()->GetTerrains();
+  nearestPositionX = 0.0f;
+  nearestPositionY = 0.0f;
 
-  auto* base = object->GetCollision()->GetBase();
+  if (currentRoom)
+  {
+    terrainCollisionCheck(currentRoom->GetTerrains(Room::Layer::BACKGROUND));
+    terrainCollisionCheck(currentRoom->GetTerrains(Room::Layer::MIDDLEGROUND));
+    terrainCollisionCheck(currentRoom->GetTerrains(Room::Layer::FOREGROUND));
+
+    //Room* linkedRoomLeft = currentRoom->GetLinkedRoom(LEFT);
+    //if (linkedRoomLeft)
+    //{
+    //  terrainCollisionCheck(linkedRoomLeft->GetTerrains(Room::Layer::BACKGROUND));
+    //  terrainCollisionCheck(linkedRoomLeft->GetTerrains(Room::Layer::MIDDLEGROUND));
+    //  terrainCollisionCheck(linkedRoomLeft->GetTerrains(Room::Layer::FOREGROUND));
+    //}
+    //
+    //Room* linkedRoomRight = currentRoom->GetLinkedRoom(RIGHT);
+    //if (linkedRoomRight)
+    //{
+    //  terrainCollisionCheck(linkedRoomRight->GetTerrains(Room::Layer::BACKGROUND));
+    //  terrainCollisionCheck(linkedRoomRight->GetTerrains(Room::Layer::MIDDLEGROUND));
+    //  terrainCollisionCheck(linkedRoomRight->GetTerrains(Room::Layer::FOREGROUND));
+    //}
+  }
+}
+
+void Movement::terrainCollisionCheck(std::vector<Terrain*>& terrains)
+{
+  //Room* currentRoom = object->GetCurrentRoom();
+  //auto& terrains = GameManager::Get()->GetCurrentLevel()->GetTerrains();
+
+  //auto* base = object->GetCollision()->GetBase();
 
   auto* bottomSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::BOTTOM);
   auto* topSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::TOP);
@@ -295,117 +327,84 @@ void Movement::terrainCollisionCheck()
   Vector3 terrSize;
 
   BoundingBox* footholder, * terrBottom, * terrBase;
-  float nearestPositionX = 0.0f;
-  float nearestPositionY = 0.0f;
 
   Terrain::Type currentTerrType;
 
-  for (auto terr : terrains) {
-    footholder = terr->GetCollision()->GetFootholder();
-    terrBase = terr->GetCollision()->GetBase();
-    //terrBottom = terr->GetCollision()->GetBottom();
+  if (terrains.empty() == false)
+  {
+    for (auto terr : terrains) {
 
-    terrPos = terr->GetPosition();
-    terrSize = terr->GetSize();
+      footholder = terr->GetCollision()->GetFootholder();
+      terrBase = terr->GetCollision()->GetBase();
+      //terrBottom = terr->GetCollision()->GetBottom();
 
-    currentTerrType = terr->GetTerrainType();
+      terrPos = terr->GetPosition();
+      terrSize = terr->GetSize();
 
-    if (ySpeed <= 0.0f)
-    {
-      if (BoundingBox::OBB(bottomSpeedBox, footholder))
+      currentTerrType = terr->GetTerrainType();
+
+      if (ySpeed <= 0.0f)
       {
-        switch (currentTerrType)
+        if (BoundingBox::OBB(bottomSpeedBox, footholder))
         {
-        case Terrain::Type::STAIR_UP:
-        case Terrain::Type::STAIR_DOWN:
-          nearestStair = terr;
-        //{
-        //  RectEdge stairRect = *footholder->GetRect();
-        //  RectEdge bottomSpeedBoxRect = *bottomSpeedBox->GetRect();
-        //
-        //  float heightOnStair = 0.0f;
-        //
-        //  float length = 0.0f;
-        //  if (currentTerrType == Terrain::Type::STAIR_UP)
-        //  {
-        //    length = stairRect.RT.x - bottomSpeedBoxRect.RB.x;
-        //    if (length < 0) length = 0;
-        //
-        //    heightOnStair = stairRect.RT.y - length - 1;
-        //  }
-        //  else
-        //  {
-        //    length = bottomSpeedBoxRect.LB.x - stairRect.LT.x;
-        //    if (length < 0) length = 0;
-        //
-        //    heightOnStair = stairRect.LT.y - length - 1;
-        //  }
-        //  if (bottomSpeedBoxRect.LT.y > heightOnStair) nearestStair = terr;
-        //}
-          break;
-        default:
-          if (nearestFootholder == nullptr || footholder->GetRect()->LT.y > nearestPositionY)
+          switch (currentTerrType)
           {
-            nearestPositionY = footholder->GetRect()->LT.y;
-            nearestFootholder = terr;
+          case Terrain::Type::STAIR_UP:
+          case Terrain::Type::STAIR_DOWN:
+            nearestStair = terr;
+
+            break;
+          default:
+            if (nearestFootholder == nullptr || footholder->GetRect()->LT.y > nearestPositionY)
+            {
+              nearestPositionY = footholder->GetRect()->LT.y;
+              nearestFootholder = terr;
+            }
+            break;
           }
-          break;
         }
       }
-    }
-    
-    //if (ySpeed > 0) {
-    //  if (BoundingBox::AABB(topSpeedBox, terrBottom))
-    //  {
-    //    
-    //    if (nearestY == nullptr || terrBottom->GetRect()->LB.y < nearestY->GetRect()->LB.y)
-    //    {
-    //      nearestY = terrBottom;
-    //
-    //      float depth = std::abs(topSpeedBox->GetRect()->LT.y - nearestY->GetRect()->LB.y);
-    //      ySpeed -= depth;
-    //    }
-    //  }
-    //}
 
-    if (xSpeed > 0)
-    {
-      if (BoundingBox::OBB(rightSpeedBox, terrBase) == true)
       {
-        if (nearestTerrainR == nullptr || terrBase->GetRect()->LB.x < nearestPositionX)
-        {
-          nearestPositionX = terrBase->GetRect()->LB.x;
-          nearestTerrainR = terr;
-        }
+        //if (ySpeed > 0) {
+        //  if (BoundingBox::AABB(topSpeedBox, terrBottom))
+        //  {
+        //    
+        //    if (nearestY == nullptr || terrBottom->GetRect()->LB.y < nearestY->GetRect()->LB.y)
+        //    {
+        //      nearestY = terrBottom;
+        //
+        //      float depth = std::abs(topSpeedBox->GetRect()->LT.y - nearestY->GetRect()->LB.y);
+        //      ySpeed -= depth;
+        //    }
+        //  }
+        //}
       }
-    }
 
-    if (xSpeed < 0)
-    {
-      if (BoundingBox::OBB(leftSpeedBox, terrBase) == true)
+      if (xSpeed > 0)
       {
-        if (nearestTerrainL == nullptr || terrBase->GetRect()->RB.x > nearestPositionX)
+        if (BoundingBox::OBB(rightSpeedBox, terrBase) == true)
         {
-          nearestPositionX = terrBase->GetRect()->LB.x;
-          nearestTerrainL = terr;
+          if (nearestTerrainR == nullptr || terrBase->GetRect()->LB.x < nearestPositionX)
+          {
+            nearestPositionX = terrBase->GetRect()->LB.x;
+            nearestTerrainR = terr;
+          }
+        }
+      }
+
+      if (xSpeed < 0)
+      {
+        if (BoundingBox::OBB(leftSpeedBox, terrBase) == true)
+        {
+          if (nearestTerrainL == nullptr || terrBase->GetRect()->RB.x > nearestPositionX)
+          {
+            nearestPositionX = terrBase->GetRect()->LB.x;
+            nearestTerrainL = terr;
+          }
         }
       }
     }
-
-
-    //if (BoundingBox::AABB(base, terrBase) == true) {
-    //
-    //  if (objPos.x < terrPos.x) {
-    //    float depth = (objPos.x + objSize.x / 2) - (terrPos.x - terrSize.x / 2);
-    //    object->Move({ -depth, 0, 0 });
-    //    if (xSpeed > 0) xSpeed = 0;
-    //  }
-    //  else if (objPos.x > terrPos.x) {
-    //    float depth = (terrPos.x + terrSize.x / 2) - (objPos.x - objSize.x / 2);
-    //    object->Move({ depth, 0, 0 });
-    //    if (xSpeed < 0) xSpeed = 0;
-    //  }
-    //}
   }
 }
 
@@ -447,6 +446,7 @@ void Movement::interaction()
   float footholderTop = 0.0f;
 
   standOn = nearestFootholder;
+
   if (standOn == nullptr)
   {
     if (isDropping == false) standOn = nearestStair;

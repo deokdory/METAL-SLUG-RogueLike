@@ -105,7 +105,7 @@ Throwable::Throwable(GameObject* thrown, Side side, float strength, float damage
   graphic->InitTexture(texturePath);
 
   //collision->InitializeTop();
-  collision->InitializeBase();
+  //collision->InitializeBase();
   //collision->InitializeBottom();
 
   sinceThrown = 0.0;

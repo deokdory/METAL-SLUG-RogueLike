@@ -38,6 +38,9 @@ class GameObject {
   AnchorPoint GetAnchorPoint() { return anchorPoint; }
   void SetAnchorPoint(AnchorPoint anchorPoint);
 
+  void SetCurrentRoom(class Room* currentRoom);
+  Room* GetCurrentRoom();
+
 protected:
   Type objectType = Type::NONE;
 
@@ -51,6 +54,8 @@ protected:
   float rotation = 0;
 
   bool isFliped = false;
+
+  class Room* currentRoom = nullptr;
 
   bool isWaitingDelete = false;
 };

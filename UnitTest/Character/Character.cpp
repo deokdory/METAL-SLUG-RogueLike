@@ -10,7 +10,7 @@ Character::Character(Vector3 position, Vector3 size)
 
   hp = hpMax;
 
-  collision->InitializeBase();
+  //collision->InitializeBase();
   //collision->InitializeBottom();
   //collision->InitializeTop();
 }

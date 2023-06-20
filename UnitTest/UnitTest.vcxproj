@@ -154,6 +154,7 @@
     <ClInclude Include="Character\Animations.h" />
     <ClInclude Include="Character\Character.h" />
     <ClInclude Include="Character\Agent.h" />
+    <ClInclude Include="Utilities\GameManager.h" />
     <ClInclude Include="Utilities\Gun\Gun.h" />
     <ClInclude Include="Utilities\Input\Input.h" />
     <ClInclude Include="Utilities\Combat\PlayerCombat.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="Character\Animations.cpp" />
     <ClCompile Include="Character\Character.cpp" />
     <ClCompile Include="Character\Agent.cpp" />
+    <ClCompile Include="Utilities\GameManager.cpp" />
     <ClCompile Include="Utilities\Gun\Gun.cpp" />
     <ClCompile Include="Utilities\Input\Input.cpp" />
     <ClCompile Include="Utilities\Combat\PlayerCombat.cpp" />

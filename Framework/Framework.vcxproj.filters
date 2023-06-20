@@ -33,13 +33,9 @@
     <ClCompile Include="Utilities\Collision\Collision.cpp" />
     <ClCompile Include="Objects\GameObject.cpp" />
     <ClCompile Include="Game\Level\Level.cpp" />
-    <ClCompile Include="Game\GameManager.cpp" />
     <ClCompile Include="Utilities\ObjectGraphic\ObjectGraphic.cpp" />
     <ClCompile Include="Objects\Terrain.cpp" />
     <ClCompile Include="Game\Level\Room\Room.cpp" />
-    <ClCompile Include="Geometries\Tile\Tile.cpp" />
-    <ClCompile Include="Geometries\Tile\TileMap.cpp" />
-    <ClCompile Include="Geometries\Tile\TileSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems\Graphics.h" />
@@ -78,13 +74,9 @@
     <ClInclude Include="Utilities\Collision\Collision.h" />
     <ClInclude Include="Objects\GameObject.h" />
     <ClInclude Include="Game\Level\Level.h" />
-    <ClInclude Include="Game\GameManager.h" />
     <ClInclude Include="Utilities\ObjectGraphic\ObjectGraphic.h" />
     <ClInclude Include="Game\Gun\Gun.h" />
     <ClInclude Include="Objects\Terrain.h" />
     <ClInclude Include="Game\Level\Room\Room.h" />
-    <ClInclude Include="Geometries\Tile\Tile.h" />
-    <ClInclude Include="Geometries\Tile\TileMap.h" />
-    <ClInclude Include="Geometries\Tile\TileSet.h" />
   </ItemGroup>
 </Project>

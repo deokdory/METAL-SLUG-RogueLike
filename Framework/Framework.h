@@ -63,7 +63,7 @@ enum class AnchorPoint
 	LEFT_BOT, MID_BOT, RIGHT_BOT
 };
 
-enum Direction { UP, DOWN, LEFT, RIGHT };
+enum Direction { NONEDIRECTION, UP, DOWN, LEFT, RIGHT };
 
 #include "Interfaces/IObject.h"
 
@@ -118,7 +118,6 @@ typedef UINT		uint;
 #include "Objects/GameObject.h"
 #include "Game/Level/Level.h"
 
-#include "Game/GameManager.h"
 #include "Systems/Camera.h"
 
 #define WinMaxWidth 1280

@@ -12,6 +12,7 @@ GameWorld::~GameWorld() {
 void GameWorld::Update() {
   Camera::Get()->Update();
   level->Update();
+  GameManager::Get()->Update();
 }
 
 void GameWorld::Render() { level->Render(); }
@@ -19,4 +20,5 @@ void GameWorld::Render() { level->Render(); }
 void GameWorld::GUI()
 {
   level->GUI();
+  GameManager::Get()->GUI();
 }

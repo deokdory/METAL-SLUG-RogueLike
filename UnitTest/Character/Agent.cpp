@@ -166,7 +166,11 @@ void Agent::Update()
   mousePos.y -= (float)WinMaxHeight / 2;
   mousePos.z = 0.0f;
 
+  auto& rooms = GameManager::Get()->GetCurrentLevel()->GetRooms();
+
+
   Camera::Get()->SetPosition(position);
+
 }
 
 void Agent::Render() 

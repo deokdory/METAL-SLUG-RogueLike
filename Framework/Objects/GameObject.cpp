@@ -1,17 +1,21 @@
 #include "Framework.h"
 #include "GameObject.h"
 
+#include "Game/Level/Room/Room.h"
+
 GameObject::GameObject(Vector3 position, Vector3 size) 
 : position(position), size(size), rotation(0) {
 
   graphic = new ObjectGraphic(this);
   collision = new Collision(this);
+  collision->InitializeBase();
 }
 
 GameObject::GameObject(Vector3 position) // 지형 용 생성자
   : position(position), rotation(0)
 {
   graphic = new ObjectGraphic(this);
+  //collision->InitializeBase();
   //collision = new Collision(this);
 }
 
@@ -24,6 +28,7 @@ void GameObject::Update() {
   if (graphic != nullptr) graphic->Update();
   collision->Update();
 }
+
 void GameObject::Render() {
   if (graphic != nullptr) graphic->Render();
   collision->Render();
@@ -62,4 +67,14 @@ void GameObject::SetAnchorPoint(AnchorPoint anchorPoint)
   graphic->SetAnchorPoint(anchorPoint);
   collision->SetAnchorPoint(anchorPoint);
 
+}
+
+void GameObject::SetCurrentRoom(Room* currentRoom)
+{
+  this->currentRoom = currentRoom;
+}
+
+Room* GameObject::GetCurrentRoom()
+{
+  return currentRoom;
 }

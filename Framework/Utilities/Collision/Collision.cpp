@@ -32,6 +32,9 @@ void Collision::Render() {
 }
 
 void Collision::InitializeBase() {
+
+  if (base) assert(false);
+
   base = new BoundingBox(objPos, objSize, objRotation, Color(0, 0, 1, 0.25f));
   if (anchorPoint == AnchorPoint::MID_BOT) base->SetAnchorPoint(AnchorPoint::MID_BOT);
 }
@@ -80,12 +83,12 @@ TerrainCollision::TerrainCollision(GameObject* object, Type type)
   switch (type)
   {
   case TerrainCollision::Type::FH_MID:
-    position = objPos + Vector3(10, 16, 0);
+    position = objPos + Vector3(0, 16, 0); // 10, 16, 0
     footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 1.0f));
     break;
 
   case TerrainCollision::Type::FH_EDGE_L:
-    position = objPos + Vector3(10, 16, 0);
+    position = objPos + Vector3(00, 16, 0);
     size.x /= 2;
 
     footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 1.0f));
@@ -93,7 +96,7 @@ TerrainCollision::TerrainCollision(GameObject* object, Type type)
     break;
 
   case TerrainCollision::Type::FH_EDGE_R:
-    position = objPos + Vector3(10, 16, 0);
+    position = objPos + Vector3(00, 16, 0);
     size.x /= 2;
 
     footholder = new BoundingBox(position, size, rotation, Color(1.0f, 0.0f, 1.0f, 1.0f));

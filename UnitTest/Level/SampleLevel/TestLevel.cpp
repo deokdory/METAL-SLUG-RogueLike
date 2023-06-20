@@ -12,13 +12,15 @@ TestLevel::TestLevel()
 
 void TestLevel::init() {
 
-  auto player = new Agent(Values::CenterOfScreen, Vector3(44, 80, 0.f));
+  auto player = new Agent(Vector3(0, 100, 0), Vector3(44, 80, 0.f));
   player->InitGraphic(Animations::GetEriLower(), ObjectGraphic::Slot::LOWER);
   player->InitGraphic(Animations::GetEriUpper(), ObjectGraphic::Slot::UPPER);
 
   objects.push_back(player);
+  GameManager::Get()->SetPlayer(player);
 
   TextureRect* background = new TextureRect(Vector3(640, 360, 0), Vector3(2106, 1024, 0), 0, TexturePath + L"MS5_2-2_BACKGROUND_PATTERN.png");
+
   background->Update();
   backgrounds.push_back(background);
 
@@ -65,12 +67,17 @@ void TestLevel::init() {
 
   // 颇老 阂矾客辑 积己
   {
-    rooms.push_back(new Room(Room::Type::START));
+    rooms.push_back(new Room(Room::Type::ELEVATE));
+    rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_1to1.csv", rooms[0], Direction::RIGHT));
+    rooms.push_back(new Room(Room::Type::BATTLE, MapDataPath + L"room_1.csv", rooms[1], Direction::RIGHT));
+    rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_0to1.csv", rooms[0], Direction::LEFT));
+    rooms.push_back(new Room(Room::Type::ELIMINATE, MapDataPath + L"room_2.csv", rooms.back(), Direction::LEFT));
   }
 
   __super::init();
 
   GameManager::Get()->SetCurrentLevel(this);
+  GameManager::Get()->Update();
 }
 
 void TestLevel::Update() 

@@ -127,7 +127,7 @@ Bullet::Bullet(GameObject* fired, Side side, float speed, float damage, std::wst
     //std::cout << rotation << std::endl;
 
     graphic->InitTexture(texturePath);
-    collision->InitializeBase();
+    //collision->InitializeBase();
 
     //Move(axis * (speed * 4));
   

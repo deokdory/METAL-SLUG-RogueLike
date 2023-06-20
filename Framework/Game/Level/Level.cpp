@@ -24,7 +24,8 @@ void Level::init() {
 }
 void Level::Update() {
 
-  for (auto room : rooms) room->Update();
+  for (auto room : rooms)
+    room->Update();
 
   //for (size_t i = 0; i < terrains.size(); i++) {
   //  terrains[i]->Update();
@@ -41,8 +42,43 @@ void Level::Update() {
       continue;
     }
     objects[i]->Update();
-  }
 
+    {
+      Room* objectCurrentRoom = nullptr;
+
+      float nearWithEdge = 6000.0f;
+      float nearest = 6000.0f;
+
+      for (auto room : rooms)
+      {
+        if (BoundingBox::AABB(objects[i]->GetCollision()->GetBase(), room->GetArea()))
+        {
+          float objectPositionX = objects[i]->GetPosition().x;
+          float roomPositionX = room->GetPosition().x;
+          float roomSizeX = room->GetSize().x;
+
+          if (objectCurrentRoom == nullptr)
+          {
+            objectCurrentRoom = room;
+            objects[i]->SetCurrentRoom(room);
+          }
+          else
+          {
+            if (objectPositionX > roomPositionX && objectPositionX < roomPositionX + roomSizeX / 2)
+            {
+              objectCurrentRoom = room;
+              objects[i]->SetCurrentRoom(room);
+            }
+            else if (objectPositionX < roomPositionX && objectPositionX > roomPositionX - roomSizeX / 2)
+            {
+              objectCurrentRoom = room;
+              objects[i]->SetCurrentRoom(room);
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 void Level::Render() {

@@ -15,6 +15,7 @@ public:
 
   void PushObject(GameObject* object) { objects.push_back(object); }
 
+  std::vector<Room*>& GetRooms() { return rooms; }
   std::vector<Terrain*>& GetTerrains() { return terrains; }
   std::vector<GameObject*>& GetObjects() { return objects; }
 

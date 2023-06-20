@@ -64,7 +64,8 @@ public:
   float GetFallingSpeedMax() { return fallingSpeedMax; }
 
 protected:
-  virtual void terrainCollisionCheck(); // 위, 아래, 양옆의 충돌한 지형이 있는지,
+  virtual void terrainCollisionCheck();
+  virtual void terrainCollisionCheck(std::vector<Terrain*>& terrains); // 위, 아래, 양옆의 충돌한 지형이 있는지,
                                         // 있다면 가장 가까운 지형이 어떤 것인지 체크
 
   virtual void interaction(); // 충돌한 각 객체들과의 상호작용을 수행
@@ -75,6 +76,9 @@ protected:
   Terrain* nearestTerrainL   = nullptr;
 
   Terrain* nearestStair = nullptr;
+
+  float nearestPositionX = 0.0f;
+  float nearestPositionY = 0.0f;
 
   Terrain* standOn = nullptr;
   Terrain* lastStanded = nullptr;
