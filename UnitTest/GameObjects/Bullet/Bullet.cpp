@@ -60,11 +60,14 @@ void Bullet::hit(GameObject* object)
 
   if (objectType == GameObject::Type::CHARACTER) // 캐릭터와 부딪혔다면 (적군 포함)
   {
-    Character* character = dynamic_cast<Character*>(object); // 게임오브젝트 클래스 포인터를 다운캐스팅
-    if (character->GetIsDead() == false) // 캐릭터가 살아있는 상태라면
+    if (object->GetIsActived())
     {
-      character->Damaged(this->damage); // 캐릭터에게 대미지를 입히고
-      isHit = true; // 기능을 상실함
+      Character* character = dynamic_cast<Character*>(object); // 게임오브젝트 클래스 포인터를 다운캐스팅
+      if (character->GetIsDead() == false) // 캐릭터가 살아있는 상태라면
+      {
+        character->Damaged(this->damage); // 캐릭터에게 대미지를 입히고
+        isHit = true; // 기능을 상실함
+      }
     }
   }
 }

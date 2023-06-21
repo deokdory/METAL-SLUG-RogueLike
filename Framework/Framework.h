@@ -63,7 +63,7 @@ enum class AnchorPoint
 	LEFT_BOT, MID_BOT, RIGHT_BOT
 };
 
-enum Direction { NONEDIRECTION, UP, DOWN, LEFT, RIGHT };
+enum class Direction { NONE, UP, DOWN, LEFT, RIGHT };
 
 #include "Interfaces/IObject.h"
 

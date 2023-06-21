@@ -4,8 +4,6 @@
 #include "Systems/Window.h"
 
 #include "Utilities/Game.h"
-#include "Demos/TileMapDemo.h"
-
 
 void Program::Init()
 {

@@ -25,4 +25,6 @@ class Camera : public SingletonBase<Camera> {
 
   Vector3 position = Values::ZeroVec3;
   float cameraSpeed = 100.0f;
+
+  float viewAdjust = 0.0f;
 };

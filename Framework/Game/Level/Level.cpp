@@ -25,60 +25,55 @@ void Level::init() {
 void Level::Update() {
 
   for (auto room : rooms)
-    room->Update();
-
-  //for (size_t i = 0; i < terrains.size(); i++) {
-  //  terrains[i]->Update();
-  //}
-
-  for (size_t i = 0; i < objects.size(); i++)
   {
-    if (objects[i]->GetIsWaitingDelete())
-    {
-      SAFE_DELETE(objects[i]);
-      objects.erase(objects.begin() + i);
+    room->Update();
+    room->SetIsActived(false);
+  }
+  if (playerCurrentRoom)
+  {
+    playerCurrentRoom->SetIsActived(true);
 
-      i--;
-      continue;
+    auto* temp = playerCurrentRoom->GetLinkedRoom(Direction::LEFT);
+    Room* linkedRoom = nullptr;
+
+    if (temp)
+    {
+      linkedRoom = temp;
+      linkedRoom->SetIsActived(true);
+      temp = linkedRoom->GetLinkedRoom(Direction::LEFT);
     }
-    objects[i]->Update();
 
+    if (temp)
     {
-      Room* objectCurrentRoom = nullptr;
+      linkedRoom = temp;
+      linkedRoom->SetIsActived(true);
+    }
 
-      float nearWithEdge = 6000.0f;
-      float nearest = 6000.0f;
+    temp = playerCurrentRoom->GetLinkedRoom(Direction::RIGHT);
+    if (temp)
+    {
+      linkedRoom = temp;
+      linkedRoom->SetIsActived(true);
+      temp = linkedRoom->GetLinkedRoom(Direction::RIGHT);
+    }
 
-      for (auto room : rooms)
-      {
-        if (BoundingBox::AABB(objects[i]->GetCollision()->GetBase(), room->GetArea()))
-        {
-          float objectPositionX = objects[i]->GetPosition().x;
-          float roomPositionX = room->GetPosition().x;
-          float roomSizeX = room->GetSize().x;
-
-          if (objectCurrentRoom == nullptr)
-          {
-            objectCurrentRoom = room;
-            objects[i]->SetCurrentRoom(room);
-          }
-          else
-          {
-            if (objectPositionX > roomPositionX && objectPositionX < roomPositionX + roomSizeX / 2)
-            {
-              objectCurrentRoom = room;
-              objects[i]->SetCurrentRoom(room);
-            }
-            else if (objectPositionX < roomPositionX && objectPositionX > roomPositionX - roomSizeX / 2)
-            {
-              objectCurrentRoom = room;
-              objects[i]->SetCurrentRoom(room);
-            }
-          }
-        }
-      }
+    if (temp)
+    {
+      linkedRoom = temp;
+      linkedRoom->SetIsActived(true);
     }
   }
+
+  objectsUpdate(objects);
+
+  player->Update();
+  checkObjectsCurrentRoom(player);
+
+  objectsUpdate(objForeground);
+
+  playerCurrentRoom = player->GetCurrentRoom();
+
+
 }
 
 void Level::Render() {
@@ -100,6 +95,13 @@ void Level::Render() {
     obj->Render();
   }
 
+  player->Render();
+
+  for (auto obj : objForeground)
+  {
+    obj->Render();
+  }
+
   for (auto room : rooms) {
     room->ForegroundRender();
   }
@@ -109,5 +111,59 @@ void Level::GUI()
 {
   for (auto obj : objects) {
     obj->GUI();
+  }
+}
+
+void Level::objectsUpdate(std::vector<GameObject*>& objects)
+{
+  for (size_t i = 0; i < objects.size(); i++)
+  {
+    if (objects[i]->GetIsWaitingDelete())
+    {
+      SAFE_DELETE(objects[i]);
+      objects.erase(objects.begin() + i);
+
+      i--;
+      continue;
+    }
+    objects[i]->Update();
+    checkObjectsCurrentRoom(objects[i]);
+  }
+}
+
+void Level::checkObjectsCurrentRoom(GameObject* object)
+{
+  Room* objectCurrentRoom = nullptr;
+
+  float nearWithEdge = 6000.0f;
+  float nearest = 6000.0f;
+
+  for (auto room : rooms)
+  {
+    if (BoundingBox::AABB(object->GetCollision()->GetBase(), room->GetArea()))
+    {
+      float objectPositionX = object->GetPosition().x;
+      float roomPositionX = room->GetPosition().x;
+      float roomSizeX = room->GetSize().x;
+
+      if (objectCurrentRoom == nullptr)
+      {
+        objectCurrentRoom = room;
+        object->SetCurrentRoom(room);
+      }
+      else
+      {
+        if (objectPositionX > roomPositionX && objectPositionX < roomPositionX + roomSizeX / 2)
+        {
+          objectCurrentRoom = room;
+          object->SetCurrentRoom(room);
+        }
+        else if (objectPositionX < roomPositionX && objectPositionX > roomPositionX - roomSizeX / 2)
+        {
+          objectCurrentRoom = room;
+          object->SetCurrentRoom(room);
+        }
+      }
+    }
   }
 }

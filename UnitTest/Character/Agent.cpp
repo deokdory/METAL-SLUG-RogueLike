@@ -9,6 +9,8 @@ Agent::Agent(Vector3 position, Vector3 size)
 
   movement = new PlayerMovement(this);
   combat = new PlayerCombat(*this);
+
+  isActived = true;
 } 
 
 Agent::~Agent() {
@@ -157,6 +159,7 @@ void Agent::Update()
   }
 
   __super::Update();
+
   movement->Update();
   combat->Update(*this);
 

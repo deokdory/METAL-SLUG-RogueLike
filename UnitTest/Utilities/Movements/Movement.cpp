@@ -246,12 +246,9 @@ void Movement::SlowDown()
 
 void Movement::Jump()
 {
-  if (isFalling == false)
-  {
     ySpeedOrigin = jumpPower;
     isFalling = true;
     standOn = nullptr;
-  }
 }
 
 void Movement::Drop()

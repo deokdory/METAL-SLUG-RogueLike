@@ -28,38 +28,48 @@ void Enemy::Update()
   }
   else // 살아 있는 상태
   {
-    if (hp <= 0.0f) Die(); // 체력이 0 이하라면 사망
+    if (isActived)
+    {
+      if (hp <= 0.0f) Die(); // 체력이 0 이하라면 사망
 
-    if (isHit) // 피격 후 애니메이션 재생 중
-    {
-      if (hitAnimTimer > 0.22222222) // 피격 애니메이션 시간 초과 임시 구현
+      if (isHit) // 피격 후 애니메이션 재생 중
       {
-        graphic->SetCurrentAnimation(L"idle"); 
-        isHit = false;
+        if (hitAnimTimer > 0.22222222) // 피격 애니메이션 시간 초과 임시 구현
+        {
+          graphic->SetCurrentAnimation(L"idle");
+          isHit = false;
+        }
+        else hitAnimTimer += Time::Get()->WorldDelta(); // 피격 애니메이션 시간 계산 임시 구현
       }
-      else hitAnimTimer += Time::Get()->WorldDelta(); // 피격 애니메이션 시간 계산 임시 구현
-    }
-    else
-    {
-      //movement->MoveLeft();
+      else
+      {
+        //movement->MoveLeft();
+      }
     }
   }
 
-  hpBar->Update(); // 체력 상태 바 업데이트
   __super::Update(); // 부모클래스(게임 오브젝트) 업데이트
-  movement->Update(); // 이동 컴포넌트 업데이트
 
-  // 체력 상태 바의 위치를 설정
-  Vector3 hpBarPosition = position;
-  hpBarPosition.y += size.y;
-  hpBar->SetPosition(hpBarPosition);
+  if (isActived)
+  {
+    hpBar->Update(); // 체력 상태 바 업데이트
+    movement->Update(); // 이동 컴포넌트 업데이트
+
+    // 체력 상태 바의 위치를 설정
+    Vector3 hpBarPosition = position;
+    hpBarPosition.y += size.y;
+    hpBar->SetPosition(hpBarPosition);
+  }
 }
 
 void Enemy::Render()
 {
-  __super::Render();
-  movement->Render();
-  hpBar->Render();
+  if (isActived)
+  {
+    __super::Render();
+    movement->Render();
+    hpBar->Render();
+  }
 }
 
 void Enemy::Damaged(float damage)

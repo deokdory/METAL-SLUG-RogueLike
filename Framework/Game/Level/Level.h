@@ -18,9 +18,14 @@ public:
   std::vector<Room*>& GetRooms() { return rooms; }
   std::vector<Terrain*>& GetTerrains() { return terrains; }
   std::vector<GameObject*>& GetObjects() { return objects; }
+  std::vector<GameObject*>& GetObjectsForeground() { return objForeground; }
 
 protected:
+  void objectsUpdate(std::vector<GameObject*>& objects);
+  void checkObjectsCurrentRoom(GameObject* object);
+
   std::vector<Room*> rooms;
+  Room* playerCurrentRoom = nullptr;
 
   UINT levelWidth = 7;
   UINT levelHeight = 3;
@@ -34,4 +39,6 @@ protected:
   std::vector<Terrain*> terrains;
   std::vector<GameObject*> objects;
   
+  std::vector<GameObject*> objForeground;
+
 };

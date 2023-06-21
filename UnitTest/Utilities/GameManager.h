@@ -14,6 +14,7 @@ public:
   class Room* GetPlayerCurrentRoom();
 
   float GetGlobalGravity();
+
   void SetPlayer(class Agent* player);
   class Agent* GetPlayer();
 

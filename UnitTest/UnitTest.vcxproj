@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="Character\Enemy.h" />
     <ClInclude Include="Character\SoldierSample.h" />
+    <ClInclude Include="GameObjects\Elevator.h" />
     <ClInclude Include="GameObjects\Throwable\Throwable.h" />
     <ClInclude Include="GameObjects\Bullet\Bullet.h" />
     <ClInclude Include="Character\Animations.h" />
@@ -175,6 +176,7 @@
   <ItemGroup>
     <ClCompile Include="Character\Enemy.cpp" />
     <ClCompile Include="Character\SoldierSample.cpp" />
+    <ClCompile Include="GameObjects\Elevator.cpp" />
     <ClCompile Include="GameObjects\Throwable\Throwable.cpp" />
     <ClCompile Include="GameObjects\Bullet\Bullet.cpp" />
     <ClCompile Include="Character\Animations.cpp" />

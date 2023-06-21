@@ -5,6 +5,8 @@
 #include "GameObjects/Throwable/Throwable.h"
 #include "Utilities/Movements/ThrowableMovement.h"
 
+#include "GameObjects/Elevator.h"
+
 Input::Input()
 {
   crosshair = new TextureRect(Values::ZeroVec3, Vector3(72, 72, 0), 0, TexturePath + L"crosshair003.png");
@@ -56,6 +58,7 @@ void Input::Update(Agent& agent)
   agent.SetAgentLookAtAxis(agentLookAtAxis);
 
   // Movement
+  if(agent.GetCanMove())
   {
     auto movementState = agent.GetMovementState();
 
@@ -64,6 +67,55 @@ void Input::Update(Agent& agent)
     case Agent::MovementState::ONGROUND:
     {
       graphic->SetVisible(true, ObjectGraphic::Type::ANIMATION, ObjectGraphic::Slot::UPPER);
+
+      if (Keyboard::Get()->Down('E'))
+      {
+        auto& objects = GameManager::Get()->GetCurrentLevel()->GetObjectsForeground();
+        for (auto obj : objects)
+        {
+          if (obj->GetIsActived())
+          {
+            if (BoundingBox::AABB(agent.GetCollision()->GetBase(), obj->GetCollision()->GetBase()))
+            {
+              auto objectType = obj->GetObjectType();
+              switch (objectType)
+              {
+              case GameObject::Type::NONE:
+                break;
+
+              case GameObject::Type::CHARACTER:
+                break;
+
+              case GameObject::Type::PLAYER:
+                break;
+
+              case GameObject::Type::VEHICLE:
+                break;
+
+              case GameObject::Type::PROP:
+                break;
+
+              case GameObject::Type::TERRAIN:
+                break;
+
+              case GameObject::Type::BULLET:
+                break;
+
+              case GameObject::Type::THROWABLE:
+                break;
+
+              case GameObject::Type::ELEVATOR:
+                obj->Interaction(&agent);
+                break;
+
+              default:
+                break;
+              }
+            }
+          }
+        }
+        // 상호작용
+      }
 
       // 이동
       if (Keyboard::Get()->Press('A') && !Keyboard::Get()->Press('D')) {

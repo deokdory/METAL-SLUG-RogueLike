@@ -12,7 +12,7 @@ GameObject::GameObject(Vector3 position, Vector3 size)
 }
 
 GameObject::GameObject(Vector3 position) // 지형 용 생성자
-  : position(position), rotation(0)
+  : position(position), rotation(0), isActived(true)
 {
   graphic = new ObjectGraphic(this);
   //collision->InitializeBase();
@@ -25,13 +25,37 @@ GameObject::~GameObject() {
 }
 
 void GameObject::Update() {
-  if (graphic != nullptr) graphic->Update();
+
+  if (isActived)
+  {
+    if (graphic != nullptr) graphic->Update();
+  }
+
   collision->Update();
+
+  if (objectType != Type::PLAYER)
+  {
+    if (currentRoom)
+    {
+      if (currentRoom->GetIsActived())
+      {
+        isActived = true;
+      }
+      else
+      {
+        isActived = false;
+      }
+    }
+    else isActived = false;
+  }
 }
 
 void GameObject::Render() {
-  if (graphic != nullptr) graphic->Render();
-  collision->Render();
+  if (isActived)
+  {
+    if (graphic != nullptr) graphic->Render();
+    collision->Render();
+  }
 }
 
 void GameObject::GUI()
@@ -77,4 +101,8 @@ void GameObject::SetCurrentRoom(Room* currentRoom)
 Room* GameObject::GetCurrentRoom()
 {
   return currentRoom;
+}
+
+void GameObject::Interaction(GameObject* object)
+{
 }

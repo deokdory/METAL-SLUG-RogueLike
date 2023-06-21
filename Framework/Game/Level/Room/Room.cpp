@@ -26,18 +26,19 @@ Room::Room(Type type, Room* prevRoom, Direction direction)
 	default:
 		break;
 	}
-	prevRoom->SetLinkedRoom(direction, this);
-
 	initTerrains(mapDataFilePath, prevRoom, direction);
 
 	area = new BoundingBox(position, size, 0.0f, Color(0, 1, 1, 0.25f));
 	area->Update(position, size, 0.0f);
+
+	prevRoom->SetLinkedRoom(direction, this);
+	if (direction == Direction::RIGHT)	this->SetLinkedRoom(Direction::LEFT, prevRoom);
+	else if (direction == Direction::LEFT) this->SetLinkedRoom(Direction::RIGHT, prevRoom);
 }
 
 Room::Room(Type type, std::wstring mapDataFilePath, Room* prevRoom, Direction direction)
 	: type(type)
 {
-	prevRoom->SetLinkedRoom(direction, this);
 
 	initTerrains(mapDataFilePath, prevRoom, direction);
 	//moveTerrainsToRoomPosition(prevRoom, direction);
@@ -45,6 +46,9 @@ Room::Room(Type type, std::wstring mapDataFilePath, Room* prevRoom, Direction di
 	area = new BoundingBox(position, size, 0.0f, getAreaColor(type));
 	area->Update(position, size, 0.0f);
 
+	prevRoom->SetLinkedRoom(direction, this);
+	if (direction == Direction::RIGHT)	this->SetLinkedRoom(Direction::LEFT, prevRoom);
+	else if (direction == Direction::LEFT) this->SetLinkedRoom(Direction::RIGHT, prevRoom);
 }
 
 
@@ -93,10 +97,10 @@ void Room::SetLinkedRoom(Direction direction, Room* linkedRoom)
 {
 	switch (direction)
 	{
-	case LEFT:
+	case Direction::LEFT:
 		linkedRoomLeft = linkedRoom;
 		break;
-	case RIGHT:
+	case Direction::RIGHT:
 		linkedRoomRight = linkedRoom;
 		break;
 	default:
@@ -108,12 +112,12 @@ Room* Room::GetLinkedRoom(Direction direction)
 {
 	switch (direction)
 	{
-	case NONEDIRECTION:
+	case Direction::NONE:
 		break;
-	case LEFT:
+	case Direction::LEFT:
 		return linkedRoomLeft;
 		break;
-	case RIGHT:
+	case Direction::RIGHT:
 		return linkedRoomRight;
 		break;
 	default:
@@ -220,20 +224,20 @@ bool Room::initTerrains(std::wstring mapDataFilePath, Room* prevRoom, Direction 
 					Vector3 prevRoomSize = Values::ZeroVec3;
 
 					// 이전 방에 붙이는 중이라면 포지션을 그에 따라 수정
-					if (prevRoom != nullptr && direction != NONEDIRECTION)
+					if (prevRoom != nullptr && direction != Direction::NONE)
 					{
 						prevRoomPosition = prevRoom->GetPosition();
 						prevRoomSize = prevRoom->GetSize();
 
 						switch (direction)
 						{
-						case LEFT:
+						case Direction::LEFT:
 							position.x = prevRoomPosition.x - prevRoomSize.x / 2 - size.x / 2;
 							position.y = prevRoomPosition.y;
 							position.z = 0;
 							break;
 
-						case RIGHT:
+						case Direction::RIGHT:
 							position.x = prevRoomPosition.x + prevRoomSize.x / 2 + size.x / 2;
 							position.y = prevRoomPosition.y;
 							position.z = 0;
@@ -446,19 +450,19 @@ void Room::moveTerrainsToRoomPosition(Room* prevRoom, Direction direction)
 
 	switch (direction)
 	{
-	case UP:
+	case Direction::UP:
 		break;
 
-	case DOWN:
+	case Direction::DOWN:
 		break;
 
-	case LEFT:
+	case Direction::LEFT:
 	  position.x = prevRoomPosition.x - prevRoomSize.x / 2 - size.x / 2;
 		position.y = 0;
 		position.z = 0;
 		break;
 
-	case RIGHT:
+	case Direction::RIGHT:
 		position.x = prevRoomPosition.x + prevRoomSize.x / 2 + size.x / 2;
 		position.y = 0;
 		position.z = 0;

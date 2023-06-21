@@ -9,4 +9,5 @@ class Animations {
   static Animator* GetEriLower();
 
   static Animator* GetSoldierSample();
+  static Animator* GetElevator();
 };

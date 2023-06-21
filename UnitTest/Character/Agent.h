@@ -30,6 +30,9 @@ public:
   void SetAgentLookAtAxis(Vector3 axis) { this->agentLookAtAxis = axis; }
   Vector3 GetAgentLookAtAxis() { return agentLookAtAxis; }
 
+  void SetCanMove(bool canMove) { this->canMove = canMove; }
+  bool GetCanMove() { return canMove; }
+
 private:
   Vector3 agentLookAtAxis = Values::ZeroVec3;
 
@@ -40,4 +43,6 @@ private:
 
   PlayerCombat* combat = nullptr;
   CombatState combatState = CombatState::AIMING_RIFLE;
+
+  bool canMove = true;
 };

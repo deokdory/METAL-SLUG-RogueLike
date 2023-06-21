@@ -2,7 +2,7 @@
 
 class GameObject {
  public:
-  enum class Type { NONE, CHARACTER, PLAYER, VEHICLE, PROP, TERRAIN, BULLET, THROWABLE };
+  enum class Type { NONE, CHARACTER, PLAYER, VEHICLE, PROP, TERRAIN, BULLET, THROWABLE, ELEVATOR };
 
   GameObject(Vector3 position, Vector3 size);
   GameObject(Vector3 position);
@@ -41,6 +41,10 @@ class GameObject {
   void SetCurrentRoom(class Room* currentRoom);
   Room* GetCurrentRoom();
 
+  virtual void Interaction(GameObject* object);
+
+  bool GetIsActived() { return isActived; }
+
 protected:
   Type objectType = Type::NONE;
 
@@ -58,4 +62,6 @@ protected:
   class Room* currentRoom = nullptr;
 
   bool isWaitingDelete = false;
+
+  bool isActived = false;
 };

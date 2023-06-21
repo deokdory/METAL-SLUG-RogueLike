@@ -25,6 +25,7 @@
     <ClInclude Include="Utilities\Movements\Movement.h" />
     <ClInclude Include="Utilities\LevelEditor\LevelEditor.h" />
     <ClInclude Include="Utilities\GameManager.h" />
+    <ClInclude Include="GameObjects\Elevator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
@@ -49,6 +50,7 @@
     <ClCompile Include="Utilities\Movements\Movement.cpp" />
     <ClCompile Include="Utilities\LevelEditor\LevelEditor.cpp" />
     <ClCompile Include="Utilities\GameManager.cpp" />
+    <ClCompile Include="GameObjects\Elevator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Framework.lib" />

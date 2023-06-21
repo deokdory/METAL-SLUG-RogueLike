@@ -109,6 +109,19 @@ Animator* Animations::GetSoldierSample()
   return animator;
 }
 
+Animator* Animations::GetElevator()
+{
+  Texture2D* srcTex = new Texture2D(TexturePath + L"elevator.png");
+
+  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 6, { 0, 0 }, { 2304, 192 }, 1.0f / 15.0f, false);
+  Animator* animator = new Animator();
+  animator->AddAnimClip(idle);
+  animator->SetCurrentAnimClip(L"idle");
+
+  SAFE_DELETE(srcTex);
+  return animator;
+}
+
 //Animator* Animations::GetEriUpper() {
 //  Texture2D* srcTex = new Texture2D(TexturePath + L"eri_upper.png");
 //

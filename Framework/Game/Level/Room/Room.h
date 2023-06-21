@@ -35,10 +35,13 @@ public:
 
   std::vector<Terrain*>& GetTerrains(Layer layer);
 
+  void SetIsActived(bool isActived) { this->isActived = isActived; }
+  bool GetIsActived() { return isActived; }
+
 private:
   Color getAreaColor(Type type);
 
-  bool initTerrains(std::wstring mapDataFilePath, Room* prevRoom = nullptr, Direction direction = NONEDIRECTION);
+  bool initTerrains(std::wstring mapDataFilePath, Room* prevRoom = nullptr, Direction direction = Direction::NONE);
   void moveTerrainsToRoomPosition(Room* prevRoom, Direction direction);
   Vector3 tilePosToVector3(Terrain::Type trnType, UINT tilePositionX, UINT tilePositionY);
   Type type = Type::EMPTY;
@@ -65,6 +68,8 @@ private:
   Room* linkedRoomRight = nullptr;
 
   BoundingBox* area = nullptr;
+  bool isActived = false;
+
   // ENEMIES
   // PROPS
   // TRAPS
