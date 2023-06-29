@@ -80,7 +80,7 @@ void ThrowableMovement::interaction()
   if (nearestFootholder)
   {
     auto terrainType = nearestFootholder->GetTerrainType();
-    if (terrainType != Terrain::Type::STAIR_UP && terrainType != Terrain::Type::STAIR_DOWN)
+    if (terrainType != Terrain::Type::STAIR)
     {
       isFalling = false;
       bounce.y = (std::abs(ySpeed) / Time::Get()->GetGlobalSpeed()) * 0.5f;

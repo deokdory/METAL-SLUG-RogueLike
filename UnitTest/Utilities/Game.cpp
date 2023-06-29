@@ -1,34 +1,35 @@
 #include "stdafx.h"
 #include "Game.h"
 
-void Game::Init() { 
+void Game::Init() 
+{ 
   GameManager::Create();
   gameWorld = new GameWorld();
   prevTime = Time::Get()->Running();
   Time::Get()->InitNewTimer("game");
-
-  // Texture Pre load
-  //Texture2D* terrainsTex = new Texture2D(TexturePath + L"terrains.png");
-  
 }
 
-void Game::Destroy() {
+void Game::Destroy() 
+{
   SAFE_DELETE(gameWorld);
   GameManager::Delete();
 }
 
-void Game::Update() {
+void Game::Update() 
+{
     gameWorld->Update();
     frameCount++;
 }
 
-void Game::Render() {
+void Game::Render() 
+{
     gameWorld->Render();
 }
 
 void Game::PostRender() {}
 
-void Game::GUI() {
+void Game::GUI() 
+{
 
   gameWorld->GUI();
 

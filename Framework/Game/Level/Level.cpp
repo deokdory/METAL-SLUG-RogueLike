@@ -1,6 +1,8 @@
 #include "Framework.h"
 #include "Level.h"
 
+
+
 Level::Level()
 {
   
@@ -29,40 +31,7 @@ void Level::Update() {
     room->Update();
     room->SetIsActived(false);
   }
-  if (playerCurrentRoom)
-  {
-    playerCurrentRoom->SetIsActived(true);
-
-    auto* temp = playerCurrentRoom->GetLinkedRoom(Direction::LEFT);
-    Room* linkedRoom = nullptr;
-
-    if (temp)
-    {
-      linkedRoom = temp;
-      linkedRoom->SetIsActived(true);
-      temp = linkedRoom->GetLinkedRoom(Direction::LEFT);
-    }
-
-    if (temp)
-    {
-      linkedRoom = temp;
-      linkedRoom->SetIsActived(true);
-    }
-
-    temp = playerCurrentRoom->GetLinkedRoom(Direction::RIGHT);
-    if (temp)
-    {
-      linkedRoom = temp;
-      linkedRoom->SetIsActived(true);
-      temp = linkedRoom->GetLinkedRoom(Direction::RIGHT);
-    }
-
-    if (temp)
-    {
-      linkedRoom = temp;
-      linkedRoom->SetIsActived(true);
-    }
-  }
+  activeRooms();
 
   objectsUpdate(objects);
 
@@ -109,6 +78,8 @@ void Level::Render() {
 
 void Level::GUI()
 {
+  player->GUI();
+
   for (auto obj : objects) {
     obj->GUI();
   }
@@ -164,6 +135,58 @@ void Level::checkObjectsCurrentRoom(GameObject* object)
           object->SetCurrentRoom(room);
         }
       }
+    }
+  }
+}
+
+void Level::activeRooms()
+{
+  if (playerCurrentRoom)
+  {
+    playerCurrentRoom->SetIsActived(true);
+
+    auto* temp = playerCurrentRoom->GetLinkedRoom(Direction::LEFT);
+    Room* linkedRoom = nullptr;
+
+    if (temp)
+    {
+      linkedRoom = temp;
+      linkedRoom->SetIsActived(true);
+      temp = linkedRoom->GetLinkedRoom(Direction::LEFT);
+    }
+
+    if (temp)
+    {
+      linkedRoom = temp;
+      linkedRoom->SetIsActived(true);
+    }
+
+    temp = playerCurrentRoom->GetLinkedRoom(Direction::RIGHT);
+    if (temp)
+    {
+      linkedRoom = temp;
+      linkedRoom->SetIsActived(true);
+      temp = linkedRoom->GetLinkedRoom(Direction::RIGHT);
+    }
+
+    if (temp)
+    {
+      linkedRoom = temp;
+      linkedRoom->SetIsActived(true);
+    }
+
+    temp = playerCurrentRoom->GetLinkedRoom(Direction::UP);
+    if (temp)
+    {
+      linkedRoom = temp;
+      linkedRoom->SetIsActived(true);
+    }
+
+    temp = playerCurrentRoom->GetLinkedRoom(Direction::DOWN);
+    if (temp)
+    {
+      linkedRoom = temp;
+      linkedRoom->SetIsActived(true);
     }
   }
 }

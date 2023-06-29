@@ -15,6 +15,7 @@ class Character : public GameObject {
   bool GetIsDead() { return isDead; }
 
 protected:
+
   float hp;
   float hpMax = 20.0f;
 

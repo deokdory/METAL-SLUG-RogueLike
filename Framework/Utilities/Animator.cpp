@@ -55,7 +55,7 @@ Animator::~Animator() {
 void Animator::Update() {
   auto playRate = currentClip->playRate;
 
-  if (playRate > 0 && bFinished == false) {
+  if (playRate > 0 && isFinish == false) {
     if (elapsedTime > playRate) {
       if (currentClip->bReversed == false) {
         currentFrameIndex++;
@@ -63,7 +63,7 @@ void Animator::Update() {
           if (currentClip->bLoop) currentFrameIndex = 0;
           else {
             currentFrameIndex = currentClip->frameCount - 1;
-            bFinished = true;
+            isFinish = true;
           }
         }
       }
@@ -73,7 +73,7 @@ void Animator::Update() {
           if (currentClip->bLoop) currentFrameIndex = currentClip->frameCount - 1;
           else {
             currentFrameIndex = 0;
-            bFinished = true;
+            isFinish = true;
           }
         }
       }
@@ -109,7 +109,7 @@ void Animator::SetCurrentAnimClip(std::wstring clipName) {
     // 현재 프레임 업데이트
     currentFrame = currentClip->keyframes[currentFrameIndex];
     elapsedTime = 0.0;
-    bFinished = false;
+    isFinish = false;
   }
 }
 

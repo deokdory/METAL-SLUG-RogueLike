@@ -37,6 +37,7 @@ public:
   virtual void Render();
   virtual void GUI();
 
+  // 낙하 설정
   virtual void Falling();
 
   virtual void MoveLeft();
@@ -45,6 +46,10 @@ public:
 
   virtual void Jump();
   virtual void Drop();
+
+  void Stop();
+
+  // 가속도 설정
   virtual void UpdateAccel();
 
   void SetIsDirectingDown(bool isDirectingDown = true) { this->isDirectingDown = isDirectingDown; }
@@ -56,6 +61,8 @@ public:
 
   float GetXSpeed() { return xSpeed; }
   float GetYSpeed() { return ySpeed; }
+
+  void SetXSpeedMax(float xSpeedMax) { this->xSpeedMax = xSpeedMax; }
 
   float GetXSpeedOrigin() { return xSpeedOrigin; }
   float GetYSpeedOrigin() { return ySpeedOrigin; }

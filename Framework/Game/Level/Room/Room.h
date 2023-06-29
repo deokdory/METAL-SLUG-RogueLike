@@ -3,6 +3,17 @@
 class Room
 {
 public:
+  enum MapDataNum
+  {
+    EMPTY = 0,
+    FOOTHOLDER,
+    FOOTHOLDER_WITH_DECO,
+    STAIR_NORMAL_UP,
+    STAIR_NORMAL_DOWN,
+    STAIR_LONG_UP,
+    STAIR_LONG_DOWN
+  };
+
   enum class Type { EMPTY, UPGRADE, BATTLE, ROOT, BOSS, ELIMINATE, ELEVATE, PASSAGE };
   enum class Layer { BACKGROUND, MIDDLEGROUND, FOREGROUND };
 
@@ -35,15 +46,20 @@ public:
 
   std::vector<Terrain*>& GetTerrains(Layer layer);
 
-  void SetIsActived(bool isActived) { this->isActived = isActived; }
+  void SetIsActived(bool isActived);
   bool GetIsActived() { return isActived; }
+
+  int GetFloor() { return floor; }
 
 private:
   Color getAreaColor(Type type);
 
   bool initTerrains(std::wstring mapDataFilePath, Room* prevRoom = nullptr, Direction direction = Direction::NONE);
-  void moveTerrainsToRoomPosition(Room* prevRoom, Direction direction);
-  Vector3 tilePosToVector3(Terrain::Type trnType, UINT tilePositionX, UINT tilePositionY);
+
+  void setRoomPosition(Room* prevRoom, Direction direction);
+  void setFloorFromPrevRoom(Room* prevRoom, Direction direction);
+  void setEnterFloor(UINT tilePositionX, UINT tilePositionY);
+
   Type type = Type::EMPTY;
 
   // 양쪽 입구 층수 ( 0 ~ 2 )
@@ -58,6 +74,8 @@ private:
   
   GameObject* elevator = nullptr;
 
+  std::vector<TextureRect*> decorations;
+
   std::vector<Terrain*> trnBackground;
   std::vector<Terrain*> trnMiddleground;
   std::vector<Terrain*> trnForeground;
@@ -66,10 +84,13 @@ private:
 
   Room* linkedRoomLeft = nullptr;
   Room* linkedRoomRight = nullptr;
+  Room* linkedRoomUp = nullptr;
+  Room* linkedRoomDown = nullptr;
 
   BoundingBox* area = nullptr;
   bool isActived = false;
 
+  int floor = 0;
   // ENEMIES
   // PROPS
   // TRAPS

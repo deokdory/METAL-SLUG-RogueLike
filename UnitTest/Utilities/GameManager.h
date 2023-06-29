@@ -24,5 +24,8 @@ private:
   class Level* currentLevel = nullptr;
   class Room* playerCurrentRoom = nullptr;
 
+  int topFloor = 0;
+  int bottomFloor = 0;
+
   float globalGravity = 0.25f;
 };

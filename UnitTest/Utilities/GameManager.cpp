@@ -12,9 +12,10 @@ void GameManager::Update()
 
 void GameManager::GUI()
 {
-  // 현재 방 종류 프린트용
+  // 현재 방 상태 프린트용
     std::string roomTypeStr = "Current room type : ";
     std::string isActivedStr = "This room is ";
+    std::string floorStr = "Current Floor : ";
 
     if (playerCurrentRoom != nullptr)
     {
@@ -51,13 +52,20 @@ void GameManager::GUI()
       // 현재 방 활성화 상태
       if (playerCurrentRoom->GetIsActived()) isActivedStr += "actived";
       else isActivedStr += "not actived";
-    }
-    else roomTypeStr += "NULL";
 
-  ImGui::Begin("GameManager");
+      // 현재 층수
+      floorStr += std::to_string(playerCurrentRoom->GetFloor());
+    }
+    else
+    {
+      roomTypeStr += "NULL";
+    }
+    
+  ImGui::Begin("Room");
   {
     ImGui::Text(roomTypeStr.c_str());
     ImGui::Text(isActivedStr.c_str());
+    ImGui::Text(floorStr.c_str());
   }
   ImGui::End();
 }

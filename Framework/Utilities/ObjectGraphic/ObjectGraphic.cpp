@@ -253,6 +253,11 @@ void ObjectGraphic::SetCurrentFrame(UINT index, Slot slot)
     if (animators[slot] != nullptr) animators[slot]->SetCurrentFrame(index);
 }
 
+bool ObjectGraphic::IsAnimationFinish(Slot slot)
+{
+  return animators[slot] != nullptr ? animators[slot]->GetIsFinish() : false;
+}
+
 //void ObjectGraphic::SetAnchorPoint(AnchorPoint anchor, Type type, Slot slot)
 //{
 //  switch (type)
@@ -334,7 +339,7 @@ void ObjectGraphic::AddRotation(float rotation, Type type, Slot slot)
 
 void ObjectGraphic::FadeOut(float duration, Type type, Slot slot)
 {
-  assert(duration > 0);
+  assert(duration >= 0);
 
   float opacity = 0.0f;
 

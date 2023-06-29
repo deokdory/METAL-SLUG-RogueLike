@@ -160,9 +160,30 @@ void BoundingBox::SetAnchorPoint(AnchorPoint point) {
 }
 
 void BoundingBox::Update(Vector3 position, Vector3 size, float rotation) {
+
   this->position = position;
   this->size = size;
   this->rotation = rotation;
+
+  world = DXMath::Scaling(size) * DXMath::RotationInDegree(rotation) *
+    DXMath::Translation(position);
+
+  wb->SetWorld(world);
+
+  if (Keyboard::Get()->Down(VK_F1)) {
+    cb->SwitchRender(true);
+  }
+
+  if (Keyboard::Get()->Down(VK_F2)) {
+    cb->SwitchRender(false);
+  }
+
+  UpdateCollisionData();
+}
+
+void BoundingBox::Update(Vector3 position)
+{
+  this->position = position;
 
   world = DXMath::Scaling(size) * DXMath::RotationInDegree(rotation) *
     DXMath::Translation(position);
@@ -341,4 +362,13 @@ bool BoundingBox::OBB(BoundingBox* a, BoundingBox* b) {
   else {
     return false;
   }
+}
+
+void BoundingBox::ChangeColor(Color color)
+{
+  this->color = color;
+  mapVertexBuffer();
+  for (VertexColor& v : vertices) v.color = color;
+  unmapVertexBuffer();
+  
 }

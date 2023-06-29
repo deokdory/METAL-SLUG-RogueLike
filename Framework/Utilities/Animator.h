@@ -48,10 +48,11 @@ class Animator {
 
   void SetCurrentFrame(UINT index);
 
-  bool GetFinished() { return bFinished; }
+  bool GetIsFinish() { return isFinish; }
 
  private:
-  bool CheckExist(std::wstring clipName) {
+  bool CheckExist(std::wstring clipName) 
+  {
     return animClips.find(clipName) != animClips.end();
   }
 
@@ -63,5 +64,5 @@ class Animator {
   Vector2 currentFrame = Values::ZeroVec2;
 
   double elapsedTime = 0.0;
-  bool bFinished = false;
+  bool isFinish = false;
 };

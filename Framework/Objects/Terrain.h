@@ -1,29 +1,66 @@
 #pragma once
 
-class Terrain : public GameObject {
- public:
-   enum class Type
-   {
-     NONE,
-     FH_EDGE_L, 
-     FH_MID, 
-     FH_MID_L_WP, // With Pannel (Decoration)
-     FH_MID_R_WP, 
-     FH_EDGE_R_WP, 
-     FH_EDGE_R, 
-     STAIR_UP, 
-     STAIR_DOWN
-   };
+class Terrain : public GameObject 
+{
+public:
+  enum class Type
+  {
+    NONE,
+    FOOTHOLDER,
+    STAIR
+  };
 
+   Terrain();
    Terrain(Vector3 position, Type type);
-   ~Terrain();
+
+   virtual ~Terrain();
 
    virtual void Update();
    virtual void Render();
 
    Type GetTerrainType() { return terrainType; }
-   float GetFootholderTop(Vector3 position);
+   virtual float GetFootholderTop(Vector3 objectPosition) = 0;
+
+   void SetCanDropDown(bool canDropDown) { this->canDropDown = canDropDown; }
+   bool GetCanDropDown() { return canDropDown; }
+
+protected:
+  Terrain::Type terrainType = Type::NONE;
+  bool canDropDown = true; // 밑점프가 가능한 발판인지
+};
+
+class Footholder : public Terrain
+{
+public:
+  enum class Type
+  {
+    NONE,
+    EDGE,
+    MID,
+  };
+
+  Footholder() = default;
+  Footholder(Vector3 position, Footholder::Type footholderType, Direction side = Direction::NONE, bool withDeco = false);
+
+  float GetFootholderTop(Vector3 objectPosition);
 
 private:
-  Type terrainType;
+  bool withDeco = false;
+};
+
+class Stair : public Terrain
+{
+public:
+  enum class Type
+  {
+    NONE,
+    NORMAL_UP,
+    NORMAL_DOWN,
+    LONG_UP,
+    LONG_DOWN
+  };
+
+  Stair(Vector3 position, Stair::Type stairType);
+
+  float GetFootholderTop(Vector3 objectPosition);
 };

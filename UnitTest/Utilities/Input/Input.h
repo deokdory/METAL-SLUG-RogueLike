@@ -38,5 +38,6 @@ protected:
 
   TextureRect* crosshair = nullptr;
   TextureRect* grenadeCursor = nullptr;
+
   std::vector<TextureRect*> throwLine;
 };

@@ -30,11 +30,22 @@ void TestLevel::init() {
 
   // 颇老 阂矾客辑 积己
   {
+    // 1F
     rooms.push_back(new Room(Room::Type::ELEVATE));
     rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_1to1.csv", rooms[0], Direction::RIGHT));
     rooms.push_back(new Room(Room::Type::BATTLE, MapDataPath + L"room_1.csv", rooms[1], Direction::RIGHT));
     rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_0to1.csv", rooms[0], Direction::LEFT));
     rooms.push_back(new Room(Room::Type::ELIMINATE, MapDataPath + L"room_2.csv", rooms.back(), Direction::LEFT));
+
+    // 2F
+    rooms.push_back(new Room(Room::Type::ELEVATE, rooms[0], Direction::UP));
+    rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_1to1.csv", rooms.back(), Direction::RIGHT));
+    rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_1to1.csv", rooms[5], Direction::LEFT));
+
+    // 0F
+    rooms.push_back(new Room(Room::Type::ELEVATE, rooms[0], Direction::DOWN));
+    rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_1to1.csv", rooms.back(), Direction::RIGHT));
+    rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_1to1.csv", rooms[8], Direction::LEFT));
 
     objForeground.push_back(new Elevator(Vector3(0, -64, 0)));
   }
@@ -58,15 +69,15 @@ void TestLevel::Render()
 
 void TestLevel::InitTestEnemies(Vector3 position)
 {
-  auto enemy1 = new SoldierSample(position + Vector3(-300, 0, 0), Vector3(44, 80, 0.f));
-  auto enemy2 = new SoldierSample(position + Vector3(-150, 0, 0), Vector3(44, 80, 0.f));
+  //auto enemy1 = new SoldierSample(position + Vector3(-300, 0, 0), Vector3(44, 80, 0.f));
+  //auto enemy2 = new SoldierSample(position + Vector3(-150, 0, 0), Vector3(44, 80, 0.f));
   auto enemy3 = new SoldierSample(position + Vector3(0, 0, 0), Vector3(44, 80, 0.f));
-  auto enemy4 = new SoldierSample(position + Vector3(150, 0, 0), Vector3(44, 80, 0.f));
-  auto enemy5 = new SoldierSample(position + Vector3(300, 0, 0), Vector3(44, 80, 0.f));
+  //auto enemy4 = new SoldierSample(position + Vector3(150, 0, 0), Vector3(44, 80, 0.f));
+  //auto enemy5 = new SoldierSample(position + Vector3(300, 0, 0), Vector3(44, 80, 0.f));
 
-  objects.push_back(enemy1);
-  objects.push_back(enemy2);
+  //objects.push_back(enemy1);
+  //objects.push_back(enemy2);
   objects.push_back(enemy3);
-  objects.push_back(enemy4);
-  objects.push_back(enemy5);
+  //objects.push_back(enemy4);
+  //objects.push_back(enemy5);
 }

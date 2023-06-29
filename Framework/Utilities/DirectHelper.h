@@ -30,6 +30,28 @@ class Values {
   const static Color ClearColor;
 
   const static Matrix Identity;
+
+  static Direction GetDirectionOtherSide(Direction direction)
+  {
+    switch (direction)
+    {
+    case Direction::UP: return Direction::DOWN;
+      break;
+
+    case Direction::DOWN: return Direction::UP;
+      break;
+
+    case Direction::LEFT: return Direction::RIGHT;
+      break;
+
+    case Direction::RIGHT: return Direction::LEFT;
+      break;
+
+    case Direction::NONE:
+    default: return Direction::NONE;
+      break;
+    }
+  }
 }; 
 
 class DXMath {
@@ -69,4 +91,5 @@ class DXMath {
     D3DXMatrixRotationZ(&m, rotation);
     return m;
   }
+
 };

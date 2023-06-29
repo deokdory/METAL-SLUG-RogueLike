@@ -94,7 +94,7 @@ Animator* Animations::GetSoldierSample()
   Texture2D* srcTex = new Texture2D(TexturePath + L"enemy_soldier_sample.png");
 
   AnimationClip* idle = new AnimationClip(L"idle", srcTex, 6, { 0, 0 }, { 336, 77 }, 1.0f / 6.0f, false);
-  AnimationClip* hit = new AnimationClip(L"hit", srcTex, 4, { 337, 0 }, { 600, 77 }, 1.0 / 24.0f, false);
+  AnimationClip* hit = new AnimationClip(L"hit", srcTex, 4, { 337, 0 }, { 600, 77 }, 1.0 / 24.0f, false, false);
   AnimationClip* die = new AnimationClip(L"die", srcTex, 11, { 0, 80 }, { 725, 153 }, 1.0f / 18.0f, false, false);
 
   Animator* animator = new Animator();
@@ -113,7 +113,7 @@ Animator* Animations::GetElevator()
 {
   Texture2D* srcTex = new Texture2D(TexturePath + L"elevator.png");
 
-  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 6, { 0, 0 }, { 2304, 192 }, 1.0f / 15.0f, false);
+  AnimationClip* idle = new AnimationClip(L"idle", srcTex, 6, { 0, 0 }, { 1908, 192 }, 1.0f / 15.0f, false);
   Animator* animator = new Animator();
   animator->AddAnimClip(idle);
   animator->SetCurrentAnimClip(L"idle");

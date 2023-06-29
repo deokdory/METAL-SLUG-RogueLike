@@ -42,9 +42,6 @@ MovementSpeedBox::MovementSpeedBox(GameObject* object)
   }
   speedBoxT->SetAnchorPoint(AnchorPoint::MID_BOT);
   speedBoxB->SetAnchorPoint(AnchorPoint::MID_TOP);
-
-
-
 }
 
 MovementSpeedBox::~MovementSpeedBox()
@@ -150,7 +147,6 @@ void Movement::Update()
 {
   float globalSpeed = Time::Get()->GetGlobalSpeed();
 
-  // 가속도 관련
   UpdateAccel();
 
   // 낙하 
@@ -179,11 +175,8 @@ void Movement::GUI()
   {
     switch (standOn->GetTerrainType())
     {
-    case Terrain::Type::STAIR_DOWN:
-      standOnStr += "down stair";
-      break;
-    case Terrain::Type::STAIR_UP:
-      standOnStr += "up stair";
+    case Terrain::Type::STAIR:
+      standOnStr += "stair";
       break;
     default:
       standOnStr += "normal footholder";
@@ -255,12 +248,17 @@ void Movement::Drop()
 {
   if (standOn)
   {
-    if (standOn->GetTerrainType() == Terrain::Type::STAIR_DOWN || standOn->GetTerrainType() == Terrain::Type::STAIR_UP)
+    if (standOn->GetCanDropDown())
     {
       standOn == nullptr;
       isDropping = true;
     }
   }
+}
+
+void Movement::Stop()
+{
+  xSpeed = xSpeedOrigin = 0.0f;
 }
 
 void Movement::UpdateAccel()
@@ -286,32 +284,11 @@ void Movement::terrainCollisionCheck()
     terrainCollisionCheck(currentRoom->GetTerrains(Room::Layer::BACKGROUND));
     terrainCollisionCheck(currentRoom->GetTerrains(Room::Layer::MIDDLEGROUND));
     terrainCollisionCheck(currentRoom->GetTerrains(Room::Layer::FOREGROUND));
-
-    //Room* linkedRoomLeft = currentRoom->GetLinkedRoom(LEFT);
-    //if (linkedRoomLeft)
-    //{
-    //  terrainCollisionCheck(linkedRoomLeft->GetTerrains(Room::Layer::BACKGROUND));
-    //  terrainCollisionCheck(linkedRoomLeft->GetTerrains(Room::Layer::MIDDLEGROUND));
-    //  terrainCollisionCheck(linkedRoomLeft->GetTerrains(Room::Layer::FOREGROUND));
-    //}
-    //
-    //Room* linkedRoomRight = currentRoom->GetLinkedRoom(RIGHT);
-    //if (linkedRoomRight)
-    //{
-    //  terrainCollisionCheck(linkedRoomRight->GetTerrains(Room::Layer::BACKGROUND));
-    //  terrainCollisionCheck(linkedRoomRight->GetTerrains(Room::Layer::MIDDLEGROUND));
-    //  terrainCollisionCheck(linkedRoomRight->GetTerrains(Room::Layer::FOREGROUND));
-    //}
   }
 }
 
 void Movement::terrainCollisionCheck(std::vector<Terrain*>& terrains)
 {
-  //Room* currentRoom = object->GetCurrentRoom();
-  //auto& terrains = GameManager::Get()->GetCurrentLevel()->GetTerrains();
-
-  //auto* base = object->GetCollision()->GetBase();
-
   auto* bottomSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::BOTTOM);
   auto* topSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::TOP);
   auto* leftSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::LEFT);
@@ -346,8 +323,7 @@ void Movement::terrainCollisionCheck(std::vector<Terrain*>& terrains)
         {
           switch (currentTerrType)
           {
-          case Terrain::Type::STAIR_UP:
-          case Terrain::Type::STAIR_DOWN:
+          case Terrain::Type::STAIR:
             nearestStair = terr;
 
             break;
@@ -408,6 +384,7 @@ void Movement::terrainCollisionCheck(std::vector<Terrain*>& terrains)
 void Movement::interaction()
 {
   isFalling = true;
+  standOn = nullptr;
 
   auto* objectBox = object->GetCollision()->GetBase();
 
@@ -442,28 +419,34 @@ void Movement::interaction()
 
   float footholderTop = 0.0f;
 
-  standOn = nearestFootholder;
+  if (nearestFootholder)
+  {
+    if (lastStanded == nullptr) standOn = nearestFootholder;
+    else if (isDropping == false) standOn = nearestFootholder;
+    else if (lastStanded->GetPosition().y != nearestFootholder->GetPosition().y) 
+      standOn = nearestFootholder;
 
-  if (standOn == nullptr)
-  {
-    if (isDropping == false) standOn = nearestStair;
-  }
-  else
-  {
-    if (nearestStair != nullptr)
+    if (nearestStair)
     {
       BoundingBox* stairFootholder = nearestStair->GetCollision()->GetFootholder();
       footholderTop = nearestStair->GetFootholderTop(objectPosition);
 
       if (isDirectingDown)
       {
-        if (stairFootholder->GetPosition().y - footholderTop < TILESIZE) standOn = nearestStair;
+        if (stairFootholder->GetPosition().y - footholderTop < TILESIZE) 
+          standOn = nearestStair;
       }
       else if (isDirectingUp)
       {
-        if (stairFootholder->GetPosition().y - footholderTop > TILESIZE) standOn = nearestStair;
+        if (stairFootholder->GetPosition().y - footholderTop > TILESIZE) 
+          standOn = nearestStair;
       }
     }
+  }
+  else
+  {
+    if (lastStanded == nearestStair && isDropping) standOn = nullptr;
+    else standOn = nearestStair;
   }
 
   // 발판에 충돌 중일 때
@@ -472,6 +455,7 @@ void Movement::interaction()
     ySpeedOrigin = 0;
     isFalling = isDropping = false;
 
+    lastStanded = standOn;
     objectPosition.y = standOn->GetFootholderTop(objectPosition);
   }
 
@@ -480,6 +464,5 @@ void Movement::interaction()
   {
     objectPosition.y += ySpeed;
   }
-  
   object->SetPositionForce(objectPosition);
 }

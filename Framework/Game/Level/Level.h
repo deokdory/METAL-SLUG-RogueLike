@@ -23,15 +23,13 @@ public:
 protected:
   void objectsUpdate(std::vector<GameObject*>& objects);
   void checkObjectsCurrentRoom(GameObject* object);
+  void activeRooms();
 
   std::vector<Room*> rooms;
   Room* playerCurrentRoom = nullptr;
 
   UINT levelWidth = 7;
   UINT levelHeight = 3;
-
-  //std::vector<Background*> backgrounds;
-  //std::vector<Decoration*> decos;
 
   GameObject* player = nullptr;
 

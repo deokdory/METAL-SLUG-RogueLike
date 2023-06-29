@@ -1,7 +1,4 @@
 #pragma once
-#define FLOOR_0_YPOS -1024.0f
-#define FLOOR_1_YPOS   -64.0f
-#define FLOOR_2_YPOS   896.0f
 
 class Elevator : public GameObject
 {

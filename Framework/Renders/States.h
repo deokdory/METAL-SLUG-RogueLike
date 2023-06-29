@@ -10,15 +10,15 @@ class States {
   static void GetBlendDesc(D3D11_BLEND_DESC* desc);
 
   static void CreateRasterizerState(D3D11_RASTERIZER_DESC* desc,
-                                   ID3D11RasterizerState** state);
+                                   ID3D11RasterizerState** currState);
 
   static void CreateDepthStencilState(D3D11_DEPTH_STENCIL_DESC* desc,
-                                     ID3D11DepthStencilState** state);
+                                     ID3D11DepthStencilState** currState);
 
   static void CreateSamplerState(D3D11_SAMPLER_DESC* desc,
-                               ID3D11SamplerState** state);
+                               ID3D11SamplerState** currState);
 
-  static void CreateBlendState(D3D11_BLEND_DESC* desc, ID3D11BlendState** state);
+  static void CreateBlendState(D3D11_BLEND_DESC* desc, ID3D11BlendState** currState);
 
   private:
   static void CreateRasterizerDesc();

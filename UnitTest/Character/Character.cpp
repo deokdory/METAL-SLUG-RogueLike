@@ -2,12 +2,11 @@
 #include "Character.h"
 
 Character::Character(Vector3 position, Vector3 size) 
-: GameObject(position, size) {
-
+: GameObject(position, size) 
+{
   SetAnchorPoint(AnchorPoint::MID_BOT);
 
   objectType = Type::CHARACTER;
-
   hp = hpMax;
 
   //collision->InitializeBase();
@@ -17,12 +16,13 @@ Character::Character(Vector3 position, Vector3 size)
 
 Character::~Character() {}
 
-void Character::Update() { 
-
+void Character::Update() 
+{ 
   __super::Update(); 
 }
 
-void Character::Render() {
+void Character::Render() 
+{
   __super::Render(); 
 }
 

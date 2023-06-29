@@ -16,7 +16,7 @@ struct AxisData {
 
 class CollisionBuffer : public ShaderBuffer {
  public:
-  CollisionBuffer() : ShaderBuffer(&data, sizeof(data)) { data.isOn = false; }
+  CollisionBuffer() : ShaderBuffer(&data, sizeof(data)) { data.isOn = true; }
 
   void SwitchRender(bool isOn) { data.isOn = isOn; }
 
@@ -38,6 +38,7 @@ class BoundingBox {
   void SetAnchorPoint(AnchorPoint point);
 
   void Update(Vector3 position, Vector3 size, float rotation);
+  void Update(Vector3 position);
 
   void Render();
 
@@ -53,6 +54,8 @@ class BoundingBox {
 
   static bool AABB(BoundingBox* a, BoundingBox* b);
   static bool OBB(BoundingBox* a, BoundingBox* b);
+
+  void ChangeColor(Color color);
 
  private:
   std::vector<VertexColor> vertices;

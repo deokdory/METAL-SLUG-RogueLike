@@ -36,25 +36,25 @@ void States::GetBlendDesc(D3D11_BLEND_DESC* desc) {
 
 #pragma region CreateState
 void States::CreateRasterizerState(D3D11_RASTERIZER_DESC* desc,
-                                   ID3D11RasterizerState** state) {
-  HRESULT hr = DEVICE->CreateRasterizerState(desc, state);
+                                   ID3D11RasterizerState** currState) {
+  HRESULT hr = DEVICE->CreateRasterizerState(desc, currState);
   CHECK(hr);
 }
 
 void States::CreateDepthStencilState(D3D11_DEPTH_STENCIL_DESC* desc,
-                                     ID3D11DepthStencilState** state) {
-  HRESULT hr = DEVICE->CreateDepthStencilState(desc, state);
+                                     ID3D11DepthStencilState** currState) {
+  HRESULT hr = DEVICE->CreateDepthStencilState(desc, currState);
   CHECK(hr);
 }
 
 void States::CreateSamplerState(D3D11_SAMPLER_DESC* desc,
-                               ID3D11SamplerState** state) {
-  HRESULT hr = DEVICE->CreateSamplerState(desc, state);
+                               ID3D11SamplerState** currState) {
+  HRESULT hr = DEVICE->CreateSamplerState(desc, currState);
   CHECK(hr);
 }
 
-void States::CreateBlendState(D3D11_BLEND_DESC* desc, ID3D11BlendState** state) {
-  HRESULT hr = DEVICE->CreateBlendState(desc, state);
+void States::CreateBlendState(D3D11_BLEND_DESC* desc, ID3D11BlendState** currState) {
+  HRESULT hr = DEVICE->CreateBlendState(desc, currState);
   CHECK(hr);
 }
 #pragma endregion

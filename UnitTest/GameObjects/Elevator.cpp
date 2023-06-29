@@ -5,7 +5,7 @@
 #include "Character/Agent.h"
 
 Elevator::Elevator(Vector3 position)
-  : GameObject(position, Vector3(384, 192, 0))
+  : GameObject(position, Vector3(318, 192, 0))
 {
   objectType = GameObject::Type::ELEVATOR;
   InitGraphic(Animations::GetElevator(), ObjectGraphic::Slot::NORMAL);
@@ -17,6 +17,15 @@ Elevator::~Elevator()
 
 void Elevator::Update()
 {
+  if (GameManager::Get()->GetPlayerCurrentRoom() != nullptr && status != Status::MOVING)
+  {
+    int playerCurrentFloor = GameManager::Get()->GetPlayerCurrentRoom()->GetFloor();
+    if (currentRoom->GetFloor() != playerCurrentFloor)
+    {
+      position.y = playerCurrentFloor * 960 - 64;
+    }
+  }
+
   elevatorTopPos = position + Vector3(0, 62, 0);
 
   if (justGetOn == false)
@@ -101,7 +110,8 @@ void Elevator::elevate(Direction direction)
   {
   case Direction::UP:
   {
-    if (position.y == FLOOR_2_YPOS) std::cout << "ELEVATOR::already top" << std::endl;
+    if (currentRoom->GetLinkedRoom(Direction::UP) == nullptr)
+      std::cout << "ELEVATOR::already top" << std::endl;
     else
     {
       status = Status::MOVING;
@@ -112,7 +122,8 @@ void Elevator::elevate(Direction direction)
     break;
   case Direction::DOWN:
   {
-    if (position.y == FLOOR_0_YPOS) std::cout << "ELEVATOR::already bottom" << std::endl;
+    if (currentRoom->GetLinkedRoom(Direction::DOWN) == nullptr) 
+      std::cout << "ELEVATOR::already bottom" << std::endl;
     else
     {
       status = Status::MOVING;
