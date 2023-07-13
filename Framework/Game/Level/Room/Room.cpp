@@ -7,7 +7,7 @@ Room::Room(Type type, Room* prevRoom, Direction direction)
 	switch (type)
 	{
 	case Room::Type::ELEVATE:
-		mapDataFilePath = MapDataPath + L"room_elevate.csv";
+		mapDataFilePath = MapDataPath + L"passage_1to1.csv";
 		break;
 
 	default:
@@ -32,7 +32,7 @@ Room::Room(Type type, std::wstring mapDataFilePath, Room* prevRoom, Direction di
 {
 	initTerrains(mapDataFilePath, prevRoom, direction);
 
-	area = new BoundingBox(position, size, 0.0f, getAreaColor(type));
+	area = new BoundingBox(position, size, 0.0f, setAreaColor(type));
 
 	if(type == Type::ELEVATE)
     decorations.push_back(new TextureRect(position, Vector3(384, 960, 0), 0.0f, TexturePath + L"MS5_3_ELEVATOR_PILLAR.png"));
@@ -55,7 +55,7 @@ Room::Room(Type type)
 	if (type == Type::ELEVATE)
 		decorations.push_back(new TextureRect(position, Vector3(384, 960, 0), 0.0f, TexturePath + L"MS5_3_ELEVATOR_PILLAR.png"));
 
-	area = new BoundingBox(position, size, 0.0f, getAreaColor(type));
+	area = new BoundingBox(position, size, 0.0f, setAreaColor(type));
 }
 
 Room::~Room()
@@ -78,6 +78,7 @@ void Room::Update()
 	for (auto deco : decorations) deco->Update();
 	for (auto trn : trnBackground) trn->Update();
 	for (auto trn : trnMiddleground) trn->Update();
+	for (auto trn : trnStairs) trn->Update();
 	for (auto trn : trnForeground) trn->Update();
 }
 void Room::Render()
@@ -86,6 +87,7 @@ void Room::Render()
 	area->Render();
 	for (auto deco : decorations) deco->Render();
 	for (auto trn : trnBackground) trn->Render();
+	for (auto trn : trnStairs) trn->Render();
 	for (auto trn : trnMiddleground) trn->Render();
 }
 void Room::ForegroundRender()
@@ -155,6 +157,8 @@ std::vector<Terrain*>& Room::GetTerrains(Layer layer)
 		break;
 	case Room::Layer::FOREGROUND: return trnForeground;
 		break;
+	case Room::Layer::STAIRS: return trnStairs;
+		break;
 	}
 }
 
@@ -167,7 +171,7 @@ void Room::SetIsActived(bool isActived)
 	this->area->ChangeColor(color);
 }
 
-Color Room::getAreaColor(Type type)
+Color Room::setAreaColor(Type type)
 {
 	Color areaColor = Color(0, 0, 0, 0);
 
@@ -258,6 +262,7 @@ bool Room::initTerrains(std::wstring mapDataFilePath, Room* prevRoom, Direction 
     {
       UINT tilePositionX = 0;
       UINT tilePositionY = 0;
+
       getline(fs, str_buf, '\n');
 
       String::SplitString(&tiles, str_buf, ",");
@@ -273,12 +278,21 @@ bool Room::initTerrains(std::wstring mapDataFilePath, Room* prevRoom, Direction 
         size.y = (float)totalTileY * TILESIZE;
         size.z = 0;
 
+				if (type == Type::ELEVATE) size.y = 960.0f;
+
         setRoomPosition(prevRoom, direction);
       }
 
       tilePositionY = std::stoi(tiles[0]);
+
+			int tileFloor = -1;
+			if (tilePositionY >= 8) tileFloor = 2;
+			else if (tilePositionY >= 5) tileFloor = 1;
+			else if (tilePositionY >= 2) tileFloor = 0;
+
       Vector3 trnPosition;
       trnPosition.z = 0;
+
       for (UINT i = 1; i < tiles.size(); i++)
       {
         // 앞에 Y구분 열이 있으니까
@@ -390,7 +404,7 @@ bool Room::initTerrains(std::wstring mapDataFilePath, Room* prevRoom, Direction 
           }
           break;
         case STAIR_NORMAL_UP:
-          targetLayer = &trnMiddleground;
+          targetLayer = &trnStairs;
 
           trnType = Terrain::Type::STAIR;
           stairType = Stair::Type::NORMAL_UP;
@@ -400,7 +414,7 @@ bool Room::initTerrains(std::wstring mapDataFilePath, Room* prevRoom, Direction 
 
           break;
         case STAIR_NORMAL_DOWN:
-          targetLayer = &trnMiddleground;
+          targetLayer = &trnStairs;
 
           trnType = Terrain::Type::STAIR;
           stairType = Stair::Type::NORMAL_DOWN;
@@ -423,7 +437,7 @@ bool Room::initTerrains(std::wstring mapDataFilePath, Room* prevRoom, Direction 
 						break;
 					case Terrain::Type::FOOTHOLDER:
 					{
-						Footholder* footholder = new Footholder(trnPosition + position, fhType, fhSide, fhWithDeco);
+						Footholder* footholder = new Footholder(trnPosition + position, tileFloor, fhType, fhSide, fhWithDeco);
 						targetLayer->push_back(footholder);
 
 						bottomFootholder[tilePositionX] = footholder;
@@ -431,7 +445,7 @@ bool Room::initTerrains(std::wstring mapDataFilePath, Room* prevRoom, Direction 
             break;
 
           case Terrain::Type::STAIR:
-            targetLayer->push_back(new Stair(trnPosition + position, stairType));
+            targetLayer->push_back(new Stair(trnPosition + position, tileFloor, stairType));
             break;
           default:
             break;

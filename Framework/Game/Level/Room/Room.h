@@ -15,7 +15,7 @@ public:
   };
 
   enum class Type { EMPTY, UPGRADE, BATTLE, ROOT, BOSS, ELIMINATE, ELEVATE, PASSAGE };
-  enum class Layer { BACKGROUND, MIDDLEGROUND, FOREGROUND };
+  enum class Layer { BACKGROUND, MIDDLEGROUND, FOREGROUND, STAIRS };
 
   // 생성할 방 종류, 연결되는 이전 방, 연결되는 방향
   Room(Type type, Room* prevRoom, Direction direction);
@@ -52,7 +52,7 @@ public:
   int GetFloor() { return floor; }
 
 private:
-  Color getAreaColor(Type type);
+  Color setAreaColor(Type type);
 
   bool initTerrains(std::wstring mapDataFilePath, Room* prevRoom = nullptr, Direction direction = Direction::NONE);
 
@@ -80,6 +80,8 @@ private:
   std::vector<Terrain*> trnMiddleground;
   std::vector<Terrain*> trnForeground;
 
+  std::vector<Terrain*> trnStairs;
+
   wstring mapDataFilePath = L"";
 
   Room* linkedRoomLeft = nullptr;
@@ -91,6 +93,7 @@ private:
   bool isActived = false;
 
   int floor = 0;
+
   // ENEMIES
   // PROPS
   // TRAPS

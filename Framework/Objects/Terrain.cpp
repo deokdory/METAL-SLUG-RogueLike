@@ -1,8 +1,8 @@
 #include "Framework.h"
 #include "Terrain.h"
 
-Terrain::Terrain(Vector3 position, Type type)
-  : GameObject(position), terrainType(type)
+Terrain::Terrain(Vector3 position, Type type, int floor)
+  : GameObject(position), terrainType(type), floor(floor)
 {
 }
 
@@ -25,8 +25,8 @@ void Terrain::Render() {
   collision->Render();
 }
 
-Footholder::Footholder(Vector3 position, Footholder::Type footholderType, Direction side, bool withDeco)
- : Terrain(position, Terrain::Type::FOOTHOLDER), withDeco(withDeco)
+Footholder::Footholder(Vector3 position, int floor, Footholder::Type footholderType, Direction side, bool withDeco)
+ : Terrain(position, Terrain::Type::FOOTHOLDER, floor), withDeco(withDeco)
 {
   objectType = GameObject::Type::TERRAIN;
   TerrainCollision* trnCollision = nullptr;
@@ -116,8 +116,8 @@ float Footholder::GetFootholderTop(Vector3 objectPosition)
 }
 
 
-Stair::Stair(Vector3 position, Stair::Type stairType)
-  : Terrain(position, Terrain::Type::STAIR)
+Stair::Stair(Vector3 position, int floor, Stair::Type stairType)
+  : Terrain(position, Terrain::Type::STAIR, floor)
 {
   objectType = GameObject::Type::TERRAIN;
   TerrainCollision* trnCollision = nullptr;

@@ -253,7 +253,7 @@ void ObjectGraphic::SetCurrentFrame(UINT index, Slot slot)
     if (animators[slot] != nullptr) animators[slot]->SetCurrentFrame(index);
 }
 
-bool ObjectGraphic::IsAnimationFinish(Slot slot)
+bool ObjectGraphic::GetIsAnimationFinish(Slot slot)
 {
   return animators[slot] != nullptr ? animators[slot]->GetIsFinish() : false;
 }

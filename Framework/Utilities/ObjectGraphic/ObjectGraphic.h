@@ -28,7 +28,7 @@ public:
   // 애니메이션 관련 기능
   void SetCurrentAnimation(std::wstring name, Slot slot = Slot::NORMAL);
   void SetCurrentFrame(UINT index, Slot slot = Slot::NORMAL);
-  bool IsAnimationFinish(Slot slot = Slot::NORMAL);
+  bool GetIsAnimationFinish(Slot slot = Slot::NORMAL);
 
   // 지오메트리 중심점 설정
   void SetAnchorPoint(AnchorPoint anchorPoint) { this->anchorPoint = anchorPoint; }

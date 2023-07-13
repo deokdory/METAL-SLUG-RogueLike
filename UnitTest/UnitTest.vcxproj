@@ -156,6 +156,7 @@
     <ClInclude Include="Character\Character.h" />
     <ClInclude Include="Character\Agent.h" />
     <ClInclude Include="Utilities\EnemyAI\EnemyAI.h" />
+    <ClInclude Include="Utilities\EnemyState\EnemyState.h" />
     <ClInclude Include="Utilities\GameManager.h" />
     <ClInclude Include="Utilities\Gun\Gun.h" />
     <ClInclude Include="Utilities\Input\Input.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="Character\Character.cpp" />
     <ClCompile Include="Character\Agent.cpp" />
     <ClCompile Include="Utilities\EnemyAI\EnemyAI.cpp" />
+    <ClCompile Include="Utilities\EnemyState\EnemyState.cpp" />
     <ClCompile Include="Utilities\GameManager.cpp" />
     <ClCompile Include="Utilities\Gun\Gun.cpp" />
     <ClCompile Include="Utilities\Input\Input.cpp" />

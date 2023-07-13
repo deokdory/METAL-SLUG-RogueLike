@@ -244,13 +244,13 @@ void Movement::Jump()
     standOn = nullptr;
 }
 
-void Movement::Drop()
+void Movement::DropDown()
 {
   if (standOn)
   {
     if (standOn->GetCanDropDown())
     {
-      standOn == nullptr;
+      standOn = nullptr;
       isDropping = true;
     }
   }
@@ -284,6 +284,7 @@ void Movement::terrainCollisionCheck()
     terrainCollisionCheck(currentRoom->GetTerrains(Room::Layer::BACKGROUND));
     terrainCollisionCheck(currentRoom->GetTerrains(Room::Layer::MIDDLEGROUND));
     terrainCollisionCheck(currentRoom->GetTerrains(Room::Layer::FOREGROUND));
+    terrainCollisionCheck(currentRoom->GetTerrains(Room::Layer::STAIRS));
   }
 }
 
@@ -436,7 +437,8 @@ void Movement::interaction()
         if (stairFootholder->GetPosition().y - footholderTop < TILESIZE) 
           standOn = nearestStair;
       }
-      else if (isDirectingUp)
+
+      if (isDirectingUp)
       {
         if (stairFootholder->GetPosition().y - footholderTop > TILESIZE) 
           standOn = nearestStair;

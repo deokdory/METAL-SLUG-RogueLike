@@ -22,7 +22,7 @@ void Bullet::Update()
   }
   else
   {
-    if (flyingTime >= 5.0)
+    if (flyingTime >= 0.5)
       isWaitingDelete = true;
 
     flyingTime += Time::Get()->WorldDelta();

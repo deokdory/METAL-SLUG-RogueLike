@@ -2,10 +2,15 @@
 #include "GameManager.h"
 
 #include "Character/Agent.h"
+#include "Objects/Terrain.h"
 
 void GameManager::Update()
 {
   playerCurrentRoom = player->GetCurrentRoom();
+  lastStandedTerrain = player->GetMovement()->GetLastStanded();
+
+  if (lastStandedTerrain != nullptr)
+    lastStandedTerrainFloor = lastStandedTerrain->GetFloor();
 
   if (Keyboard::Get()->Press(VK_F11)) player->SetPositionForce({ 0, 100, 0 });
 }
@@ -15,7 +20,8 @@ void GameManager::GUI()
   // 현재 방 상태 프린트용
     std::string roomTypeStr = "Current room type : ";
     std::string isActivedStr = "This room is ";
-    std::string floorStr = "Current Floor : ";
+    std::string roomFloorStr = "Current Room's Floor : ";
+    std::string terrainFloorStr = "Last Standed Terrain's Floor : ";
 
     if (playerCurrentRoom != nullptr)
     {
@@ -54,18 +60,24 @@ void GameManager::GUI()
       else isActivedStr += "not actived";
 
       // 현재 층수
-      floorStr += std::to_string(playerCurrentRoom->GetFloor());
+      roomFloorStr += std::to_string(playerCurrentRoom->GetFloor());
     }
     else
     {
       roomTypeStr += "NULL";
     }
+
+    if (lastStandedTerrain != nullptr)
+      terrainFloorStr += std::to_string(lastStandedTerrain->GetFloor());
+    else
+      terrainFloorStr += "NULL";
     
   ImGui::Begin("Room");
   {
     ImGui::Text(roomTypeStr.c_str());
     ImGui::Text(isActivedStr.c_str());
-    ImGui::Text(floorStr.c_str());
+    ImGui::Text(roomFloorStr.c_str());
+    ImGui::Text(terrainFloorStr.c_str());
   }
   ImGui::End();
 }

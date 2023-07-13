@@ -92,4 +92,13 @@ class DXMath {
     return m;
   }
 
+  static Vector3 GetDistance(Vector3 positionA, Vector3 positionB)
+  {
+    Vector3 distance = { 0,0,0 };
+
+    distance.x = std::abs(positionA.x - positionB.x);
+    distance.y = std::abs(positionA.y - positionB.y);
+
+    return distance;
+  }
 };

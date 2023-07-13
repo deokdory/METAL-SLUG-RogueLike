@@ -177,7 +177,7 @@ void Input::Update(Agent& agent)
         }
         else
         {
-          movement->Drop();
+          movement->DropDown();
         }
       }
       break;

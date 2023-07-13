@@ -18,7 +18,10 @@ public:
   void SetPlayer(class Agent* player);
   class Agent* GetPlayer();
 
+  int GetLastStandedTerrainFloor() { return lastStandedTerrainFloor; }
+
 private:
+
   class Agent* player = nullptr;
 
   class Level* currentLevel = nullptr;
@@ -28,4 +31,7 @@ private:
   int bottomFloor = 0;
 
   float globalGravity = 0.25f;
+
+  class Terrain* lastStandedTerrain = nullptr;
+  int lastStandedTerrainFloor = -1;
 };

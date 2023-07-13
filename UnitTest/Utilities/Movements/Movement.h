@@ -45,7 +45,7 @@ public:
   virtual void SlowDown();
 
   virtual void Jump();
-  virtual void Drop();
+  virtual void DropDown();
 
   void Stop();
 
@@ -69,6 +69,8 @@ public:
 
   float GetGravityOffset() { return gravityOffset; }
   float GetFallingSpeedMax() { return fallingSpeedMax; }
+
+  Terrain* GetLastStanded() { return lastStanded; }
 
 protected:
   virtual void terrainCollisionCheck();

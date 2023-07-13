@@ -10,7 +10,8 @@ class TestLevel : public Level {
   virtual void Update();
   virtual void Render();
 
-  void InitTestEnemies(Vector3 position);
+  void InitTestEnemies(Vector3 position, Room* spawnedRoom);
+
  private:
   class HUD* playerHud = nullptr;
 };

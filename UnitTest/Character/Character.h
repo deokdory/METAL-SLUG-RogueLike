@@ -9,15 +9,17 @@ class Character : public GameObject {
   virtual void Update();
   virtual void Render();
 
+  float GetHP() { return hp; }
+  float GetMaxHP() { return maxHP; }
+  bool GetIsDead() { return isDead; }
+
   virtual void Damaged(float damage);
   virtual void Healed(float heal);
-
-  bool GetIsDead() { return isDead; }
 
 protected:
 
   float hp;
-  float hpMax = 20.0f;
+  float maxHP = 20.0f;
 
   bool isDead = false;
 };

@@ -4,6 +4,7 @@
 PlayerMovement::PlayerMovement(GameObject* object)
   : Movement(object)
 {
+  jumpPower = 6.f;
 }
 
 PlayerMovement::~PlayerMovement()

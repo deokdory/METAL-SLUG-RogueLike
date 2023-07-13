@@ -26,6 +26,7 @@
     <ClInclude Include="Utilities\GameManager.h" />
     <ClInclude Include="GameObjects\Elevator.h" />
     <ClInclude Include="Utilities\EnemyAI\EnemyAI.h" />
+    <ClInclude Include="Utilities\EnemyState\EnemyState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
@@ -51,6 +52,7 @@
     <ClCompile Include="Utilities\GameManager.cpp" />
     <ClCompile Include="GameObjects\Elevator.cpp" />
     <ClCompile Include="Utilities\EnemyAI\EnemyAI.cpp" />
+    <ClCompile Include="Utilities\EnemyState\EnemyState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Framework.lib" />

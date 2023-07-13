@@ -226,7 +226,7 @@ void Gun::SwitchMode()
 
 Gun* Gun::InitHMG(GameObject* owner)
 {
-  auto gun = new Gun(owner, 1.f / 12.f, 2, 1, 16, 5, 30, 30, 180, 180);
+  auto gun = new Gun(owner, 1.f / 2.f, 2, 1, 16, 5, 30, 30, 180, 180);
 
   auto bullet = new Bullet(owner, Bullet::Side::PLAYER, 16, 5, TexturePath + L"bullet_hmg.png");
   gun->setBullet(bullet);

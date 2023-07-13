@@ -21,10 +21,10 @@ void TestLevel::init() {
   this->player = player;
   GameManager::Get()->SetPlayer(player);
 
-  TextureRect* background = new TextureRect(Vector3(640, 360, 0), Vector3(2106, 1024, 0), 0, TexturePath + L"MS5_2-2_BACKGROUND_PATTERN.png");
+  //TextureRect* background = new TextureRect(Vector3(640, 360, 0), Vector3(2106, 1024, 0), 0, TexturePath + L"MS5_2-2_BACKGROUND_PATTERN.png");
 
-  background->Update();
-  backgrounds.push_back(background);
+  //background->Update();
+  //backgrounds.push_back(background);
 
   // InitTestEnemies();
 
@@ -34,8 +34,13 @@ void TestLevel::init() {
     rooms.push_back(new Room(Room::Type::ELEVATE));
     rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_1to1.csv", rooms[0], Direction::RIGHT));
     rooms.push_back(new Room(Room::Type::BATTLE, MapDataPath + L"room_1.csv", rooms[1], Direction::RIGHT));
+
+    objects.push_back(new SoldierSample(rooms.back()->GetPosition() + Vector3(0, 64, 0), Vector3(44, 80, 0.f), rooms.back()));
+
     rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_0to1.csv", rooms[0], Direction::LEFT));
     rooms.push_back(new Room(Room::Type::ELIMINATE, MapDataPath + L"room_2.csv", rooms.back(), Direction::LEFT));
+    
+    objects.push_back(new SoldierSample(rooms.back()->GetPosition() + Vector3(0, 64, 0), Vector3(44, 80, 0.f), rooms.back()));
 
     // 2F
     rooms.push_back(new Room(Room::Type::ELEVATE, rooms[0], Direction::UP));
@@ -59,7 +64,7 @@ void TestLevel::init() {
 void TestLevel::Update() 
 { 
   __super::Update(); 
-  if (Keyboard::Get()->Down(VK_F9)) InitTestEnemies(player->GetPosition() + Vector3(0, 100, 0));
+  if (Keyboard::Get()->Down(VK_F9)) InitTestEnemies(player->GetPosition() + Vector3(0, 100, 0), player->GetCurrentRoom());
 }
 
 void TestLevel::Render() 
@@ -67,11 +72,11 @@ void TestLevel::Render()
   __super::Render(); 
 }
 
-void TestLevel::InitTestEnemies(Vector3 position)
+void TestLevel::InitTestEnemies(Vector3 position, Room* spawnedRoom)
 {
   //auto enemy1 = new SoldierSample(position + Vector3(-300, 0, 0), Vector3(44, 80, 0.f));
   //auto enemy2 = new SoldierSample(position + Vector3(-150, 0, 0), Vector3(44, 80, 0.f));
-  auto enemy3 = new SoldierSample(position + Vector3(0, 0, 0), Vector3(44, 80, 0.f));
+  auto enemy3 = new SoldierSample(position + Vector3(0, 0, 0), Vector3(44, 80, 0.f), spawnedRoom);
   //auto enemy4 = new SoldierSample(position + Vector3(150, 0, 0), Vector3(44, 80, 0.f));
   //auto enemy5 = new SoldierSample(position + Vector3(300, 0, 0), Vector3(44, 80, 0.f));
 
