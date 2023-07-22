@@ -1,8 +1,6 @@
 #include "Framework.h"
 #include "Level.h"
 
-
-
 Level::Level()
 {
   

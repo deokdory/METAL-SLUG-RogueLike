@@ -124,9 +124,6 @@ Room* Room::GetLinkedRoom(Direction direction)
 {
 	switch (direction)
 	{
-	case Direction::NONE:
-		break;
-
 	case Direction::UP:
 		return linkedRoomUp;
 		break;
@@ -143,6 +140,7 @@ Room* Room::GetLinkedRoom(Direction direction)
 		break;
 
 	default:
+		return nullptr;
 		break;
 	}
 }
@@ -240,7 +238,7 @@ bool Room::initTerrains(std::wstring mapDataFilePath, Room* prevRoom, Direction 
   // 맨 밑 바닥을 체크하기 위한 동적 배열
   Footholder** bottomFootholder = new Footholder*[totalTileX];
 
-  for (int i = 0; i < totalTileX; i++)
+  for (UINT i = 0; i < totalTileX; i++)
     std::cout << i << std::endl;
 
   // 맵 데이터 불러오기
@@ -462,7 +460,7 @@ bool Room::initTerrains(std::wstring mapDataFilePath, Room* prevRoom, Direction 
   }
   fs.close();
 
-	for (int i = 0; i < totalTileX; i++)
+	for (UINT i = 0; i < totalTileX; i++)
 		bottomFootholder[i]->SetCanDropDown(false);
 
 	delete[] bottomFootholder;

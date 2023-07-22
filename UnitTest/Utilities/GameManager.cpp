@@ -22,7 +22,7 @@ void GameManager::GUI()
     std::string isActivedStr = "This room is ";
     std::string roomFloorStr = "Current Room's Floor : ";
     std::string terrainFloorStr = "Last Standed Terrain's Floor : ";
-
+    
     if (playerCurrentRoom != nullptr)
     {
       auto roomType = playerCurrentRoom->GetRoomType();

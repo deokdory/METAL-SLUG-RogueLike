@@ -122,7 +122,7 @@ void Agent::Update()
     float aimAngle = D3DXVec3Dot(&Values::UpVec, &agentLookAtAxis);
 
     aimAngle = std::acos(aimAngle);
-    aimAngle = D3DXToDegree(aimAngle);
+    aimAngle = (float)D3DXToDegree(aimAngle);
 
     switch (combatState)
     {

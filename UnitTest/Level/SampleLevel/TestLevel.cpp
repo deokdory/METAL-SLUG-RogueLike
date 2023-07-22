@@ -2,7 +2,7 @@
 #include "TestLevel.h"
 
 #include "Character/Agent.h"
-#include "Character/SoldierSample.h"
+#include "Character/Enemy.h"
 
 #include "Character/Animations.h"
 #include "UI/HUD.h"
@@ -35,12 +35,14 @@ void TestLevel::init() {
     rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_1to1.csv", rooms[0], Direction::RIGHT));
     rooms.push_back(new Room(Room::Type::BATTLE, MapDataPath + L"room_1.csv", rooms[1], Direction::RIGHT));
 
-    objects.push_back(new SoldierSample(rooms.back()->GetPosition() + Vector3(0, 64, 0), Vector3(44, 80, 0.f), rooms.back()));
+    objects.push_back(new ENM_SoldierBZK(rooms.back()->GetPosition() + Vector3(0, 64, 0), Vector3(44, 80, 0.f), rooms.back()));
+    //objects.push_back(new ENM_SoldierKnife(rooms.back()->GetPosition() + Vector3(0, 64, 0), Vector3(44, 80, 0.f), rooms.back()));
 
     rooms.push_back(new Room(Room::Type::PASSAGE, MapDataPath + L"passage_0to1.csv", rooms[0], Direction::LEFT));
     rooms.push_back(new Room(Room::Type::ELIMINATE, MapDataPath + L"room_2.csv", rooms.back(), Direction::LEFT));
     
-    objects.push_back(new SoldierSample(rooms.back()->GetPosition() + Vector3(0, 64, 0), Vector3(44, 80, 0.f), rooms.back()));
+    //objects.push_back(new ENM_SoldierKnife(rooms.back()->GetPosition() + Vector3(0, 64, 0), Vector3(44, 80, 0.f), rooms.back()));
+    objects.push_back(new ENM_SoldierBZK(rooms.back()->GetPosition() + Vector3(0, 64, 0), Vector3(44, 80, 0.f), rooms.back()));
 
     // 2F
     rooms.push_back(new Room(Room::Type::ELEVATE, rooms[0], Direction::UP));
@@ -74,11 +76,11 @@ void TestLevel::Render()
 
 void TestLevel::InitTestEnemies(Vector3 position, Room* spawnedRoom)
 {
-  //auto enemy1 = new SoldierSample(position + Vector3(-300, 0, 0), Vector3(44, 80, 0.f));
-  //auto enemy2 = new SoldierSample(position + Vector3(-150, 0, 0), Vector3(44, 80, 0.f));
-  auto enemy3 = new SoldierSample(position + Vector3(0, 0, 0), Vector3(44, 80, 0.f), spawnedRoom);
-  //auto enemy4 = new SoldierSample(position + Vector3(150, 0, 0), Vector3(44, 80, 0.f));
-  //auto enemy5 = new SoldierSample(position + Vector3(300, 0, 0), Vector3(44, 80, 0.f));
+  //auto enemy1 = new ENM_SoldierKnife(position + Vector3(-300, 0, 0), Vector3(44, 80, 0.f));
+  //auto enemy2 = new ENM_SoldierKnife(position + Vector3(-150, 0, 0), Vector3(44, 80, 0.f));
+  auto enemy3 = new ENM_SoldierKnife(position + Vector3(0, 0, 0), Vector3(44, 80, 0.f), spawnedRoom);
+  //auto enemy4 = new ENM_SoldierKnife(position + Vector3(150, 0, 0), Vector3(44, 80, 0.f));
+  //auto enemy5 = new ENM_SoldierKnife(position + Vector3(300, 0, 0), Vector3(44, 80, 0.f));
 
   //objects.push_back(enemy1);
   //objects.push_back(enemy2);

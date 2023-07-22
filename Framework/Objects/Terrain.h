@@ -66,5 +66,10 @@ public:
 
   Stair(Vector3 position, int floor, Stair::Type stairType);
 
-  float GetFootholderTop(Vector3 objectPosition);
+  float GetFootholderTop(Vector3 objectPosition) override;
+
+  Stair::Type GetStairType() { return stairType; }
+
+protected:
+  Stair::Type stairType = Stair::Type::NONE;
 };

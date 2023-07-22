@@ -7,7 +7,7 @@ Character::Character(Vector3 position, Vector3 size)
   SetAnchorPoint(AnchorPoint::MID_BOT);
 
   objectType = Type::CHARACTER;
-  hp = hpMax;
+  hp = maxHP;
 
   //collision->InitializeBase();
   //collision->InitializeBottom();

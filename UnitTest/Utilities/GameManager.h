@@ -18,7 +18,7 @@ public:
   void SetPlayer(class Agent* player);
   class Agent* GetPlayer();
 
-  int GetLastStandedTerrainFloor() { return lastStandedTerrainFloor; }
+  int GetPlayerLastStandedFloor() { return lastStandedTerrainFloor; }
 
 private:
 

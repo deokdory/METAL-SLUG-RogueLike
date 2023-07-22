@@ -2,20 +2,16 @@
 
 class TextureBuffer : public ShaderBuffer {
  public:
-  TextureBuffer() : ShaderBuffer(&data, sizeof(data)) 
-  { 
-    data.bFliped = false;
-    data.opacity = 1.0f;
-  }
+  TextureBuffer() : ShaderBuffer(&data, sizeof(data)) {}
 
   void Flip(bool flip) { this->data.bFliped = flip; }
   void SetOpacity(float opacity) { this->data.opacity = opacity; }
 
  private:
   struct Data {
-    int bFliped;
-    float opacity;
-    Vector2 dummy;
+    int bFliped = false;
+    float opacity = 1.0f;
+    Vector2 dummy = {0, 0};
   } data;
 };
 

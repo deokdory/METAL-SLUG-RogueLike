@@ -5,8 +5,8 @@
 class Enemy : public Character
 {
 public:
-  enum class State
-  { SPAWNED, SCREAM, STANDBY, DETECT, ATTACK, RETURN, HIT, DEAD };
+  enum class Type
+  { SOLDIER_KNIFE, SOLDIER_BZK };
 
   Enemy(Vector3 position, Vector3 size);
   Enemy(Vector3 position, Vector3 size, Room* spawnedRoom);
@@ -24,30 +24,28 @@ public:
   bool CanAttack(GameObject* object);
   bool CanChasing(GameObject* object);
 
-  void SetState(State state) { this->state = state; }
-  State GetState() { return state; }
-
   Movement* GetMovement() { return movement; }
-
   Room* GetSpawnedRoom() { return spawnedRoom; }
-  
+  Type GetEnemyType() { return enemyType; }
+
   void Look(Direction direction);
   void Look(GameObject* object);
 
-  void Scream();
-  void Return();
-  void StandBy();
+  void SetDelay(double delay) { this->delay = delay; }
 
-  void Attack(GameObject* target);
-
-  void HPRecover();
 protected:
-  void init();
+
+  void init(Vector2 attackRange);
+  virtual void initStates();
+
+  Enemy::Type enemyType;
 
   Room* spawnedRoom = nullptr;
   Vector3 spawnedPosition = Values::ZeroVec3;
 
-  State state = State::SPAWNED;
+  UINT currState = 0;
+  class EnemyState* currStateComp = nullptr;
+  std::array<class EnemyState*, 8> stateComps;
 
   ProgressBar* hpBar = nullptr; // 체력 상태 바
 
@@ -59,25 +57,33 @@ protected:
   BoundingBox* attackableArea = nullptr;
   BoundingBox* chasingArea = nullptr;
 
-  class EnemyAI* enemyAI = nullptr;
+  //class EnemyAI* enemyAI = nullptr;
 
   double hpRegenTimer = 0.0; // hp 1초에 한 번씩 차게 하기 위해
-  bool attacking = false; // 칼을 뽑고 있는지!
+  //bool attacking = false; // 칼을 뽑고 있는지!
+  bool isDead = false;
 
+  double delay = 0.0; // 대기 시간
 };
 
 // 칼 공격하는 모덴군
 class ENM_SoldierKnife : public Enemy
 {
+public:
   ENM_SoldierKnife(Vector3 position, Vector3 size, Room* spawnedRoom);
-  ~ENM_SoldierKnife();
+  virtual ~ENM_SoldierKnife();
 
-  void Update() override;
-
+protected:
+  virtual void initStates() override;
 };
 
 // 바주카 쏘는 모덴군
 class ENM_SoldierBZK : public Enemy
 {
+public:
+  ENM_SoldierBZK(Vector3 position, Vector3 size, Room* spawnedRoom);
+  virtual ~ENM_SoldierBZK();
 
+protected:
+  virtual void initStates() override;
 };

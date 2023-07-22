@@ -25,7 +25,7 @@ class GameObject {
   void InitGraphic(Animator* animator, ObjectGraphic::Slot slot);
   void InitGraphic(std::wstring path, ObjectGraphic::Slot slot);
 
-  void SetFliped(bool isFliped) { this->isFliped = isFliped; }
+  void SetIsFliped(bool isFliped) { this->isFliped = isFliped; }
   bool GetIsFliped() { return isFliped; }
 
   class Collision* GetCollision();

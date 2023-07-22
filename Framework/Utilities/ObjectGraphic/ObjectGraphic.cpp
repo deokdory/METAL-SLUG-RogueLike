@@ -253,6 +253,11 @@ void ObjectGraphic::SetCurrentFrame(UINT index, Slot slot)
     if (animators[slot] != nullptr) animators[slot]->SetCurrentFrame(index);
 }
 
+std::wstring ObjectGraphic::GetCurrentAnimationName(Slot slot)
+{
+  return animators[slot]->GetCurrentAnimClipName();
+}
+
 bool ObjectGraphic::GetIsAnimationFinish(Slot slot)
 {
   return animators[slot] != nullptr ? animators[slot]->GetIsFinish() : false;

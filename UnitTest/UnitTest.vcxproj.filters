@@ -18,14 +18,12 @@
     <ClInclude Include="Utilities\Combat\PlayerCombat.h" />
     <ClInclude Include="GameObjects\Throwable\Throwable.h" />
     <ClInclude Include="Character\Enemy.h" />
-    <ClInclude Include="Character\SoldierSample.h" />
     <ClInclude Include="Utilities\Movements\PlayerMovement.h" />
     <ClInclude Include="Utilities\Movements\ThrowableMovement.h" />
     <ClInclude Include="Utilities\Gun\Gun.h" />
     <ClInclude Include="Utilities\Movements\Movement.h" />
     <ClInclude Include="Utilities\GameManager.h" />
     <ClInclude Include="GameObjects\Elevator.h" />
-    <ClInclude Include="Utilities\EnemyAI\EnemyAI.h" />
     <ClInclude Include="Utilities\EnemyState\EnemyState.h" />
   </ItemGroup>
   <ItemGroup>
@@ -44,14 +42,13 @@
     <ClCompile Include="Utilities\Combat\PlayerCombat.cpp" />
     <ClCompile Include="GameObjects\Throwable\Throwable.cpp" />
     <ClCompile Include="Character\Enemy.cpp" />
-    <ClCompile Include="Character\SoldierSample.cpp" />
+    <ClCompile Include="Character\Soldiers.cpp" />
     <ClCompile Include="Utilities\Movements\PlayerMovement.cpp" />
     <ClCompile Include="Utilities\Movements\ThrowableMovement.cpp" />
     <ClCompile Include="Utilities\Gun\Gun.cpp" />
     <ClCompile Include="Utilities\Movements\Movement.cpp" />
     <ClCompile Include="Utilities\GameManager.cpp" />
     <ClCompile Include="GameObjects\Elevator.cpp" />
-    <ClCompile Include="Utilities\EnemyAI\EnemyAI.cpp" />
     <ClCompile Include="Utilities\EnemyState\EnemyState.cpp" />
   </ItemGroup>
   <ItemGroup>

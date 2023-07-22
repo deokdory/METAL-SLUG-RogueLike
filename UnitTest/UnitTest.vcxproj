@@ -148,14 +148,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Character\Enemy.h" />
-    <ClInclude Include="Character\SoldierSample.h" />
     <ClInclude Include="GameObjects\Elevator.h" />
     <ClInclude Include="GameObjects\Throwable\Throwable.h" />
     <ClInclude Include="GameObjects\Bullet\Bullet.h" />
     <ClInclude Include="Character\Animations.h" />
     <ClInclude Include="Character\Character.h" />
     <ClInclude Include="Character\Agent.h" />
-    <ClInclude Include="Utilities\EnemyAI\EnemyAI.h" />
     <ClInclude Include="Utilities\EnemyState\EnemyState.h" />
     <ClInclude Include="Utilities\GameManager.h" />
     <ClInclude Include="Utilities\Gun\Gun.h" />
@@ -176,14 +174,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Character\Enemy.cpp" />
-    <ClCompile Include="Character\SoldierSample.cpp" />
+    <ClCompile Include="Character\Soldiers.cpp" />
     <ClCompile Include="GameObjects\Elevator.cpp" />
     <ClCompile Include="GameObjects\Throwable\Throwable.cpp" />
     <ClCompile Include="GameObjects\Bullet\Bullet.cpp" />
     <ClCompile Include="Character\Animations.cpp" />
     <ClCompile Include="Character\Character.cpp" />
     <ClCompile Include="Character\Agent.cpp" />
-    <ClCompile Include="Utilities\EnemyAI\EnemyAI.cpp" />
     <ClCompile Include="Utilities\EnemyState\EnemyState.cpp" />
     <ClCompile Include="Utilities\GameManager.cpp" />
     <ClCompile Include="Utilities\Gun\Gun.cpp" />

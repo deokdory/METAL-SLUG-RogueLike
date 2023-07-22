@@ -7,8 +7,11 @@ class Time : public SingletonBase<Time> {
   bool Stopped() { return isTimerStopped; }
   double Delta() { return isTimerStopped ? 0.0f : timeElapsed; }
 
-  double WorldOriginDelta() { return isTimerStopped ? 0.0 : runningTime - lastWorldUpdate; }
-  double WorldDelta() { return isTimerStopped ? 0.0f : (runningTime - lastWorldUpdate) * globalSpeed; }
+  // 실제 경과한 시간
+  double WorldOriginDelta() { return isTimerStopped ? 0.0 : runningTime - lastWorldUpdate; } 
+  // 게임 속도 반영해서 경과한 시간
+  double WorldDelta() { return isTimerStopped ? 0.0f : (runningTime - lastWorldUpdate) * globalSpeed; } 
+
   void WorldUpdate() { this->lastWorldUpdate = runningTime; }
 
   void Update();

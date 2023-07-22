@@ -3,73 +3,110 @@
 class EnemyState
 {
 public:
-  virtual ~EnemyState() {}
-  virtual void Update(Enemy& enemy) {};
-  virtual void Enter(Enemy& enemy) {};
+  enum State
+  {
+    NONE,
+    SPAWNED, SCREAM, STANDBY, 
+    COMBAT, ATTACK, 
+    RETURN, HIT
+  };
 
-public:
-  static ES_Spawned es_spawned;
-  static ES_Scream es_scream;
-  static ES_StandBy es_standBy;
-  static ES_Detect es_detect;
-  static ES_AttackKnife es_attackKnife;
-  static ES_AttackBZK es_attackBZK;
-  static ES_RETURN  es_return;
-  static ES_HIT es_hit;
+  virtual ~EnemyState() {}
+  virtual EnemyState::State Update(class Enemy& enemy) { return State::NONE; }
+  virtual void Enter(class Enemy& enemy) {}
+
 };
 
 class ES_Spawned : public EnemyState
 {
 public:
-  virtual void Update(Enemy& enemy);
-  virtual void Enter(Enemy& enemy);
+    virtual EnemyState::State Update(Enemy& enemy);
+    virtual void Enter(Enemy& enemy);
 };
 
 class ES_Scream : public EnemyState
 {
 public:
-  virtual void Update(Enemy& enemy);
-  virtual void Enter(Enemy& enemy);
+  virtual EnemyState::State Update(class Enemy& enemy);
+  virtual void Enter(class Enemy& enemy);
 };
 
 class ES_StandBy : public EnemyState
 {
 public:
-  virtual void Update(Enemy& enemy);
-  virtual void Enter(Enemy& enemy);
+  virtual EnemyState::State Update(class Enemy& enemy);
+  virtual void Enter(class Enemy& enemy);
 };
 
-class ES_Detect : public EnemyState
+class ES_Combat : public EnemyState
 {
 public:
-  virtual void Update(Enemy& enemy);
-  virtual void Enter(Enemy& enemy);
+  virtual EnemyState::State Update(class Enemy& enemy);
+  virtual void Enter(class Enemy& enemy);
 };
 
-class ES_AttackKnife : public EnemyState
+class ES_CombatKnife : public ES_Combat
 {
 public:
-  virtual void Update(Enemy& enemy);
-  virtual void Enter(Enemy& enemy);
+  virtual EnemyState::State Update(class Enemy& enemy);
+  virtual void Enter(class Enemy& enemy);
 };
 
-class ES_AttackBZK : public EnemyState
+class ES_CombatBZK : public ES_Combat
 {
 public:
-  virtual void Update(Enemy& enemy);
-  virtual void Enter(Enemy& enemy);
+  virtual EnemyState::State Update(class Enemy& enemy);
+  virtual void Enter(class Enemy& enemy);
 };
 
-class ES_RETURN : public EnemyState
+class ES_Attack : public EnemyState
 {
 public:
-  virtual void Update(Enemy& enemy);
-  virtual void Enter(Enemy& enemy);
+  virtual EnemyState::State Update(class Enemy& enemy);
+  virtual void Enter(class Enemy& enemy);
 };
 
-class ES_HIT : public EnemyState
+class ES_AttackKnife : public ES_Attack
 {
 public:
-  virtual void Update(Enemy& enemy);
-  virtual void Enter(Enemy& enemy);
+  virtual EnemyState::State Update(class Enemy& enemy);
+  virtual void Enter(class Enemy& enemy);
+};
+
+class ES_AttackBZK : public ES_Attack
+{
+public:
+  virtual EnemyState::State Update(class Enemy& enemy);
+  virtual void Enter(class Enemy& enemy);
+};
+
+class ES_Return : public EnemyState
+{
+public:
+  virtual EnemyState::State Update(class Enemy& enemy);
+  virtual void Enter(class Enemy& enemy);
+};
+
+class ES_Hit : public EnemyState
+{
+public:
+  virtual EnemyState::State Update(class Enemy& enemy);
+  virtual void Enter(class Enemy& enemy);
+};
+
+class EnemyStates
+{
+public:
+  static EnemyState es_none;
+  static ES_Spawned es_spawned;
+  static ES_Scream es_scream;
+  static ES_StandBy es_standBy;
+  static ES_Combat es_combat;
+  static ES_CombatKnife es_combatKnife;
+  static ES_CombatBZK es_combatBZK;
+  static ES_Attack es_attack;
+  static ES_AttackKnife es_attackKnife;
+  static ES_AttackBZK es_attackBZK;
+  static ES_Return es_return;
+  static ES_Hit es_hit;
 };

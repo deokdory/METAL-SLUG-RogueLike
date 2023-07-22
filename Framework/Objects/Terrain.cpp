@@ -117,7 +117,7 @@ float Footholder::GetFootholderTop(Vector3 objectPosition)
 
 
 Stair::Stair(Vector3 position, int floor, Stair::Type stairType)
-  : Terrain(position, Terrain::Type::STAIR, floor)
+  : Terrain(position, Terrain::Type::STAIR, floor), stairType(stairType)
 {
   objectType = GameObject::Type::TERRAIN;
   TerrainCollision* trnCollision = nullptr;
@@ -163,12 +163,12 @@ float Stair::GetFootholderTop(Vector3 objectPosition)
   float r = 0.0f;
   float stairEdgeX = 0.0f;
 
-  stairEdgeX = footholder->GetSize().x / 2 * std::cos(D3DXToRadian(footholderRotation));
+  stairEdgeX = footholder->GetSize().x / 2 * (float)std::cos(D3DXToRadian(footholderRotation));
 
   r = -(footholderPosition.x - objectPosition.x);
 
   if (r > stairEdgeX) r = stairEdgeX;
   else if (r < -stairEdgeX) r = -stairEdgeX;
 
-  return footholderPosition.y + (r * std::tan(D3DXToRadian(footholderRotation)));
+  return footholderPosition.y + (r * (float)std::tan(D3DXToRadian(footholderRotation)));
 }
