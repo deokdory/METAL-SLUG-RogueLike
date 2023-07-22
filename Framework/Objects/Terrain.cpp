@@ -172,3 +172,21 @@ float Stair::GetFootholderTop(Vector3 objectPosition)
 
   return footholderPosition.y + (r * (float)std::tan(D3DXToRadian(footholderRotation)));
 }
+
+Vector3 Stair::GetEntrance()
+{
+  switch (stairType)
+  {
+  case Stair::Type::NORMAL_UP:
+  case Stair::Type::LONG_UP:
+    return collision->GetFootholder()->GetRect()->LT;
+    break;
+  case Stair::Type::NORMAL_DOWN:
+  case Stair::Type::LONG_DOWN:
+    return collision->GetFootholder()->GetRect()->RT;
+    break;
+  default:
+    break;
+  }
+  
+}

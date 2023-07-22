@@ -4,6 +4,41 @@
 #include "Character/Enemy.h"
 #include "Character/Agent.h"
 
+void EnemyState::movementBasic(Enemy& enemy)
+{
+  auto* movement = enemy.GetMovement();
+  auto* graphic = enemy.GetGraphic();
+
+  std::wstring currentAnimationName = graphic->GetCurrentAnimationName();
+
+  if (movement->GetIsFalling())
+  {
+    if (currentAnimationName != L"fall" && currentAnimationName != L"fallReverse")
+      graphic->SetCurrentAnimation(L"fall");
+    else if (currentAnimationName == L"fall" && graphic->GetIsAnimationFinish())
+      graphic->SetCurrentAnimation(L"fallReverse");
+  }
+  else
+  {
+    // 오른쪽으로 달리는 중
+    if (movement->GetXSpeedOrigin() > 1.0f)
+    {
+      enemy.SetIsFliped(false);
+      graphic->SetCurrentAnimation(L"run");
+    }
+    // 왼쪽으로 달리는 중
+    else if (movement->GetXSpeedOrigin() < -1.0f)
+    {
+      enemy.SetIsFliped(true);
+      graphic->SetCurrentAnimation(L"run");
+    }
+    // 가만히 서 있는 상태
+    else
+    {
+      graphic->SetCurrentAnimation(L"idle");
+    }
+  }
+}
 
 EnemyState::State ES_Spawned::Update(Enemy& enemy)
 {
@@ -37,12 +72,15 @@ EnemyState::State ES_StandBy::Update(Enemy& enemy)
   if (enemy.DetectPlayer())
     return State::COMBAT;
 
+  enemy.GetMovement()->SlowDown();
+
   return State::NONE;
 }
 
 void ES_StandBy::Enter(Enemy& enemy)
 {
   // 달리기 속도 초기화
+  enemy.Look(GameManager::Get()->GetPlayer());
   enemy.GetGraphic()->SetCurrentAnimation(L"idle");
   enemy.GetMovement()->SetXSpeedMax(5.0f);
 }
@@ -62,26 +100,7 @@ EnemyState::State ES_Combat::Update(Enemy& enemy)
   if (enemy.CanAttack((GameObject*)player))
     return State::ATTACK;
 
-  auto* movement = enemy.GetMovement();
-  auto* graphic = enemy.GetGraphic();
-
-  // 오른쪽으로 달리는 중
-  if (movement->GetXSpeedOrigin() > 1.0f)
-  {
-    enemy.SetIsFliped(false);
-    graphic->SetCurrentAnimation(L"run");
-  }
-  // 왼쪽으로 달리는 중
-  else if (movement->GetXSpeedOrigin() < -1.0f)
-  {
-    enemy.SetIsFliped(true);
-    graphic->SetCurrentAnimation(L"run");
-  }
-  // 가만히 서 있는 상태
-  else
-  {
-    graphic->SetCurrentAnimation(L"idle");
-  }
+  movementBasic(enemy);
 
   return State::NONE;
 }
@@ -171,19 +190,22 @@ EnemyState::State ES_CombatKnife::Update(Enemy& enemy)
       {
         if (s->GetFloor() == currentFloor)
         {
-          if (stairTemp == nullptr)
-            stairTemp = s;
+          if (stair == nullptr)
+            stair = dynamic_cast<Stair*>(s);
           else
+          {
+            Stair* currStair = dynamic_cast<Stair*>(s);
             // 플레이어와 더 가까운 계단을 목표로 설정
-            if (DXMath::GetDistance(stairTemp->GetPosition(), playerPosition).x >
-              DXMath::GetDistance(s->GetPosition(), playerPosition).x)
-              stairTemp = s;
+            if (DXMath::GetDistance(stair->GetEntrance(), playerPosition).x + DXMath::GetDistance(stair->GetEntrance(), enemyPosition).x >
+              DXMath::GetDistance(currStair->GetEntrance(), playerPosition).x + DXMath::GetDistance(currStair->GetEntrance(), enemyPosition).x)
+              stair = currStair;
+
+          }
         }
       }
 
-      if (stairTemp)
+      if (stair)
       {
-        stair = dynamic_cast<Stair*>(stairTemp);
         Vector3 stairPosition = stair->GetPosition();
 
         // 적 캐릭터가 계단 시작점 너머에 위치했는지 검사 및 이동
@@ -304,6 +326,36 @@ void ES_AttackBZK::Enter(Enemy& enemy)
 
 EnemyState::State ES_Return::Update(Enemy& enemy)
 {
+  auto* movement = enemy.GetMovement();
+
+  auto* currentRoom = enemy.GetCurrentRoom();
+  auto* spawnedRoom = enemy.GetSpawnedRoom();
+
+  Vector3 spawnedPosition = enemy.GetSpawnedPosition();
+  Vector3 position = enemy.GetPosition();
+
+  if (currentRoom)
+  {
+    if (currentRoom->GetRoomType() == Room::Type::PASSAGE)
+    {
+      movement->SetIsDirectingUp();
+      movement->SetIsDirectingDown();
+    }
+
+    movementBasic(enemy);
+
+    if (spawnedPosition.x + movement->GetXSpeed() < position.x)
+      movement->MoveLeft();
+    else if (spawnedPosition.x - movement->GetXSpeed() > position.x)
+      movement->MoveRight();
+    else
+      return EnemyState::STANDBY;
+  }
+
+  
+
+  movementBasic(enemy);
+
   return State::NONE;
 }
 

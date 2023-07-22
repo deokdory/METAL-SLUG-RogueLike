@@ -9,8 +9,18 @@ void GameManager::Update()
   playerCurrentRoom = player->GetCurrentRoom();
   lastStandedTerrain = player->GetMovement()->GetLastStanded();
 
-  if (lastStandedTerrain != nullptr)
-    lastStandedTerrainFloor = lastStandedTerrain->GetFloor();
+  if (playerCurrentRoom)
+  {
+    Vector3 playerCurrentRoomPosition = playerCurrentRoom->GetPosition();
+    Vector3 playerPosition = player->GetPosition();
+
+    if (playerPosition.y >= playerCurrentRoomPosition.y + 160.f)
+      playerCurrentFloor = 2;
+    else if (playerPosition.y >= playerCurrentRoomPosition.y - 32.f)
+      playerCurrentFloor = 1;
+    else
+      playerCurrentFloor = 0;
+  }
 
   if (Keyboard::Get()->Press(VK_F11)) player->SetPositionForce({ 0, 100, 0 });
 }
@@ -21,7 +31,7 @@ void GameManager::GUI()
     std::string roomTypeStr = "Current room type : ";
     std::string isActivedStr = "This room is ";
     std::string roomFloorStr = "Current Room's Floor : ";
-    std::string terrainFloorStr = "Last Standed Terrain's Floor : ";
+    std::string playerCurrentFloorStr = "Last Standed Terrain's Floor : ";
     
     if (playerCurrentRoom != nullptr)
     {
@@ -67,17 +77,14 @@ void GameManager::GUI()
       roomTypeStr += "NULL";
     }
 
-    if (lastStandedTerrain != nullptr)
-      terrainFloorStr += std::to_string(lastStandedTerrain->GetFloor());
-    else
-      terrainFloorStr += "NULL";
+    playerCurrentFloorStr += std::to_string(playerCurrentFloor);
     
   ImGui::Begin("Room");
   {
     ImGui::Text(roomTypeStr.c_str());
     ImGui::Text(isActivedStr.c_str());
     ImGui::Text(roomFloorStr.c_str());
-    ImGui::Text(terrainFloorStr.c_str());
+    ImGui::Text(playerCurrentFloorStr.c_str());
   }
   ImGui::End();
 }

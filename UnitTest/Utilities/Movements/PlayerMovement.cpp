@@ -21,7 +21,7 @@ void PlayerMovement::Update()
 
 void PlayerMovement::UpdateAccel()
 {
-  accel = accelOrigin * Time::Get()->GetGlobalSpeed();
+  __super::UpdateAccel();
   if (isSliding) accel /= 8;
 }
 

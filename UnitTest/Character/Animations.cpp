@@ -67,6 +67,9 @@ Animator* Animations::GetSoldierKnife()
   AnimationClip* scream = new AnimationClip(L"scream", srcTex, 11, { 0, 155 }, { 989, 242 }, 1.0f / 18.0f, false, false);
   AnimationClip* run = new AnimationClip(L"run", srcTex, 10, { 0, 243 }, { 699, 324 }, 1.0f / 12.0f, true);
 
+  AnimationClip* fall = new AnimationClip(L"fall", srcTex, 5, { 1042, 0 }, { 1368, 91 }, 1.0f / 24.0f, false, false);
+  AnimationClip* fallReverse = new AnimationClip(L"fallReverse", srcTex, 5, { 1042, 0 }, { 1368, 91 }, 1.0f / 12.0f, true, false);
+
   AnimationClip* knife1 = new AnimationClip(L"knife1", srcTex, 12, { 0, 325 }, { 1367, 402 }, 1.0f / 32.0f, false, false, Vector2(20, 0));
   AnimationClip* knife2 = new AnimationClip(L"knife2", srcTex, 12, { 0, 403 }, { 1367, 481 }, 1.0f / 32.0f, false, false, Vector2(20, 0));
 
@@ -80,6 +83,10 @@ Animator* Animations::GetSoldierKnife()
   animator->AddAnimClip(die);
   animator->AddAnimClip(scream);
   animator->AddAnimClip(run);
+
+  animator->AddAnimClip(fall);
+  animator->AddAnimClip(fallReverse);
+
   animator->AddAnimClip(knife1);
   animator->AddAnimClip(knife2);
   animator->AddAnimClip(knifeReverse);
@@ -100,7 +107,7 @@ Animator* Animations::GetSoldierBazooka()
   animator->AddAnimClip(new AnimationClip(L"idle", srcTex, 6, { 0, 0 }, { 563, 95 }, 1.0f / 6.0f, false, true));
   animator->AddAnimClip(new AnimationClip(L"hit", srcTex, 4, { 564, 0 }, { 939, 95 }, 1.0f / 24.0f, false, false));
   animator->AddAnimClip(new AnimationClip(L"run", srcTex, 6, { 0, 96 }, { 1011, 183 }, 1.0f / 12.0f, false, true));
-  animator->AddAnimClip(new AnimationClip(L"scream", srcTex, 6, { 0, 185 }, { 989, 271 }, 1.0f / 18.0f, false, false));
+  animator->AddAnimClip(new AnimationClip(L"scream", srcTex, 11, { 0, 185 }, { 989, 271 }, 1.0f / 18.0f, false, false));
   animator->AddAnimClip(new AnimationClip(L"die", knifeSrcTex, 11, { 0, 80 }, { 725, 153 }, 1.0f / 18.0f, false, false));
 
   animator->AddAnimClip(new AnimationClip(L"aimPreUp", srcTex, 3, { 0, 272 }, { 329, 389 }, 1.0f / 24.0f, false, false));
@@ -141,7 +148,8 @@ Animator* Animations::GetSoldierBazooka()
   animator->AddAnimClip(new AnimationClip(L"fireDown70", srcTex, 3, { 660, 496 }, { 989, 601 }, 1.0f / 12.0f, false, false));
   animator->AddAnimClip(new AnimationClip(L"fireDown90", srcTex, 3, { 990, 496 }, { 1319, 601 }, 1.0f / 12.0f, false, false));
 
-  animator->AddAnimClip(new AnimationClip(L"jump", srcTex, 6, { 0, 720 }, { 575, 807 }, 1.0f / 12.0f, false, false));
+  animator->AddAnimClip(new AnimationClip(L"fall", srcTex, 5, { 96, 720 }, { 575, 807 }, 1.0f / 24.0f, false, false));
+  animator->AddAnimClip(new AnimationClip(L"fallReverse", srcTex, 5, { 96, 720 }, { 575, 807 }, 1.0f / 12.0f, true, false));
   animator->AddAnimClip(new AnimationClip(L"land", srcTex, 2, { 576, 720 }, { 751, 807 }, 1.0f / 12.0f, false, false));
 
   animator->SetCurrentAnimClip(L"idle");

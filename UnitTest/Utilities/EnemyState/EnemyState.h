@@ -15,6 +15,9 @@ public:
   virtual EnemyState::State Update(class Enemy& enemy) { return State::NONE; }
   virtual void Enter(class Enemy& enemy) {}
 
+protected:
+  virtual void movementBasic(class Enemy& enemy);
+
 };
 
 class ES_Spawned : public EnemyState

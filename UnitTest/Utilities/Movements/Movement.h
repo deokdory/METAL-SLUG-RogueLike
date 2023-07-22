@@ -62,7 +62,7 @@ public:
   float GetXSpeed() { return xSpeed; }
   float GetYSpeed() { return ySpeed; }
 
-  void SetXSpeedMax(float xSpeedMax) { this->xSpeedMax = xSpeedMax; }
+  void SetXSpeedMax(float xSpeedMax) { this->xSpeedMaxOrigin = xSpeedMax; }
 
   float GetXSpeedOrigin() { return xSpeedOrigin; }
   float GetYSpeedOrigin() { return ySpeedOrigin; }
@@ -109,7 +109,8 @@ protected:
 
   float xSpeed = 0; // 수평 속도
   float xSpeedOrigin = 0; // 원래 수평 속도
-  float xSpeedMax = 5; // 수평 속도 제한
+  float xSpeedMaxOrigin = 5; // 원래 최대 수평 속도
+  float xSpeedMax = xSpeedMaxOrigin; // 수평 속도 제한
 
   float accel = 0; // 상황별 가속도 보정 위함 
   float accelOrigin = 0.3f; // 기본 가속도 값

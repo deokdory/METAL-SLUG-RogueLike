@@ -155,6 +155,8 @@ void Movement::Update()
   xSpeed = xSpeedOrigin * globalSpeed;
   ySpeed = ySpeedOrigin * globalSpeed;
 
+  xSpeedMax = xSpeedMaxOrigin;
+
   speedBox->Update(xSpeed, ySpeed);
 
   terrainCollisionCheck();
@@ -264,6 +266,7 @@ void Movement::Stop()
 void Movement::UpdateAccel()
 {
   accel = accelOrigin * Time::Get()->GetGlobalSpeed();
+  if (isFalling) accel *= 0.5f;
 }
 
 void Movement::terrainCollisionCheck()
@@ -387,6 +390,7 @@ void Movement::interaction()
   isFalling = true;
   standOn = nullptr;
 
+
   auto* objectBox = object->GetCollision()->GetBase();
 
   auto* bottomSpeedBox = speedBox->GetBox(MovementSpeedBox::Slot::BOTTOM);
@@ -454,6 +458,9 @@ void Movement::interaction()
   // 발판에 충돌 중일 때
   if (standOn != nullptr)
   {
+    if (standOn->GetTerrainType() == Terrain::Type::STAIR)
+      xSpeedMax = xSpeedMaxOrigin * 0.6f;
+
     ySpeedOrigin = 0;
     isFalling = isDropping = false;
 
@@ -464,7 +471,9 @@ void Movement::interaction()
   // 발판에 충돌 중이 아닐 때
   else
   {
+
     objectPosition.y += ySpeed;
   }
+
   object->SetPositionForce(objectPosition);
 }

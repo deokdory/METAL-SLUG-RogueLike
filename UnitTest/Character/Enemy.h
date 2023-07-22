@@ -26,6 +26,7 @@ public:
 
   Movement* GetMovement() { return movement; }
   Room* GetSpawnedRoom() { return spawnedRoom; }
+  Vector3 GetSpawnedPosition() { return spawnedPosition; }
   Type GetEnemyType() { return enemyType; }
 
   void Look(Direction direction);
