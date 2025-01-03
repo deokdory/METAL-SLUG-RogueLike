@@ -8,13 +8,17 @@
 //pch pre compiled header
 
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <time.h>
 #include <stdlib.h>
 #include <Windows.h>
 #include <string>
 #include <unordered_map>
+#include <map>
+#include <array>
 #include <assert.h>
+#include <fstream>
 
 using namespace std;
 
@@ -35,25 +39,40 @@ using namespace std;
 
 //////////////////////////////////////////
 //ImGui
+
 #include "ImGui/imgui.h"
+#include "ImGui/imgui_stdlib.h"
 #include "ImGui/imgui_internal.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui/imgui_impl_win32.h"
+
 #pragma comment(lib, "ImGui/ImGui.lib")
 
 //////////////////////////////////////////
+// NFD
+
+#include "NFD/include/nfd.h"
+#pragma comment(lib, "NFD/nfd_d.lib")
+
+//////////////////////////////////////////
+
+enum class AnchorPoint
+{
+	LEFT_TOP, MID_TOP, RIGHT_TOP,
+	LEFT_MID, CENTER, RIGHT_MID,
+	LEFT_BOT, MID_BOT, RIGHT_BOT
+};
+
+enum class Direction { NONE, UP, DOWN, LEFT, RIGHT };
 
 #include "Interfaces/IObject.h"
 
 #include "Utilities/SingletonBase.h"
-#include "Utilities/RealRandom.h"
 
 #include "Systems/Graphics.h"
 #include "Systems/Keyboard.h"
 #include "Systems/Mouse.h"
 #include "Systems/Time.h"
-
-#include "Game/GameManager.h"
 
 #include "Utilities/Gui.h"
 
@@ -94,10 +113,23 @@ typedef UINT		uint;
 #include "Utilities/String.h"
 #include "Utilities/Path.h"
 
+#include "Utilities/Collision/Collision.h"
+#include "Utilities/ObjectGraphic/ObjectGraphic.h"
+#include "Objects/GameObject.h"
+#include "Game/Level/Level.h"
+
+#include "Systems/Camera.h"
+
 #define WinMaxWidth 1280
 #define WinMaxHeight 720
 
+#define TILESIZE 64
+
+// position = (mousePos / TILESIZE) * TILESIZE + TILESIZE / 2;
+
 const wstring ShaderPath = L"../_Shaders/";
-const wstring TexturePath = L"../_Textures/";
+const wstring TexturePath = L"../_Resources/_Textures/";
+const wstring TilePath = L"../_Resources/_TileData/";
+const wstring MapDataPath = L"../_Resources/_MapData/";
 
 extern HWND handle;

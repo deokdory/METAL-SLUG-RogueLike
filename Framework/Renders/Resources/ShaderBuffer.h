@@ -7,13 +7,13 @@
 class ShaderBuffer {
 public:
 	// Vertex Shader Buffer
-	void SetVSBuffer(uint slot)
+	void SetVSBuffer(UINT slot)
 	{
 		MapData();
 		DC->VSSetConstantBuffers(slot, 1, &buffer);
 	}
 	// Pixel Shader
-	void SetPSBuffer(uint slot)
+	void SetPSBuffer(UINT slot)
 	{
 		MapData();
 		DC->PSSetConstantBuffers(slot, 1, &buffer);
@@ -21,7 +21,7 @@ public:
 
 protected:
 	// GPU 쪽에서 사용하는 데이터를 CPU 쪽에서 생성하고 수정할 수 있도록 제공하는 버퍼
-	ShaderBuffer(void* data, uint dataSize)
+	ShaderBuffer(void* data, UINT dataSize)
 		: data(data), dataSize(dataSize)
 	{
 		desc.Usage = D3D11_USAGE_DYNAMIC;				// 버퍼 사용 용도
@@ -58,6 +58,6 @@ private:
 	ID3D11Buffer* buffer = nullptr;
 
 	void* data = nullptr;
-	uint dataSize = 0;
+	UINT dataSize = 0;
 
 };

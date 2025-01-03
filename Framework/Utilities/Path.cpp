@@ -129,7 +129,7 @@ const WCHAR* TMapFilter   = L"TMap file\0*.tmap";
 void Path::OpenFileDialog(std::wstring defaultFileName,
                           const WCHAR* fileTypeFilter,
                           const std::wstring defaultFolder,
-                          const function<void(std::wstring)> callback,
+                          const function<std::wstring(std::wstring)> callback,
                           HWND parentWindowHandle) {
 
   WCHAR name[255];

@@ -31,5 +31,11 @@ private:
 
 	static DXDesc desc;
 	IObject* mainObj = nullptr;
+
+	double elapsedTime = 0;
+	static bool isActive;
+
+	const UINT32 UPDATES_PER_SECOND = 60;
+	const double MS_PER_UPDATE = 1.0 / UPDATES_PER_SECOND;
 };
 

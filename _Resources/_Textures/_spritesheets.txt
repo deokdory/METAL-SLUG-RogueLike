@@ -1,0 +1,2 @@
+elevator.png,318,192,6
+enemy_soldier_fall.png,66,92,5

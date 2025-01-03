@@ -18,13 +18,13 @@ void Keyboard::Update()
 		keyState[i] = key ? 1 : 0;
 
 		int oldState = keyOldState[i];
-		int state = keyState[i];
+		int currState = keyState[i];
 
-		if (oldState == 0 && state == 1)
+		if (oldState == 0 && currState == 1)
 			keyMap[i] = KEY_INPUT_STATUS_DOWN; //이전 0, 현재 1 - KeyDown
-		else if (oldState == 1 && state == 0)
+		else if (oldState == 1 && currState == 0)
 			keyMap[i] = KEY_INPUT_STATUS_UP; //이전 1, 현재 0 - KeyUp
-		else if (oldState == 1 && state == 1)
+		else if (oldState == 1 && currState == 1)
 			keyMap[i] = KEY_INPUT_STATUS_PRESS; //이전 1, 현재 1 - KeyPress
 		else
 			keyMap[i] = KEY_INPUT_STATUS_NONE;

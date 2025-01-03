@@ -23,6 +23,7 @@ cbuffer VPbuffer : register(b1) {
 cbuffer TextureBuffer : register(b2)
 {
     int _bFliped;
+    float _alpha;
 }
 
 // 정점 셰이더 함수
@@ -45,9 +46,11 @@ SamplerState _samp : register(s0);    // 샘플링하는 방법 지정
 
 // 픽셀 셰이더 함수
 // 입력으로 PixelInput 구조체를 받고 float4 형태의 픽셀 색상을 반환
-float4 PS(PixelInput input) : SV_Target {
+float4 PS(PixelInput input) : SV_Target
+{
     float4 color = _sourceTex.Sample(_samp, (float2) input.uv);
     float4 resultColor;
+        
     if (_bFliped)
     {
         resultColor = _sourceTex.Sample(_samp, float2(1.0f - input.uv.x, input.uv.y));
@@ -55,9 +58,10 @@ float4 PS(PixelInput input) : SV_Target {
     else
     {
         resultColor = _sourceTex.Sample(_samp, (float2) input.uv);
-    
     }
-  return resultColor;
+    
+    if (resultColor.a > 0.0f) resultColor = float4(resultColor.rgb, _alpha);
+    return resultColor;
 }
 /*
 Semantic 세멘틱

@@ -121,7 +121,7 @@ void Graphics::CreateSwapchain()
 		}
 	}
 
-	for (int i = 0; i < adapterInfos.size(); i++)
+	for (UINT i = 0; i < adapterInfos.size(); i++)
 	{
 		gpuName = adapterInfos[i]->adapterDesc.Description;
 		wcout << "GPU Name : " << adapterInfos[i]->adapterDesc.Description << endl;

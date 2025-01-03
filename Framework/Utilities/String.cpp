@@ -87,7 +87,10 @@ void String::Replace(std::string* str, std::string comp, std::string rep) {
   std::string temp = *str;
 
   size_t startPos = 0;
-  while (startPos = temp.find(comp, startPos) != std::wstring::npos) {
+  while (true) {
+    startPos = temp.find(comp, startPos);
+    if (startPos == std::wstring::npos) break;
+
     temp.replace(startPos, comp.length(), rep);
     startPos += rep.length();
   }

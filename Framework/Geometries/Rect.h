@@ -20,6 +20,9 @@ class Rect {
   const Vector3 GetSize() { return size; }
   const float GetRotation() { return rotation; }
 
+  void SetPosition(Vector3 position) { this->position = position; }
+
+
   Matrix GetWorld() { return worldMatrix; }
 
   Vector3* GetVerticesLocalPosition() { return verticesLocalPosition; }

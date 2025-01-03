@@ -6,7 +6,7 @@ class InputLayout {
  public:
   ~InputLayout();
 
-  void Create(D3D11_INPUT_ELEMENT_DESC* desc, uint count, ID3DBlob* blob);
+  void Create(D3D11_INPUT_ELEMENT_DESC* desc, UINT count, ID3DBlob* blob);
 
   void SetIA();
  private:

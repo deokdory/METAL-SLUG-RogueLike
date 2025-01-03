@@ -12,10 +12,8 @@ class AnimationRect : public TextureRect {
   bool IsFliped() { return this->bFliped; }
 
   void SetAnimator(class Animator* animator) { this->animator = animator; }
+  //class Animator* GetAnimator();
 
  private:
   class Animator* animator = nullptr;
-
-  ID3D11SamplerState* point[2];
-  ID3D11BlendState* bPoint[2];
 };

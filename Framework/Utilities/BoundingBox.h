@@ -1,6 +1,5 @@
 #pragma once
-
-enum {x = 0, y};
+enum { x = 0, y };
 
 struct RectEdge {
   Vector3 LT;
@@ -17,35 +16,46 @@ struct AxisData {
 
 class CollisionBuffer : public ShaderBuffer {
  public:
-  CollisionBuffer() : ShaderBuffer(&data, sizeof(data)) { data.isOn = 1; }
+  CollisionBuffer() : ShaderBuffer(&data, sizeof(data)) { data.isOn = true; }
 
-  void SwitchRender() { data.isOn = !data.isOn; }
+  void SwitchRender(bool isOn) { data.isOn = isOn; }
 
-  private:
-  struct Data {
-    bool isOn;
-    Vector3 dummy;
-  } data;
+ private:
+   struct Data {
+     bool isOn;
+     Vector3 dummy;
+   } data;
 };
 
 class BoundingBox {
  public:
-  BoundingBox();
+  BoundingBox(Vector3 position, Vector3 size, float rotation, Color color);
+
   ~BoundingBox();
 
-  void Init(Color color);
-  void Update(Vector3 size, Vector3 movePosition = Values::ZeroVec3,
-              float rotation = 0.0f);
+  void Init();
+
+  void SetAnchorPoint(AnchorPoint point);
+
+  void Update(Vector3 position, Vector3 size, float rotation);
+  void Update(Vector3 position);
+
   void Render();
 
-  void UpdateCollisionData(const Matrix worldMatrix,
-                           const Vector3 verticesLocalPosition[]);
+  RectEdge* GetRect() { return edge; }
+  Vector3 GetSize() { return size; }
+  Vector3 GetPosition() { return position; }
+  float GetRotation() { return rotation; }
 
-  RectEdge* GetEdge() { return edge; }
-  AxisData* GetAxis() { return data; }
+  void UpdateCollisionData();
+
+  void mapVertexBuffer();
+  void unmapVertexBuffer();
 
   static bool AABB(BoundingBox* a, BoundingBox* b);
   static bool OBB(BoundingBox* a, BoundingBox* b);
+
+  void ChangeColor(Color color);
 
  private:
   std::vector<VertexColor> vertices;
@@ -62,9 +72,17 @@ class BoundingBox {
   Matrix S, R, T;
   WorldBuffer* wb = nullptr;
 
+  Vector3 position;
+  Vector3 size;
+  float rotation;
+  Color color;
+
   CollisionBuffer* cb = nullptr;
   ID3D11BlendState* bs = nullptr;
 
   RectEdge* edge = nullptr;
   AxisData* data = nullptr;
+
+  D3D11_MAPPED_SUBRESOURCE subResource;
+
 };

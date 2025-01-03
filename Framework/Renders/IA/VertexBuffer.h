@@ -52,17 +52,17 @@ public:
 
 	ID3D11Buffer* GetResource() { return buffer; }
 
-	uint GetStride() { return stride; }
-	uint GetOffset() { return offset; }
-	uint GetCount() { return count; }
+	UINT GetStride() { return stride; }
+	UINT GetOffset() { return offset; }
+	UINT GetCount() { return count; }
 
 	void SetIA();
 private:
 	ID3D11Buffer* buffer = nullptr;
 
-	uint stride = 0;	// 정점 버퍼 내에서 한 정점의 메모리 상 size
-	uint offset = 0;	// 각 정점 내 데이터의 메모리 시작 위치 ( Position, UV, Color 등 )
-	uint count = 0;		// 정점 버퍼가 읽을 정점의 개수
+	UINT stride = 0;	// 정점 버퍼 내에서 한 정점의 메모리 상 size
+	UINT offset = 0;	// 각 정점 내 데이터의 메모리 시작 위치 ( Position, UV, Color 등 )
+	UINT count = 0;		// 정점 버퍼가 읽을 정점의 개수
 };
 /*
 								GPU					CPU

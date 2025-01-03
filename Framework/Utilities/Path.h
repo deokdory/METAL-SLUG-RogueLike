@@ -33,7 +33,7 @@ class Path {
   const static WCHAR* TileFilter;
   const static WCHAR* TMapFilter;
 
-  static void OpenFileDialog(std::wstring defaultFileName, const WCHAR* fileTypeFilter, const std::wstring defaultFolder, const function<void(std::wstring)> callback, HWND parentWindowHandle = NULL);
+  static void OpenFileDialog(std::wstring defaultFileName, const WCHAR* fileTypeFilter, const std::wstring defaultFolder, const function<std::wstring(std::wstring)> callback, HWND parentWindowHandle = NULL);
   static void SaveFileDialog(std::wstring defaultFileName, const WCHAR* fileTypeFilter, const std::wstring defaultFolder, const function<void(std::wstring)> callback, HWND parentWindowHandle = NULL);
 
   static void GetFiles(std::vector<std::string>* files, std::string path,
@@ -46,7 +46,6 @@ class Path {
 
   static void CreateFolders(std::string path);
   static void CreateFolders(std::wstring path);
-
   };
 
 

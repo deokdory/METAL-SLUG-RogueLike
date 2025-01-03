@@ -3,9 +3,9 @@
 
 IndexBuffer::~IndexBuffer() { SAFE_RELEASE(buffer); }
 
-void IndexBuffer::Create(const vector<uint>& indices,
+void IndexBuffer::Create(const vector<UINT>& indices,
                          const D3D11_USAGE& usage) {
-  stride = sizeof(uint);
+  stride = sizeof(UINT);
   count = indices.size();
 
   D3D11_BUFFER_DESC desc;

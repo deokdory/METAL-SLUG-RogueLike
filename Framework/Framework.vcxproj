@@ -155,12 +155,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Framework.cpp" />
-    <ClCompile Include="Game\Character.cpp" />
-    <ClCompile Include="Game\GameManager.cpp" />
+    <ClCompile Include="Game\Level\Level.cpp" />
+    <ClCompile Include="Game\Level\Room\Room.cpp" />
+    <ClCompile Include="Game\UI\ProgressBar.cpp" />
+    <ClCompile Include="Objects\GameObject.cpp" />
+    <ClCompile Include="Objects\Terrain.cpp" />
+    <ClCompile Include="Utilities\Collision\Collision.cpp" />
+    <ClCompile Include="Utilities\ObjectGraphic\ObjectGraphic.cpp" />
+    <ClCompile Include="Utilities\UI.cpp" />
     <ClCompile Include="Geometries\AnimationRect.cpp" />
     <ClCompile Include="Geometries\Rect.cpp" />
     <ClCompile Include="Geometries\TextureRect.cpp" />
-    <ClCompile Include="Geometries\TextureRectTest.cpp" />
     <ClCompile Include="Renders\IA\IndexBuffer.cpp" />
     <ClCompile Include="Renders\IA\InputLayout.cpp" />
     <ClCompile Include="Renders\IA\VertexBuffer.cpp" />
@@ -177,6 +182,7 @@
     <ClCompile Include="Systems\Window.cpp" />
     <ClCompile Include="Utilities\Animator.cpp" />
     <ClCompile Include="Utilities\BoundingBox.cpp" />
+    <ClCompile Include="Systems\Camera.cpp" />
     <ClCompile Include="Utilities\DirectHelper.cpp" />
     <ClCompile Include="Utilities\Gui.cpp" />
     <ClCompile Include="Utilities\Path.cpp" />
@@ -186,9 +192,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework.h" />
-    <ClInclude Include="Game\Character.h" />
-    <ClInclude Include="Game\GameManager.h" />
-    <ClInclude Include="Geometries\TextureRectTest.h" />
+    <ClInclude Include="Game\Gun\Gun.h" />
+    <ClInclude Include="Game\Level\Level.h" />
+    <ClInclude Include="Game\Level\Room\Room.h" />
+    <ClInclude Include="Game\UI\ProgressBar.h" />
+    <ClInclude Include="Objects\GameObject.h" />
+    <ClInclude Include="Objects\Terrain.h" />
+    <ClInclude Include="Utilities\Collision\Collision.h" />
+    <ClInclude Include="Utilities\ObjectGraphic\ObjectGraphic.h" />
+    <ClInclude Include="Utilities\UI.h" />
     <ClInclude Include="Geometries\AnimationRect.h" />
     <ClInclude Include="Geometries\Rect.h" />
     <ClInclude Include="Geometries\TextureRect.h" />
@@ -211,6 +223,7 @@
     <ClInclude Include="Systems\Window.h" />
     <ClInclude Include="Utilities\Animator.h" />
     <ClInclude Include="Utilities\BoundingBox.h" />
+    <ClInclude Include="Systems\Camera.h" />
     <ClInclude Include="Utilities\DirectHelper.h" />
     <ClInclude Include="Utilities\Gui.h" />
     <ClInclude Include="Utilities\Path.h" />

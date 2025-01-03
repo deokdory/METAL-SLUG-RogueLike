@@ -1,13 +1,16 @@
 #include "Framework.h"
 #include "Animator.h"
 
-AnimationClip::AnimationClip(std::wstring clipName, Texture2D* srcTex,
-                             UINT frameCount, Vector2 startPos, Vector2 endPos,
-                             bool bReversed, float playRate )
-    : clipName(clipName),
-      frameCount(frameCount),
-      bReversed(bReversed), 
-      playRate(playRate) {
+// playRate가 0 미만일 경우 재생되지 않음
+AnimationClip::AnimationClip(std::wstring clipName, Texture2D* srcTex, UINT frameCount,
+  Vector2 startPos, Vector2 endPos, float playRate, bool bReversed, bool bLoop, Vector2 reposition)
+
+  : clipName(clipName),
+  frameCount(frameCount),
+  bReversed(bReversed),
+  bLoop(bLoop),
+  playRate(playRate),
+  reposition(reposition) {
 
   srv = srcTex->GetSRV();
 
@@ -19,7 +22,6 @@ AnimationClip::AnimationClip(std::wstring clipName, Texture2D* srcTex,
   Vector2 clipSize = endPos - startPos;
 
   // 한 프레임의 사이즈
-  Vector2 frameSize;
   frameSize.x = clipSize.x / frameCount;
   frameSize.y = clipSize.y;
 
@@ -38,7 +40,7 @@ AnimationClip::AnimationClip(std::wstring clipName, Texture2D* srcTex,
     keyframe.x = texelStartPos.x + (texelFrameSize.x * i);
     keyframe.y = texelStartPos.y;
 
-    keyFrames.push_back(keyframe);
+    keyframes.push_back(keyframe);
   }
 }
 
@@ -50,24 +52,36 @@ Animator::~Animator() {
   }
 }
 
-void Animator::Update() { 
-  if (deltaTime > currentClip->playRate) {
-    if (currentClip->bReversed == false) {
-      currentFrameIndex++;
-      if (currentFrameIndex == currentClip->frameCount) {
-        currentFrameIndex = 0;
+void Animator::Update() {
+  auto playRate = currentClip->playRate;
+
+  if (playRate > 0 && isFinish == false) {
+    if (elapsedTime > playRate) {
+      if (currentClip->bReversed == false) {
+        currentFrameIndex++;
+        if (currentFrameIndex == currentClip->frameCount) {
+          if (currentClip->bLoop) currentFrameIndex = 0;
+          else {
+            currentFrameIndex = currentClip->frameCount - 1;
+            isFinish = true;
+          }
+        }
       }
-    } else {
-      currentFrameIndex--;
-      if(currentFrameIndex == -1) {
-        currentFrameIndex = currentClip->frameCount - 1;
+      else {
+        currentFrameIndex--;
+        if (currentFrameIndex == -1) {
+          if (currentClip->bLoop) currentFrameIndex = currentClip->frameCount - 1;
+          else {
+            currentFrameIndex = 0;
+            isFinish = true;
+          }
+        }
       }
+      elapsedTime = 0.0;
     }
-    currentFrame = currentClip->keyFrames[currentFrameIndex];
-    deltaTime = .0f;
-  } else {
-    deltaTime += Time::Delta();
+    elapsedTime += Time::Get()->WorldDelta();
   }
+  currentFrame = currentClip->keyframes[currentFrameIndex];
 }
 
 void Animator::AddAnimClip(AnimationClip* animClip) {
@@ -77,20 +91,31 @@ void Animator::AddAnimClip(AnimationClip* animClip) {
 void Animator::SetCurrentAnimClip(std::wstring clipName) {
   if (currentClip == nullptr && CheckExist(clipName) == true) {
     currentClip = animClips.find(clipName)->second;
-  } else if (currentClip != nullptr && currentClip->clipName == clipName)
+  }
+  else if (currentClip != nullptr && currentClip->clipName == clipName)
     return;
 
   if (CheckExist(clipName)) {
     currentClip = animClips.find(clipName)->second;
-    deltaTime = .0f;
-    
+
     // 역재생이 활성화 상태인 경우
     if (currentClip->bReversed == true) {
       currentFrameIndex = currentClip->frameCount - 1;
-    } else {
+    }
+    else {
       currentFrameIndex = 0;
     }
+
     // 현재 프레임 업데이트
-    currentFrame = currentClip->keyFrames[currentFrameIndex];
+    currentFrame = currentClip->keyframes[currentFrameIndex];
+    elapsedTime = 0.0;
+    isFinish = false;
   }
+}
+
+void Animator::SetCurrentFrame(UINT index) {
+  auto keyframes = currentClip->keyframes;
+  if (index >= keyframes.size()) return;
+
+  currentFrameIndex = index;
 }

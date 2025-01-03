@@ -1,12 +1,20 @@
 #include "Framework.h"
 #include "Texture2D.h"
 
-using namespace DirectX;
-std::vector<TextureDesc> Textures::descs;
+//using namespace DirectX;
+std::map<std::wstring, TextureDesc> Textures::descs;
 
 Texture2D::Texture2D(std::wstring filePath)
-: filePath(filePath) {
-  Textures::Load(this);
+: filePath(filePath) 
+{
+  auto find = Textures::Find(filePath);
+  if (find != nullptr)
+  {
+    this->srv = find->srv;
+    this->width = find->width;
+    this->height = find->height;
+  }
+  else Textures::Load(this);
 }
 
 void Texture2D::ReadPixel(std::vector<Color>* pixels) {
@@ -84,73 +92,93 @@ void Texture2D::ReadPixel(ID3D11Texture2D* texture,
 }
 
 void Textures::Delete() {
-  for (TextureDesc desc : descs) {
-    SAFE_RELEASE(desc.srv);
+  for (auto it = descs.begin(); it != descs.end(); ++it) {
+    SAFE_RELEASE(it->second.srv);
   }
 }
 
-void Textures::Load(Texture2D* texture) {
-
+void Textures::Load(Texture2D* texture)
+{
   HRESULT hr;
-  TexMetadata metaData;
+  DirectX::TexMetadata metaData;
 
   std::wstring ext = Path::GetExtension(texture->filePath);
+
   if (ext == L"tga") {
-    hr = GetMetadataFromTGAFile(texture->filePath.c_str(), metaData);
-  } else if (ext == L"dds") {
-    hr = GetMetadataFromDDSFile(texture->filePath.c_str(), DDS_FLAGS_NONE,
-                                metaData);
-  } else {
-    hr = GetMetadataFromWICFile(texture->filePath.c_str(), WIC_FLAGS_NONE,
-                                metaData);
+    hr = DirectX::GetMetadataFromTGAFile(texture->filePath.c_str(), metaData);
   }
+  else if (ext == L"dds") {
+    hr = DirectX::GetMetadataFromDDSFile(texture->filePath.c_str(), DirectX::DDS_FLAGS_NONE,
+      metaData);
+  }
+  else {
+    hr = DirectX::GetMetadataFromWICFile(texture->filePath.c_str(), DirectX::WIC_FLAGS_NONE,
+      metaData);
+  }
+  
   CHECK(hr);
 
   UINT width = metaData.width;
   UINT height = metaData.height;
 
   TextureDesc desc;
+
   desc.filePath = texture->filePath;
   desc.width = width;
   desc.height = height;
 
-  TextureDesc exist;
-  bool bExist = false;
+  //TextureDesc exist;
+  //bool bExist = false;
 
-  for (TextureDesc temp : descs) {
-    if (desc == temp) {
-      bExist = true;
-      exist = temp;
-      break;
-    }
-  }
+  //for (TextureDesc temp : descs)
+  //{
+  //  if (desc == temp)
+  //  {
+  //    bExist = true;
+  //    exist = temp;
+  //    break;
+  //  }
+  //}
 
-  if (bExist == true) {
-    texture->srv = exist.srv;
-  } else {
+  //if (bExist == true) 
+  //{
+  //  texture->srv = exist.srv;
+  //  texture->metaData = metaData;
+  //}
+  //else 
+
+  {
     DirectX::ScratchImage image;
 
     if (ext == L"tga") {
-      hr = LoadFromTGAFile(texture->filePath.c_str(), &metaData, image);
-    } else if (ext == L"dds") {
-      hr = LoadFromDDSFile(texture->filePath.c_str(), DDS_FLAGS_NONE,
-                                  &metaData, image);
-    } else {
-      hr = LoadFromWICFile(texture->filePath.c_str(), WIC_FLAGS_NONE,
-                                  &metaData, image);
+      hr = DirectX::LoadFromTGAFile(texture->filePath.c_str(), &metaData, image);
+    }
+
+    else if (ext == L"dds") {
+      hr = DirectX::LoadFromDDSFile(texture->filePath.c_str(), DirectX::DDS_FLAGS_NONE,
+        &metaData, image);
+    }
+    else {
+      hr = DirectX::LoadFromWICFile(texture->filePath.c_str(), DirectX::WIC_FLAGS_NONE,
+        &metaData, image);
     }
     CHECK(hr);
 
-    ID3D11ShaderResourceView* srv= nullptr;
+    ID3D11ShaderResourceView* srv = nullptr;
     hr = CreateShaderResourceView(DEVICE, image.GetImages(),
-                                  image.GetImageCount(), metaData, &srv);
+      image.GetImageCount(), metaData, &srv);
     CHECK(hr);
 
-    desc.srv = srv;
-    texture->srv = srv;
-    texture->metaData = metaData;
+    desc.srv = texture->srv = srv;
+    texture->width = metaData.width;
+    texture->height = metaData.height;
 
-    descs.push_back(desc);
+    descs.insert(std::make_pair(texture->filePath, desc));
   }
- 
+}
+
+TextureDesc* Textures::Find(std::wstring filePath)
+{
+  auto find = descs.find(filePath);
+  return find != descs.end() ? &find->second : nullptr;
 }
